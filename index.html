@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desenvolvimento Real | O Portal de Alta Performance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --dark-blue: #0B172A; --black: #000000; --accent: #0056b3; }
+        body { font-family: 'Roboto', sans-serif; margin: 0; background-color: #fff; color: #333; }
+        header { background: var(--black); color: white; padding: 25px; text-align: center; border-bottom: 4px solid var(--accent); }
+        .logo { font-size: 36px; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; }
+        nav { background: var(--dark-blue); color: white; padding: 12px; text-align: center; }
+        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: 700; font-size: 14px; }
+        .ad-container { text-align: center; padding: 20px; background: #f9f9f9; margin: 25px auto; border: 1px dashed #ccc; max-width: 900px; color: #666; font-size: 12px; }
+        .ad-square { width: 300px; height: 250px; background: #f9f9f9; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; margin: 20px auto; color: #666; font-size: 12px; }
+        .container { max-width: 1100px; margin: auto; padding: 20px; }
+        .hero-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .thumb-main { width: 100%; height: 300px; background: #ddd; display: flex; align-items: center; justify-content: center; color: #777; margin-bottom: 15px; }
+        .post-card { display: flex; gap: 15px; border-top: 1px solid #eee; padding: 15px 0; align-items: center; }
+        .small-thumb { width: 80px; height: 60px; background: #ddd; flex-shrink: 0; }
+        .post-card h4 { margin: 0; font-size: 16px; color: var(--dark-blue); }
+        footer { background: var(--black); color: #ccc; text-align: center; padding: 40px; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Desenvolvimento Real</div>
+</header>
+
+<nav style="display: flex; justify-content: center; align-items: center; position: relative; padding: 12px; background: #0B172A;">
+    <div>
+        <a href="#">ÚLTIMAS</a>
+        <a href="#">CARREIRA</a>
+        <a href="#">MENTE</a>
+        <a href="#">FINANÇAS</a>
+    </div>
+    <div id="auth-area" style="position: absolute; right: 20px;">
+        <button id="btn-login" style="background: #0056b3; border: 1px solid white; color: white; cursor: pointer; padding: 5px 10px; font-weight: bold;">Acessar</button>
+    </div>
+</nav>
+
+<div class="ad-container">BANNER ADSENSE TOPO (728x90)</div>
+
+<div class="container">
+    <div class="hero-grid">
+        <main>
+            <div class="thumb-main">IMAGEM DESTAQUE PRINCIPAL</div>
+            <h1 style="font-size: 32px; margin: 10px 0;">Como a disciplina vence o talento em 2026</h1>
+            <p>Análise completa sobre como construir hábitos que geram resultados exponenciais mesmo com pouco tempo.</p>
+            <hr style="margin: 30px 0;">
+            <h3>Outras Notícias</h3>
+            <div class="post-card"><div class="small-thumb"></div><h4>Técnicas de produtividade que funcionam</h4></div>
+            <div class="post-card"><div class="small-thumb"></div><h4>Finanças: como começar hoje</h4></div>
+            <div class="post-card"><div class="small-thumb"></div><h4>O poder da rotina matinal</h4></div>
+        </main>
+        <aside>
+            <div class="ad-square">SIDEBAR ADSENSE 1</div>
+            <h3 style="border-bottom: 2px solid var(--black);">Mais Lidas</h3>
+            <div class="post-card"><div class="small-thumb"></div><h4>1. Guia do investidor</h4></div>
+            <div class="post-card"><div class="small-thumb"></div><h4>2. O impacto do sono</h4></div>
+            <div class="post-card"><div class="small-thumb"></div><h4>3. Foco em 2026</h4></div>
+            <div class="ad-square">SIDEBAR ADSENSE 2</div>
+            <div class="post-card"><div class="small-thumb"></div><h4>5. Inteligência Emocional</h4></div>
+            <div class="ad-square">SIDEBAR ADSENSE 3</div>
+            <div class="ad-square">SIDEBAR ADSENSE 4</div>
+        </aside>
+    </div>
+</div>
+
+<footer>© 2026 Desenvolvimento Real.</footer>
+
+<div id="admin-panel" style="display: none; background: #f0f0f0; padding: 20px; border: 2px solid #0056b3; margin: 20px;">
+    <h2>Painel de Edição</h2>
+    <input id="input-titulo" placeholder="Título" style="width: 100%; margin-bottom: 5px;"><br>
+    <textarea id="input-conteudo" placeholder="Conteúdo" style="width: 100%; height: 100px;"></textarea><br>
+    <button id="btn-publicar">Confirmar Publicação</button>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAkbBvmfcJ-FmRndrXypVm4DjK3cqpB6k",
+        authDomain: "desenvolvimentoreal-1b8a3.firebaseapp.com",
+        projectId: "desenvolvimentoreal-1b8a3",
+        storageBucket: "desenvolvimentoreal-1b8a3.appspot.com",
+        messagingSenderId: "996194852151",
+        appId: "1:996194852151:web:41f962b99ecee030a64eb2",
+        measurementId: "G-63Z414S3KM"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Lógica de Login (Corrigida)
+    document.getElementById('btn-login').addEventListener('click', () => {
+        const email = prompt("Digite seu e-mail:");
+        if (email === "juniorjeronimosilva@gmail.com") {
+            document.getElementById('admin-panel').style.display = 'block';
+            alert("Acesso liberado, Administrador!");
+        } else { 
+            alert("Acesso negado."); 
+        }
+    });
+
+    // Função de Publicar (Corrigida)
+    document.getElementById('btn-publicar').addEventListener('click', async () => {
+        const titulo = document.getElementById('input-titulo').value;
+        const conteudo = document.getElementById('input-conteudo').value;
+        
+        if (titulo && conteudo) {
+            try {
+                await addDoc(collection(db, "posts"), {
+                    titulo: titulo,
+                    conteudo: conteudo,
+                    data: new Date()
+                });
+                alert("Post enviado para o Firebase com sucesso!");
+                document.getElementById('input-titulo').value = '';
+                document.getElementById('input-conteudo').value = '';
+            } catch (e) {
+                alert("Erro ao publicar: " + e.message);
+            }
+        } else {
+            alert("Preencha todos os campos!");
+        }
+    });
+</script>
+</body>
+</html>
