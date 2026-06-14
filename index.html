@@ -306,13 +306,6 @@
     <!-- ── Aba Artigo (existente) ── -->
     <div id="aba-artigo" class="px-8 py-6 space-y-5">
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1" data-i18n="admin_type_label">Tipo:</label>
-            <select id="select-tipo" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="destaque" data-i18n="admin_type_featured">Destaque Principal</option>
-                <option value="normal" data-i18n="admin_type_normal">Artigo Normal</option>
-            </select>
-        </div>
-        <div>
             <label class="block text-sm font-semibold text-gray-700 mb-1" data-i18n="admin_category_label">Categoria:</label>
             <select id="select-categoria" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="geral" data-i18n="cat_geral">Geral</option>
@@ -875,9 +868,8 @@
     }
 
     function renderPosts() {
-        const destaque = allPosts.find(p => p.tipo === 'destaque');
-        const artigos  = allPosts.filter(p => {
-            if (p.tipo !== 'normal') return false;
+        const destaque = allPosts[0] || null;
+        const artigos  = allPosts.slice(1).filter(p => {
             return activeCategory === 'todas' || (p.categoria || 'geral') === activeCategory;
         });
 
@@ -908,7 +900,7 @@
             : `<p style="color:#999;padding:20px 0;">${t('no_articles')}</p>`;
 
         // Mais lidas (sempre globais)
-        const maisLidas = allPosts.filter(p => p.tipo === 'normal').slice(0, 5);
+        const maisLidas = allPosts.slice(0, 5);
         document.getElementById('lista-mais-lidas').innerHTML = maisLidas.length
             ? maisLidas.map((p, i) => `
                 <a href="${postUrl(p)}" style="text-decoration:none;color:inherit;">
@@ -1011,7 +1003,7 @@
 
     // ─── Publicar ─────────────────────────────────────────────────────────────
     document.getElementById('btn-publicar').addEventListener('click', async () => {
-        const tipo         = document.getElementById('select-tipo').value;
+        const tipo         = 'normal';
         const categoria    = document.getElementById('select-categoria').value;
         const titulo       = document.getElementById('input-titulo').value.trim();
         const conteudo     = document.getElementById('input-conteudo').value.trim();
