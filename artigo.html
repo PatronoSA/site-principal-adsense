@@ -372,7 +372,9 @@
             if (snap?.exists() && snap.data().admin) { isAdmin = true; mostrarBotaoDelete(); }
         }
 
-        if (isPremium || isAdmin) pularInterstitial(); else iniciarInterstitial();
+        if (isPremium) pularInterstitial(true);
+        else if (isAdmin) pularInterstitial(false);
+        else iniciarInterstitial();
     });
 
     btnLoginArt.addEventListener('click', async () => {
@@ -404,17 +406,24 @@
     document.getElementById('btn-assinar-artigo-mensal').addEventListener('click', e => { e.preventDefault(); abrirCheckout(STRIPE_MONTHLY); });
     document.getElementById('btn-assinar-artigo-anual').addEventListener('click',  e => { e.preventDefault(); abrirCheckout(STRIPE_YEARLY);  });
 
+    // Força reload ao restaurar do bfcache (garante estado limpo + interstitial sempre dispara)
+    window.addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
+
     // ─── Premium ──────────────────────────────────────────────────────────────
     let isPremium    = false;
     let authResolved = false;
     const authTimer  = setTimeout(() => { if (!authResolved) iniciarInterstitial(); }, 900);
 
-    function pularInterstitial() {
+    function pularInterstitial(esconderAds = false) {
         document.getElementById('interstitial')?.remove();
         document.getElementById('premium-banner-artigo')?.remove();
         const wrap = document.getElementById('article-wrap');
         wrap.style.filter = wrap.style.pointerEvents = wrap.style.userSelect = '';
-        document.querySelectorAll('.ad-slot, ins.adsbygoogle').forEach(el => el.style.display = 'none');
+        if (esconderAds) {
+            document.querySelectorAll('.ad-slot, ins.adsbygoogle').forEach(el => el.style.display = 'none');
+        } else {
+            inicializarAnunciosArtigo();
+        }
     }
 
     // ─── Intersticial ─────────────────────────────────────────────────────────
