@@ -36,6 +36,9 @@
         /* Article */
         .article-body { font-family: 'Merriweather', Georgia, serif; font-size: 19px; line-height: 1.95; color: #1a1a1a; }
         .article-body p { margin: 0 0 1.6rem; }
+        .article-body h2 { font-family: 'Roboto', sans-serif; font-size: 24px; font-weight: 800; color: #111; margin: 2.2rem 0 0.8rem; line-height: 1.3; }
+        .btn-delete-art { display: flex; align-items: center; gap: 8px; background: #fff; color: #dc2626; border: 1.5px solid #dc2626; border-radius: 8px; padding: 9px 18px; font-size: 13px; font-weight: 700; font-family: 'Roboto', sans-serif; cursor: pointer; transition: background .15s, color .15s; }
+        .btn-delete-art:hover { background: #dc2626; color: #fff; }
         .ad-slot { background: #f9f9f9; border: 1px dashed #bbb; position: relative; text-align: center; overflow: hidden; }
         .ad-slot::after { content: attr(data-label); position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #ccc; font-size: 11px; pointer-events: none; white-space: nowrap; font-family: 'Roboto', sans-serif; }
         .skeleton { animation: pulse 1.5s cubic-bezier(.4,0,.6,1) infinite; }
@@ -190,6 +193,9 @@
                  class="hidden w-full object-cover rounded-2xl mb-10 shadow-md"
                  style="max-height:480px;">
             <div id="article-body" class="article-body"></div>
+            <div id="admin-delete-wrap" class="hidden mt-8 pt-6" style="border-top:1px solid #e5e7eb;">
+                <button id="btn-delete-post" class="btn-delete-art">🗑️ Excluir artigo</button>
+            </div>
         </div>
 
     </article>
@@ -208,7 +214,7 @@
 <!-- ═══ SCRIPT ════════════════════════════════════════════════════════════════ -->
 <script type="module">
     import { initializeApp }  from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, getDocs, query, collection, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, getDocs, deleteDoc, query, collection, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
                               from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
@@ -327,6 +333,7 @@
 
             const snap = await getDoc(doc(db, "usuarios", user.uid)).catch(() => null);
             isPremium = snap?.exists() && snap.data().premium === true;
+            if (snap?.exists() && snap.data().admin) { isAdmin = true; mostrarBotaoDelete(); }
         }
 
         if (isPremium) pularInterstitial(); else iniciarInterstitial();
@@ -406,6 +413,21 @@
     const _params = new URLSearchParams(window.location.search);
     const id   = _params.get('id');
     const slug = _params.get('slug');
+    let currentDocId = null;
+    let isAdmin      = false;
+
+    function mostrarBotaoDelete() {
+        if (isAdmin && currentDocId)
+            document.getElementById('admin-delete-wrap').classList.remove('hidden');
+    }
+
+    document.getElementById('btn-delete-post').addEventListener('click', async () => {
+        if (!confirm('Excluir este artigo permanentemente?')) return;
+        try {
+            await deleteDoc(doc(db, 'posts', currentDocId));
+            window.location.href = 'index.html';
+        } catch (e) { alert('Erro ao excluir: ' + e.message); }
+    });
 
     async function carregarArtigo() {
         if (!id && !slug) { mostrarErro(t('err_no_id')); return; }
@@ -420,6 +442,8 @@
                 if (!snap.exists()) { mostrarErro(t('err_not_found')); return; }
             }
 
+            currentDocId = snap.id;
+            mostrarBotaoDelete();
             const post = snap.data();
             document.title = post.titulo + ' | Desenvolvimento Real';
 
@@ -463,13 +487,24 @@
         } catch (e) { mostrarErro(t('err_load') + e.message); }
     }
 
+    function formatInline(texto) {
+        return texto.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    }
+
     function renderComAnuncios(conteudo) {
-        const paragrafos = conteudo.split(/\n+/).map(p => p.trim()).filter(Boolean);
-        if (!paragrafos.length) return `<p>${conteudo}</p>`;
+        const linhas = conteudo.split(/\n+/).map(l => l.trim()).filter(Boolean);
+        if (!linhas.length) return `<p>${conteudo}</p>`;
         let html = '', adIdx = 0;
-        paragrafos.forEach((p, i) => {
-            html += `<p>${p}</p>`;
-            if ((i + 1) % 3 === 0 && i < paragrafos.length - 1)
+        linhas.forEach((linha, i) => {
+            let bloco;
+            const h2 = linha.match(/^#{1,2} (.+)/);
+            if (h2) {
+                bloco = `<h2>${formatInline(h2[1])}</h2>`;
+            } else {
+                bloco = `<p>${formatInline(linha)}</p>`;
+            }
+            html += bloco;
+            if (!h2 && (i + 1) % 3 === 0 && i < linhas.length - 1)
                 html += `<div class="ad-artigo-slot" data-idx="${adIdx++}"></div>`;
         });
         if (adIdx === 0) html += `<div class="ad-artigo-slot" data-idx="0"></div>`;
