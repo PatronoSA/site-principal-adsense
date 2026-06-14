@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-BR" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desenvolvimento Real</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7485615657043606" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Roboto', sans-serif; background: #f3f4f6; margin: 0; }
+
+        /* Header */
+        header { background: #000; color: #fff; border-bottom: 4px solid #0056b3; }
+        .header-inner { max-width: 1100px; margin: auto; padding: 18px 25px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { font-size: 26px; font-weight: 300; letter-spacing: 3px; text-transform: uppercase; line-height: 1.1; text-decoration: none; color: #fff; }
+        .logo span.logo-bold { font-weight: 800; color: #0056b3; letter-spacing: 2px; }
+        .logo span.logo-light { font-weight: 300; opacity: 0.85; }
+        .btn-lang { background: none; border: 1px solid rgba(255,255,255,.35); color: rgba(255,255,255,.8); padding: 4px 12px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: 700; font-family: 'Roboto', sans-serif; letter-spacing: .5px; transition: all .2s; }
+        .btn-lang:hover { border-color: #fff; color: #fff; }
+
+        /* Nav */
+        nav { background: #0B172A; padding: 9px 15px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+        nav a { color: rgba(255,255,255,.7); text-decoration: none; font-weight: 700; font-size: 12px; }
+        nav a:hover { color: #fff; }
+
+        /* Auth */
+        .nav-auth { display: flex; align-items: center; gap: 8px; }
+        #user-info-art { display: none; align-items: center; gap: 7px; }
+        #user-avatar-art { width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(255,255,255,.4); }
+        #user-name-art { color: rgba(255,255,255,.9); font-size: 12px; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .btn-google-sm { display: flex; align-items: center; gap: 5px; background: #fff; border: none; border-radius: 3px; padding: 4px 8px; cursor: pointer; font-size: 11px; font-weight: 700; color: #444; font-family: 'Roboto', sans-serif; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+        .btn-logout-sm { background: none; border: 1px solid rgba(255,255,255,.35); color: rgba(255,255,255,.8); padding: 3px 9px; border-radius: 3px; cursor: pointer; font-size: 11px; font-weight: 700; font-family: 'Roboto', sans-serif; }
+
+        /* Article */
+        .article-body { font-family: 'Merriweather', Georgia, serif; font-size: 19px; line-height: 1.95; color: #1a1a1a; }
+        .article-body p { margin: 0 0 1.6rem; }
+        .ad-slot { background: #f9f9f9; border: 1px dashed #bbb; position: relative; text-align: center; overflow: hidden; }
+        .ad-slot::after { content: attr(data-label); position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #ccc; font-size: 11px; pointer-events: none; white-space: nowrap; font-family: 'Roboto', sans-serif; }
+        .skeleton { animation: pulse 1.5s cubic-bezier(.4,0,.6,1) infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+        footer { background: #000; color: #9ca3af; text-align: center; padding: 40px; font-size: 13px; margin-top: 40px; }
+
+        /* ── Mobile ──────────────────────────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .header-inner { padding: 12px 16px; }
+            .logo { font-size: 18px; letter-spacing: 1.5px; }
+
+            /* Nav: empilha links e auth */
+            nav { flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px 14px; }
+            .nav-links { gap: 4px 12px; }
+            .nav-auth { width: 100%; justify-content: flex-start; }
+
+            /* Artigo */
+            .article-body { font-size: 17px; line-height: 1.85; }
+
+            /* Conteúdo com padding lateral */
+            .max-w-3xl { padding-left: 14px; padding-right: 14px; }
+        }
+
+        @media (max-width: 480px) {
+            .logo { font-size: 15px; letter-spacing: 1px; }
+            .header-inner { padding: 10px 12px; }
+            .article-body { font-size: 16px; line-height: 1.8; }
+            nav a { font-size: 11px; }
+            footer { padding: 20px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ════════════════════════════════════════════════════════════════ -->
+<header>
+    <div class="header-inner">
+        <a class="logo" href="index.html" id="logo-text"><span class="logo-light">Life</span> <span class="logo-bold">Mastery</span> <span class="logo-light">Path</span></a>
+        <button id="btn-lang-art" class="btn-lang">🌐 EN</button>
+    </div>
+</header>
+
+<!-- ═══ NAV ═══════════════════════════════════════════════════════════════════ -->
+<nav>
+    <div class="nav-links">
+        <a href="index.html" id="nav-back">← Voltar</a>
+        <a href="index.html" data-art-i18n="nav_latest">Início</a>
+        <a href="index.html" data-art-i18n="nav_career">Carreira</a>
+        <a href="index.html" data-art-i18n="nav_mind">Mente</a>
+        <a href="index.html" data-art-i18n="nav_finance">Finanças</a>
+        <a href="livros.html" data-art-i18n="nav_books">Livros</a>
+        <a href="index.html" data-art-i18n="nav_productivity">Produtividade</a>
+        <a href="index.html" data-art-i18n="nav_hobbies">Hobbies</a>
+        <a href="index.html" data-art-i18n="nav_lifestyle">Estilo de Vida</a>
+    </div>
+    <div class="nav-auth">
+        <div id="user-info-art">
+            <img id="user-avatar-art" src="" alt="">
+            <span id="user-name-art"></span>
+        </div>
+        <button id="btn-login-art" class="btn-google-sm">
+            <svg width="12" height="12" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            <span id="btn-login-art-label" data-art-i18n="btn_google">Entrar</span>
+        </button>
+    </div>
+</nav>
+
+<!-- ═══ BANNER PREMIUM ════════════════════════════════════════════════════════ -->
+<div id="premium-banner-artigo" style="display:none;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;text-align:center;padding:9px 50px;font-size:14px;position:relative;">
+    ✨ <span data-art-i18n="premium_banner">Leia sem anúncios.</span>
+    <a href="#" id="btn-assinar-artigo-mensal" style="color:#fff;font-weight:bold;margin-left:8px;" data-art-i18n="premium_cta_monthly">Mensal $4,99 →</a>
+    <span style="color:rgba(255,255,255,.45);margin:0 6px;">|</span>
+    <a href="#" id="btn-assinar-artigo-anual" style="color:#fff;font-weight:bold;" data-art-i18n="premium_cta_yearly">Anual →</a>
+    <button onclick="this.parentElement.remove()" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1;">×</button>
+</div>
+
+<!-- ═══ INTERSTITIAL ══════════════════════════════════════════════════════════ -->
+<div id="interstitial" class="fixed inset-0 z-50 bg-black bg-opacity-95 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+        <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest" data-art-i18n="ad_label">Publicidade</span>
+            <span id="countdown-chip" class="bg-gray-200 text-gray-500 text-xs font-bold px-2 py-0.5 rounded-full">
+                <span id="count">5</span>s
+            </span>
+        </div>
+        <div class="ad-slot flex items-center justify-center" style="width:300px;height:250px;margin:0 auto;"
+             data-label="AdSense 300×250">
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:300px;height:250px"
+                 data-ad-client="ca-pub-7485615657043606"
+                 data-ad-slot="2669333856"></ins>
+        </div>
+        <div class="px-6 py-4 text-center border-t border-gray-100">
+            <p id="countdown-msg" class="text-sm text-gray-400 mb-2">
+                <span data-art-i18n="wait_msg">Aguarde</span> <span id="count2">5</span>s...
+            </p>
+            <button id="btn-fechar"
+                    class="hidden w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 rounded-xl text-sm transition-colors"
+                    data-art-i18n="continue_btn">
+                Continuar lendo →
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ CONTEÚDO ══════════════════════════════════════════════════════════════ -->
+<div id="article-wrap" style="filter:blur(6px);pointer-events:none;user-select:none;">
+
+    <div class="ad-slot max-w-4xl mx-auto my-4" style="min-height:90px;"
+         data-label="AdSense • Banner Topo (728×90)">
+        <ins id="ad-topo"
+             class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-7485615657043606"
+             data-ad-slot="2753094333"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+    </div>
+
+    <article class="max-w-3xl mx-auto px-4 pb-16">
+
+        <div id="article-skeleton" class="bg-white rounded-2xl shadow p-8 mt-2">
+            <div class="skeleton h-6 bg-gray-200 rounded w-24 mb-6"></div>
+            <div class="skeleton h-10 bg-gray-200 rounded w-full mb-3"></div>
+            <div class="skeleton h-10 bg-gray-200 rounded w-4/5 mb-4"></div>
+            <div class="skeleton h-4 bg-gray-200 rounded w-32 mb-8"></div>
+            <div class="skeleton h-72 bg-gray-200 rounded-xl mb-8"></div>
+            <div class="space-y-3">
+                <div class="skeleton h-4 bg-gray-200 rounded"></div>
+                <div class="skeleton h-4 bg-gray-200 rounded"></div>
+                <div class="skeleton h-4 bg-gray-200 rounded w-11/12"></div>
+                <div class="skeleton h-4 bg-gray-200 rounded w-4/5"></div>
+            </div>
+        </div>
+
+        <div id="article-content" class="hidden bg-white rounded-2xl shadow p-8 mt-2">
+            <div class="flex items-center gap-3 mb-5">
+                <span id="article-categoria"
+                      class="text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"></span>
+                <span id="article-data" class="text-sm text-gray-400"></span>
+            </div>
+            <h1 id="article-titulo"
+                class="text-4xl font-black leading-tight text-gray-900 mb-8"
+                style="font-family:'Roboto',sans-serif;letter-spacing:-0.5px;"></h1>
+            <img id="article-imagem" src="" alt=""
+                 class="hidden w-full object-cover rounded-2xl mb-10 shadow-md"
+                 style="max-height:480px;">
+            <div id="article-body" class="article-body"></div>
+        </div>
+
+    </article>
+</div>
+
+<footer id="footer-text">
+    <div style="margin-bottom:12px;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;">
+        <a href="about.html" style="color:#aaa;text-decoration:none;font-size:13px;font-weight:700;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">About Us</a>
+        <a href="privacy-policy.html" style="color:#aaa;text-decoration:none;font-size:13px;font-weight:700;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">Privacy Policy</a>
+        <a href="terms-of-service.html" style="color:#aaa;text-decoration:none;font-size:13px;font-weight:700;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">Terms of Service</a>
+        <a href="contact.html" style="color:#aaa;text-decoration:none;font-size:13px;font-weight:700;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">Contact</a>
+    </div>
+    © 2026 Life Mastery Path.
+</footer>
+
+<!-- ═══ SCRIPT ════════════════════════════════════════════════════════════════ -->
+<script type="module">
+    import { initializeApp }  from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, getDocs, query, collection, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+                              from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+    // ─── Stripe ───────────────────────────────────────────────────────────────
+    const STRIPE_MONTHLY = 'https://buy.stripe.com/test_28E9ASeQodkO99ucUS5AQ00';
+    const STRIPE_YEARLY  = 'https://buy.stripe.com/test_3cIbJ04bK6Wq3Pa9IG5AQ01';
+
+    // ─── i18n ─────────────────────────────────────────────────────────────────
+    let LANG = localStorage.getItem('dr_lang') || 'pt';
+
+    const T = {
+        pt: {
+            site_title:    'Desenvolvimento Real',
+            nav_back:      '← Voltar',
+            nav_latest:    'Início',
+            nav_career:    'Carreira',
+            nav_mind:      'Mente',
+            nav_finance:   'Finanças',
+            nav_books:     'Livros',
+            nav_productivity: 'Produtividade',
+            nav_hobbies:   'Hobbies',
+            nav_lifestyle: 'Estilo de Vida',
+            btn_google:    'Entrar',
+            btn_logout:    'Sair',
+            premium_banner:      'Leia sem anúncios.',
+            premium_cta_monthly: 'Mensal $4,99 →',
+            premium_cta_yearly:  'Anual →',
+            ad_label:      'Publicidade',
+            wait_msg:      'Aguarde',
+            continue_btn:  'Continuar lendo →',
+            footer_text:   '© 2026 Desenvolvimento Real.',
+            err_not_found: 'Artigo não encontrado.',
+            err_no_id:     'Nenhum artigo selecionado.',
+            err_load:      'Erro ao carregar: ',
+            back_home:     '← Voltar para o início',
+            cat_destaque:  'Destaque',
+            cat_artigo:    'Artigo',
+        },
+        en: {
+            site_title:    'Real Development',
+            nav_back:      '← Back',
+            nav_latest:    'Home',
+            nav_career:    'Career',
+            nav_mind:      'Mindset',
+            nav_finance:   'Finance',
+            nav_books:     'Books',
+            nav_productivity: 'Productivity',
+            nav_hobbies:   'Hobbies',
+            nav_lifestyle: 'Lifestyle',
+            btn_google:    'Sign in',
+            btn_logout:    'Sign out',
+            premium_banner:      'Read without ads.',
+            premium_cta_monthly: 'Monthly $4.99 →',
+            premium_cta_yearly:  'Yearly →',
+            ad_label:      'Advertisement',
+            wait_msg:      'Wait',
+            continue_btn:  'Continue reading →',
+            footer_text:   '© 2026 Real Development.',
+            err_not_found: 'Article not found.',
+            err_no_id:     'No article selected.',
+            err_load:      'Load error: ',
+            back_home:     '← Back to home',
+            cat_destaque:  'Featured',
+            cat_artigo:    'Article',
+        }
+    };
+
+    function t(k) { return T[LANG][k] || k; }
+
+    function applyLang() {
+        document.getElementById('html-root').lang = LANG === 'pt' ? 'pt-BR' : 'en-US';
+        document.getElementById('nav-back').textContent = t('nav_back');
+        document.getElementById('footer-text').textContent = t('footer_text');
+        document.getElementById('btn-lang-art').textContent = LANG === 'pt' ? '🌐 EN' : '🌐 PT';
+        document.querySelectorAll('[data-art-i18n]').forEach(el => el.textContent = t(el.dataset.artI18n));
+    }
+
+    document.getElementById('btn-lang-art').addEventListener('click', () => {
+        LANG = LANG === 'pt' ? 'en' : 'pt';
+        localStorage.setItem('dr_lang', LANG);
+        applyLang();
+    });
+    // ─── /i18n ────────────────────────────────────────────────────────────────
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAKbBvmfcJ-_FmRndrXypVm4DjK3cqpB6k",
+        authDomain: "desenvolvimentoreal-1b8a3.firebaseapp.com",
+        projectId: "desenvolvimentoreal-1b8a3",
+        storageBucket: "desenvolvimentoreal-1b8a3.firebasestorage.app",
+        messagingSenderId: "996194852151",
+        appId: "1:996194852151:web:41f962b99ecee030a64eb2",
+        measurementId: "G-63Z414S3KM"
+    };
+
+    const app      = initializeApp(firebaseConfig);
+    const db       = getFirestore(app);
+    const auth     = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // ─── Auth UI ──────────────────────────────────────────────────────────────
+    const btnLoginArt  = document.getElementById('btn-login-art');
+    const userInfoArt  = document.getElementById('user-info-art');
+    const userAvatarArt = document.getElementById('user-avatar-art');
+    const userNameArt   = document.getElementById('user-name-art');
+
+    onAuthStateChanged(auth, async (user) => {
+        authResolved = true;
+        clearTimeout(authTimer);
+
+        if (user) {
+            userAvatarArt.src = user.photoURL || '';
+            userNameArt.textContent = user.displayName?.split(' ')[0] || user.email;
+            userInfoArt.style.display = 'flex';
+            btnLoginArt.className = 'btn-logout-sm';
+            btnLoginArt.innerHTML = `<span data-art-i18n="btn_logout">${t('btn_logout')}</span>`;
+
+            const snap = await getDoc(doc(db, "usuarios", user.uid)).catch(() => null);
+            isPremium = snap?.exists() && snap.data().premium === true;
+        }
+
+        if (isPremium) pularInterstitial(); else iniciarInterstitial();
+    });
+
+    btnLoginArt.addEventListener('click', async () => {
+        if (auth.currentUser) {
+            await signOut(auth);
+            btnLoginArt.className = 'btn-google-sm';
+            btnLoginArt.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg><span data-art-i18n="btn_google">${t('btn_google')}</span>`;
+            userInfoArt.style.display = 'none';
+        } else {
+            try { await signInWithPopup(auth, provider); }
+            catch (e) { if (e.code !== 'auth/popup-closed-by-user') alert('Erro ao fazer login.'); }
+        }
+    });
+
+    // ─── Stripe ───────────────────────────────────────────────────────────────
+    async function abrirCheckout(baseUrl) {
+        let user = auth.currentUser;
+        if (!user) {
+            try { ({ user } = await signInWithPopup(auth, provider)); } catch { return; }
+        }
+        window.open(`${baseUrl}?client_reference_id=${user.uid}&prefilled_email=${encodeURIComponent(user.email)}`, '_blank');
+    }
+
+    document.getElementById('btn-assinar-artigo-mensal').addEventListener('click', e => { e.preventDefault(); abrirCheckout(STRIPE_MONTHLY); });
+    document.getElementById('btn-assinar-artigo-anual').addEventListener('click',  e => { e.preventDefault(); abrirCheckout(STRIPE_YEARLY);  });
+
+    // ─── Premium ──────────────────────────────────────────────────────────────
+    let isPremium    = false;
+    let authResolved = false;
+    const authTimer  = setTimeout(() => { if (!authResolved) iniciarInterstitial(); }, 900);
+
+    function pularInterstitial() {
+        document.getElementById('interstitial')?.remove();
+        document.getElementById('premium-banner-artigo')?.remove();
+        const wrap = document.getElementById('article-wrap');
+        wrap.style.filter = wrap.style.pointerEvents = wrap.style.userSelect = '';
+        document.querySelectorAll('.ad-slot, ins.adsbygoogle').forEach(el => el.style.display = 'none');
+    }
+
+    // ─── Intersticial ─────────────────────────────────────────────────────────
+    function iniciarInterstitial() {
+        if (iniciarInterstitial.done) return;
+        iniciarInterstitial.done = true;
+
+        ;(window.adsbygoogle = window.adsbygoogle || []).push({});
+
+        let seconds = 5;
+        const countEls = [document.getElementById('count'), document.getElementById('count2')];
+        const ticker = setInterval(() => {
+            seconds--;
+            countEls.forEach(el => { if (el) el.textContent = seconds; });
+            if (seconds <= 0) {
+                clearInterval(ticker);
+                document.getElementById('countdown-msg')?.classList.add('hidden');
+                document.getElementById('countdown-chip')?.classList.add('hidden');
+                document.getElementById('btn-fechar').classList.remove('hidden');
+            }
+        }, 1000);
+    }
+
+    document.getElementById('btn-fechar').addEventListener('click', () => {
+        document.getElementById('interstitial').remove();
+        const wrap = document.getElementById('article-wrap');
+        wrap.style.filter = wrap.style.pointerEvents = wrap.style.userSelect = '';
+        inicializarAnunciosArtigo();
+    });
+
+    // ─── Artigo ───────────────────────────────────────────────────────────────
+    const _params = new URLSearchParams(window.location.search);
+    const id   = _params.get('id');
+    const slug = _params.get('slug');
+
+    async function carregarArtigo() {
+        if (!id && !slug) { mostrarErro(t('err_no_id')); return; }
+        try {
+            let snap;
+            if (slug) {
+                const qSnap = await getDocs(query(collection(db, "posts"), where("slug", "==", slug)));
+                if (qSnap.empty) { mostrarErro(t('err_not_found')); return; }
+                snap = qSnap.docs[0];
+            } else {
+                snap = await getDoc(doc(db, "posts", id));
+                if (!snap.exists()) { mostrarErro(t('err_not_found')); return; }
+            }
+
+            const post = snap.data();
+            document.title = post.titulo + ' | Desenvolvimento Real';
+
+            const CAT_COLORS = {
+                carreira:         { label: () => t('nav_career'),       color: '#2563eb' },
+                mente:            { label: () => t('nav_mind'),         color: '#7c3aed' },
+                financas:         { label: () => t('nav_finance'),      color: '#059669' },
+                livros:           { label: () => t('nav_books'),        color: '#ea580c' },
+                produtividade:    { label: () => t('nav_productivity'), color: '#b45309' },
+                hobbies:          { label: () => t('nav_hobbies'),      color: '#b91c1c' },
+                'estilo-de-vida': { label: () => t('nav_lifestyle'),    color: '#0891b2' },
+            };
+            const catEl = document.getElementById('article-categoria');
+            if (post.tipo === 'destaque') {
+                catEl.textContent = t('cat_destaque');
+                catEl.style.background = '#d97706';
+            } else if (CAT_COLORS[post.categoria]) {
+                const c = CAT_COLORS[post.categoria];
+                catEl.textContent = c.label();
+                catEl.style.background = c.color;
+            } else {
+                catEl.textContent = t('cat_artigo');
+            }
+
+            if (post.data?.toDate) {
+                document.getElementById('article-data').textContent =
+                    post.data.toDate().toLocaleDateString(LANG === 'pt' ? 'pt-BR' : 'en-US',
+                        { day: '2-digit', month: 'long', year: 'numeric' });
+            }
+
+            document.getElementById('article-titulo').textContent = post.titulo;
+
+            const imgEl = document.getElementById('article-imagem');
+            if (post.imagem) { imgEl.src = post.imagem; imgEl.alt = post.titulo; imgEl.classList.remove('hidden'); }
+
+            document.getElementById('article-body').innerHTML = renderComAnuncios(post.conteudo || '');
+
+            document.getElementById('article-skeleton').classList.add('hidden');
+            document.getElementById('article-content').classList.remove('hidden');
+
+        } catch (e) { mostrarErro(t('err_load') + e.message); }
+    }
+
+    function renderComAnuncios(conteudo) {
+        const paragrafos = conteudo.split(/\n+/).map(p => p.trim()).filter(Boolean);
+        if (!paragrafos.length) return `<p>${conteudo}</p>`;
+        let html = '', adIdx = 0;
+        paragrafos.forEach((p, i) => {
+            html += `<p>${p}</p>`;
+            if ((i + 1) % 3 === 0 && i < paragrafos.length - 1)
+                html += `<div class="ad-artigo-slot" data-idx="${adIdx++}"></div>`;
+        });
+        if (adIdx === 0) html += `<div class="ad-artigo-slot" data-idx="0"></div>`;
+        return html;
+    }
+
+    function inicializarAnunciosArtigo() {
+        ;(window.adsbygoogle = window.adsbygoogle || []).push({});
+        document.querySelectorAll('.ad-artigo-slot').forEach(div => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'ad-slot my-8 rounded-lg overflow-hidden';
+            wrapper.setAttribute('data-label', 'AdSense • Artigo');
+            wrapper.style.minHeight = '90px';
+            const ins = document.createElement('ins');
+            ins.className = 'adsbygoogle';
+            ins.setAttribute('style', 'display:block;text-align:center;');
+            ins.setAttribute('data-ad-client', 'ca-pub-7485615657043606');
+            ins.setAttribute('data-ad-slot', '3603141572');
+            ins.setAttribute('data-ad-format', 'auto');
+            ins.setAttribute('data-full-width-responsive', 'true');
+            wrapper.appendChild(ins);
+            div.replaceWith(wrapper);
+            ;(window.adsbygoogle = window.adsbygoogle || []).push({});
+        });
+    }
+
+    function mostrarErro(msg) {
+        document.getElementById('article-skeleton').innerHTML =
+            `<div class="text-center py-20 text-gray-400">
+                <p class="text-lg font-semibold mb-2">Ops!</p>
+                <p class="text-sm">${msg}</p>
+                <a href="index.html" class="inline-block mt-6 text-blue-600 text-sm font-semibold hover:underline">${t('back_home')}</a>
+             </div>`;
+    }
+
+    applyLang();
+    carregarArtigo();
+</script>
+</body>
+</html>
