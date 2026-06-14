@@ -386,6 +386,8 @@
         if (iniciarInterstitial.done) return;
         iniciarInterstitial.done = true;
 
+        if (sessionStorage.getItem('interstitial_seen')) { pularInterstitial(); return; }
+
         ;(window.adsbygoogle = window.adsbygoogle || []).push({});
 
         let seconds = 5;
@@ -403,6 +405,7 @@
     }
 
     document.getElementById('btn-fechar').addEventListener('click', () => {
+        sessionStorage.setItem('interstitial_seen', '1');
         document.getElementById('interstitial').remove();
         const wrap = document.getElementById('article-wrap');
         wrap.style.filter = wrap.style.pointerEvents = wrap.style.userSelect = '';

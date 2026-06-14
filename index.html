@@ -114,6 +114,14 @@
         .post-card h4 { margin: 0; font-size: 16px; color: var(--dark-blue); transition: color .2s; }
         .post-card:hover h4 { color: var(--accent); }
         .cat-badge { display: inline-block; font-size: 10px; font-weight: 700; color: #fff; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+        .destaque-wrap { position: relative; border-radius: 8px; overflow: hidden; }
+        .destaque-wrap .destaque-img, .destaque-wrap .thumb-main { margin-bottom: 0; border-radius: 0; display: block; }
+        .destaque-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 24px 24px; background: linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.5) 60%, transparent 100%); color: #fff; }
+        .destaque-overlay h1 { font-size: 26px; margin: 6px 0 10px; line-height: 1.25; color: #fff; }
+        .destaque-overlay p { font-size: 14px; line-height: 1.55; color: rgba(255,255,255,.85); margin: 0 0 16px; }
+        .btn-read-full { display: inline-block; background: #fff; color: #0056b3; font-size: 12px; font-weight: 800; padding: 8px 18px; border-radius: 4px; text-decoration: none; letter-spacing: .3px; transition: background .15s; }
+        .btn-read-full:hover { background: #e8f0fe; }
+        .btn-read-more { display: inline-block; margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .3px; }
         footer { background: var(--black); color: #ccc; text-align: center; padding: 40px; margin-top: 50px; }
 
         /* ── Mobile ──────────────────────────────────────────────────────────── */
@@ -499,6 +507,8 @@
             no_featured:              'Nenhum destaque publicado ainda.',
             no_articles:              'Nenhum artigo nesta categoria ainda.',
             no_most_read:             'Nenhum artigo ainda.',
+            read_more:                'Leia Mais →',
+            read_full:                'Ler Artigo Completo →',
             no_image:                 'SEM IMAGEM',
             premium_banner:           'Leia o portal sem anúncios.',
             premium_cta_monthly:      'Mensal $4,99 →',
@@ -583,6 +593,8 @@
             no_featured:              'No featured post yet.',
             no_articles:              'No articles in this category yet.',
             no_most_read:             'No articles yet.',
+            read_more:                'Read More →',
+            read_full:                'Read Full Article →',
             no_image:                 'NO IMAGE',
             premium_banner:           'Read the portal without ads.',
             premium_cta_monthly:      'Monthly $4.99 →',
@@ -842,6 +854,11 @@
         });
     });
 
+    function textoLimpo(texto, max) {
+        const limpo = (texto || '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/^#{1,2} .+/gm, '').replace(/\n+/g, ' ').trim();
+        return limpo.length > max ? limpo.substring(0, max) + '…' : limpo;
+    }
+
     function postUrl(p) {
         return p.slug ? `artigo.html?slug=${encodeURIComponent(p.slug)}` : `artigo.html?id=${p.id}`;
     }
@@ -876,12 +893,15 @@
         // Destaque
         const areaDestaque = document.getElementById('area-destaque');
         areaDestaque.innerHTML = destaque
-            ? `<a href="${postUrl(destaque)}" style="text-decoration:none;color:inherit;display:block;cursor:pointer;">
+            ? `<div class="destaque-wrap">
                    ${destaque.imagem ? `<img src="${destaque.imagem}" class="destaque-img" alt="${destaque.titulo}">` : `<div class="thumb-main">${t('no_image')}</div>`}
-                   ${categoriaBadge(destaque.categoria)}
-                   <h1 style="font-size:32px;margin:6px 0 10px;">${destaque.titulo}</h1>
-                   <p>${destaque.conteudo}</p>
-               </a>`
+                   <div class="destaque-overlay">
+                       ${categoriaBadge(destaque.categoria)}
+                       <h1>${destaque.titulo}</h1>
+                       <p>${textoLimpo(destaque.conteudo, 200)}</p>
+                       <a href="${postUrl(destaque)}" class="btn-read-full">${t('read_full')}</a>
+                   </div>
+               </div>`
             : `<div class="thumb-main">${t('no_featured')}</div>`;
 
         // Artigos filtrados
@@ -893,7 +913,8 @@
                         <div>
                             ${categoriaBadge(p.categoria)}
                             <h4>${p.titulo}</h4>
-                            <p style="margin:4px 0 0;font-size:13px;color:#666;">${p.conteudo.substring(0,100)}${p.conteudo.length > 100 ? '…' : ''}</p>
+                            <p style="margin:4px 0 6px;font-size:13px;color:#666;">${textoLimpo(p.conteudo, 300)}</p>
+                            <span class="btn-read-more">${t('read_more')}</span>
                         </div>
                     </div>
                 </a>`).join('')
