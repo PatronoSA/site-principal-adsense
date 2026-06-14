@@ -336,7 +336,7 @@
             if (snap?.exists() && snap.data().admin) { isAdmin = true; mostrarBotaoDelete(); }
         }
 
-        if (isPremium) pularInterstitial(); else iniciarInterstitial();
+        if (isPremium || isAdmin) pularInterstitial(); else iniciarInterstitial();
     });
 
     btnLoginArt.addEventListener('click', async () => {
