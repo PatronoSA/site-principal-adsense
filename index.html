@@ -27,8 +27,8 @@
         .header-controls { display: flex; align-items: center; gap: 10px; }
 
         /* Language toggle */
-        .btn-lang { background: none; border: 1px solid rgba(255,255,255,.35); color: rgba(255,255,255,.8); padding: 4px 12px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: 700; font-family: 'Roboto', sans-serif; letter-spacing: .5px; transition: all .2s; }
-        .btn-lang:hover { border-color: #fff; color: #fff; }
+        .btn-lang-flag { background: none; border: 1px solid rgba(255,255,255,.3); color: #fff; padding: 3px 7px; border-radius: 6px; cursor: pointer; font-size: 15px; line-height: 1; transition: all .2s; }
+        .btn-lang-flag:hover, .btn-lang-flag.active { border-color: #fff; background: rgba(255,255,255,.18); }
 
         /* Nav */
         nav { background: var(--dark-blue); padding: 9px 15px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; position: relative; gap: 2px; }
@@ -154,7 +154,7 @@
         @media (max-width: 480px) {
             .logo { font-size: 15px; letter-spacing: 1px; }
             .header-inner { padding: 10px 12px; }
-            .btn-lang { padding: 3px 9px; font-size: 10px; }
+            .btn-lang-flag { padding: 2px 5px; font-size: 13px; }
             .small-thumb { width: 70px; height: 52px; }
             .post-card { gap: 10px; padding: 12px 0; }
             .post-card h4 { font-size: 13px; }
@@ -170,7 +170,11 @@
     <div class="header-inner">
         <div class="logo"><span class="logo-light">Life</span> <span class="logo-bold">Mastery</span> <span class="logo-light">Path</span></div>
         <div class="header-controls">
-            <button id="btn-lang" class="btn-lang">🌐 EN</button>
+            <div style="display:flex;gap:4px;align-items:center;">
+                <button class="btn-lang-flag" data-lang="en" title="English">🇺🇸</button>
+                <button class="btn-lang-flag" data-lang="es" title="Español">🇪🇸</button>
+                <button class="btn-lang-flag" data-lang="pt" title="Português">🇧🇷</button>
+            </div>
         </div>
     </div>
 </header>
@@ -461,7 +465,7 @@
 
     // ─── i18n ─────────────────────────────────────────────────────────────────
     // Troca de idioma persistida no localStorage — uma linha para mudar o padrão:
-    let LANG = localStorage.getItem('dr_lang') || 'pt';
+    let LANG = localStorage.getItem('dr_lang') || 'en';
 
     const T = {
         pt: {
@@ -635,6 +639,92 @@
             dd_perfil:                'My Profile',
             dd_leituras:              'Saved Readings',
             dd_config:                'Settings',
+        },
+        es: {
+            page_title:               'Life Mastery Path | El Portal del Autoconocimiento',
+            html_lang:                'es-ES',
+            site_title:               'Life Mastery Path',
+            nav_all:                  'INICIO',
+            nav_career:               'CARRERA',
+            nav_mind:                 'MENTALIDAD',
+            nav_finance:              'FINANZAS',
+            nav_books:                'LIBROS',
+            nav_productivity:         'PRODUCTIVIDAD',
+            nav_hobbies:              'HOBBIES',
+            nav_lifestyle:            'ESTILO DE VIDA',
+            btn_google:               'Iniciar sesión con Google',
+            btn_logout:               'Cerrar sesión',
+            btn_entrar:               'Entrar',
+            btn_cadastrar:            'Registrarse',
+            modal_login_title:        'Bienvenido de nuevo',
+            modal_login_subtitle:     'Inicia sesión en tu cuenta',
+            modal_signup_title:       'Crear cuenta',
+            modal_signup_subtitle:    'Es rápido y gratuito',
+            label_remember:           'Mantener sesión iniciada',
+            btn_entrar_email:         'Entrar',
+            btn_cadastrar_email:      'Crear cuenta',
+            btn_google_login:         'Continuar con Google',
+            or_divider:               'o',
+            placeholder_name:         'Tu nombre',
+            placeholder_email:        'tuemail@ejemplo.com',
+            placeholder_password:     'Mínimo 6 caracteres',
+            link_sem_conta_texto:     '¿No tienes cuenta?',
+            link_sem_conta_cta:       'Registrarse',
+            link_tem_conta_texto:     '¿Ya tienes cuenta?',
+            link_tem_conta_cta:       'Entrar',
+            err_fill:                 'Por favor completa todos los campos.',
+            err_credentials:          'Correo o contraseña incorrectos.',
+            err_email_use:            'Este correo ya está en uso.',
+            err_weak_pass:            'La contraseña debe tener al menos 6 caracteres.',
+            loading:                  'Cargando...',
+            section_other_news:       'Más Noticias',
+            section_most_read:        'Más Leídas',
+            footer_text:              '© 2026 Life Mastery Path.',
+            no_featured:              'Aún no hay publicación destacada.',
+            no_articles:              'Aún no hay artículos en esta categoría.',
+            no_most_read:             'Aún no hay artículos.',
+            read_more:                'Leer Más →',
+            read_full:                'Leer Artículo Completo →',
+            no_image:                 'SIN IMAGEN',
+            premium_banner:           'Lee el portal sin anuncios.',
+            premium_cta_monthly:      'Mensual $4.99 →',
+            premium_cta_yearly:       'Anual →',
+            admin_title:              'Panel de Publicación',
+            admin_type_label:         'Tipo:',
+            admin_type_featured:      'Destacado Principal',
+            admin_type_normal:        'Artículo Normal',
+            admin_category_label:     'Categoría:',
+            cat_geral:                'General',
+            cat_carreira:             'Carrera',
+            cat_mente:                'Mentalidad',
+            cat_financas:             'Finanzas',
+            cat_livros:               'Libros',
+            cat_produtividade:        'Productividad',
+            cat_hobbies:              'Hobbies',
+            cat_estilo:               'Estilo de Vida',
+            admin_title_label:        'Título:',
+            admin_image_label:        'Imagen:',
+            admin_content_label:      'Contenido:',
+            admin_title_placeholder:  'Ej: Cómo la disciplina vence al talento en 2026',
+            admin_content_placeholder:'Escribe el resumen o texto completo del artículo...',
+            admin_slug_label:         'Slug (URL):',
+            admin_slug_placeholder:   'generado-automáticamente-del-título',
+            admin_metadesc_label:     'Meta Description:',
+            admin_metadesc_placeholder:'Resumen para motores de búsqueda (máx 160 caracteres)',
+            admin_keywords_label:     'Palabras clave:',
+            admin_keywords_placeholder:'palabra-clave, otra, una-más',
+            admin_chars_left:         'caracteres restantes',
+            admin_publish_btn:        'Publicar Post',
+            file_select_label:        'Haz clic para seleccionar o arrastra la imagen aquí',
+            upload_sending:           'Subiendo imagen...',
+            publish_success:          '¡Post publicado con éxito!',
+            publish_fill:             '¡Por favor completa título y contenido!',
+            publish_error:            'Error al publicar: ',
+            upload_error:             'Error en la subida: ',
+            err_login:                'Error al iniciar sesión. Inténtalo de nuevo.',
+            dd_perfil:                'Mi Perfil',
+            dd_leituras:              'Lecturas Guardadas',
+            dd_config:                'Configuración',
         }
     };
 
@@ -645,14 +735,17 @@
         document.title = t('page_title');
         document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
         document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.placeholder = t(el.dataset.i18nPlaceholder));
-        // Atualiza botão de idioma para mostrar o idioma alternativo
-        document.getElementById('btn-lang').textContent = LANG === 'pt' ? '🌐 EN' : '🌐 PT';
+        document.querySelectorAll('.btn-lang-flag').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === LANG);
+        });
     }
 
-    document.getElementById('btn-lang').addEventListener('click', () => {
-        LANG = LANG === 'pt' ? 'en' : 'pt';
-        localStorage.setItem('dr_lang', LANG);
-        applyLang();
+    document.querySelectorAll('.btn-lang-flag').forEach(btn => {
+        btn.addEventListener('click', () => {
+            LANG = btn.dataset.lang;
+            localStorage.setItem('dr_lang', LANG);
+            applyLang();
+        });
     });
     // ─── /i18n ────────────────────────────────────────────────────────────────
 

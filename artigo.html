@@ -16,8 +16,8 @@
         .logo { font-size: 26px; font-weight: 300; letter-spacing: 3px; text-transform: uppercase; line-height: 1.1; text-decoration: none; color: #fff; }
         .logo span.logo-bold { font-weight: 800; color: #0056b3; letter-spacing: 2px; }
         .logo span.logo-light { font-weight: 300; opacity: 0.85; }
-        .btn-lang { background: none; border: 1px solid rgba(255,255,255,.35); color: rgba(255,255,255,.8); padding: 4px 12px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: 700; font-family: 'Roboto', sans-serif; letter-spacing: .5px; transition: all .2s; }
-        .btn-lang:hover { border-color: #fff; color: #fff; }
+        .btn-lang-flag { background: none; border: 1px solid rgba(255,255,255,.3); color: #fff; padding: 3px 7px; border-radius: 6px; cursor: pointer; font-size: 15px; line-height: 1; transition: all .2s; }
+        .btn-lang-flag:hover, .btn-lang-flag.active { border-color: #fff; background: rgba(255,255,255,.18); }
 
         /* Nav */
         nav { background: #0B172A; padding: 9px 15px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; }
@@ -78,7 +78,11 @@
 <header>
     <div class="header-inner">
         <a class="logo" href="index.html" id="logo-text"><span class="logo-light">Life</span> <span class="logo-bold">Mastery</span> <span class="logo-light">Path</span></a>
-        <button id="btn-lang-art" class="btn-lang">🌐 EN</button>
+        <div style="display:flex;gap:4px;align-items:center;">
+            <button class="btn-lang-flag" data-lang="en" title="English">🇺🇸</button>
+            <button class="btn-lang-flag" data-lang="es" title="Español">🇪🇸</button>
+            <button class="btn-lang-flag" data-lang="pt" title="Português">🇧🇷</button>
+        </div>
     </div>
 </header>
 
@@ -151,7 +155,7 @@
 </div>
 
 <!-- ═══ CONTEÚDO ══════════════════════════════════════════════════════════════ -->
-<div id="article-wrap" style="filter:blur(6px);pointer-events:none;user-select:none;">
+<div id="article-wrap">
 
     <div class="ad-slot max-w-4xl mx-auto my-4" style="min-height:90px;"
          data-label="AdSense • Banner Topo (728×90)">
@@ -223,38 +227,11 @@
     const STRIPE_YEARLY  = 'https://buy.stripe.com/test_3cIbJ04bK6Wq3Pa9IG5AQ01';
 
     // ─── i18n ─────────────────────────────────────────────────────────────────
-    let LANG = localStorage.getItem('dr_lang') || 'pt';
+    let LANG = localStorage.getItem('dr_lang') || 'en';
 
     const T = {
-        pt: {
-            site_title:    'Desenvolvimento Real',
-            nav_back:      '← Voltar',
-            nav_latest:    'Início',
-            nav_career:    'Carreira',
-            nav_mind:      'Mente',
-            nav_finance:   'Finanças',
-            nav_books:     'Livros',
-            nav_productivity: 'Produtividade',
-            nav_hobbies:   'Hobbies',
-            nav_lifestyle: 'Estilo de Vida',
-            btn_google:    'Entrar',
-            btn_logout:    'Sair',
-            premium_banner:      'Leia sem anúncios.',
-            premium_cta_monthly: 'Mensal $4,99 →',
-            premium_cta_yearly:  'Anual →',
-            ad_label:      'Publicidade',
-            wait_msg:      'Aguarde',
-            continue_btn:  'Continuar lendo →',
-            footer_text:   '© 2026 Desenvolvimento Real.',
-            err_not_found: 'Artigo não encontrado.',
-            err_no_id:     'Nenhum artigo selecionado.',
-            err_load:      'Erro ao carregar: ',
-            back_home:     '← Voltar para o início',
-            cat_destaque:  'Destaque',
-            cat_artigo:    'Artigo',
-        },
         en: {
-            site_title:    'Real Development',
+            site_title:    'Life Mastery Path',
             nav_back:      '← Back',
             nav_latest:    'Home',
             nav_career:    'Career',
@@ -272,30 +249,89 @@
             ad_label:      'Advertisement',
             wait_msg:      'Wait',
             continue_btn:  'Continue reading →',
-            footer_text:   '© 2026 Real Development.',
+            footer_text:   '© 2026 Life Mastery Path.',
             err_not_found: 'Article not found.',
             err_no_id:     'No article selected.',
             err_load:      'Load error: ',
             back_home:     '← Back to home',
             cat_destaque:  'Featured',
             cat_artigo:    'Article',
+        },
+        es: {
+            site_title:    'Life Mastery Path',
+            nav_back:      '← Volver',
+            nav_latest:    'Inicio',
+            nav_career:    'Carrera',
+            nav_mind:      'Mentalidad',
+            nav_finance:   'Finanzas',
+            nav_books:     'Libros',
+            nav_productivity: 'Productividad',
+            nav_hobbies:   'Hobbies',
+            nav_lifestyle: 'Estilo de Vida',
+            btn_google:    'Iniciar sesión',
+            btn_logout:    'Cerrar sesión',
+            premium_banner:      'Lee sin anuncios.',
+            premium_cta_monthly: 'Mensual $4.99 →',
+            premium_cta_yearly:  'Anual →',
+            ad_label:      'Publicidad',
+            wait_msg:      'Espera',
+            continue_btn:  'Continuar leyendo →',
+            footer_text:   '© 2026 Life Mastery Path.',
+            err_not_found: 'Artículo no encontrado.',
+            err_no_id:     'Ningún artículo seleccionado.',
+            err_load:      'Error al cargar: ',
+            back_home:     '← Volver al inicio',
+            cat_destaque:  'Destacado',
+            cat_artigo:    'Artículo',
+        },
+        pt: {
+            site_title:    'Life Mastery Path',
+            nav_back:      '← Voltar',
+            nav_latest:    'Início',
+            nav_career:    'Carreira',
+            nav_mind:      'Mente',
+            nav_finance:   'Finanças',
+            nav_books:     'Livros',
+            nav_productivity: 'Produtividade',
+            nav_hobbies:   'Hobbies',
+            nav_lifestyle: 'Estilo de Vida',
+            btn_google:    'Entrar',
+            btn_logout:    'Sair',
+            premium_banner:      'Leia sem anúncios.',
+            premium_cta_monthly: 'Mensal $4,99 →',
+            premium_cta_yearly:  'Anual →',
+            ad_label:      'Publicidade',
+            wait_msg:      'Aguarde',
+            continue_btn:  'Continuar lendo →',
+            footer_text:   '© 2026 Life Mastery Path.',
+            err_not_found: 'Artigo não encontrado.',
+            err_no_id:     'Nenhum artigo selecionado.',
+            err_load:      'Erro ao carregar: ',
+            back_home:     '← Voltar para o início',
+            cat_destaque:  'Destaque',
+            cat_artigo:    'Artigo',
         }
     };
 
     function t(k) { return T[LANG][k] || k; }
 
     function applyLang() {
-        document.getElementById('html-root').lang = LANG === 'pt' ? 'pt-BR' : 'en-US';
+        const langMap = { en: 'en-US', es: 'es-ES', pt: 'pt-BR' };
+        document.getElementById('html-root').lang = langMap[LANG] || 'en-US';
         document.getElementById('nav-back').textContent = t('nav_back');
         document.getElementById('footer-text').textContent = t('footer_text');
-        document.getElementById('btn-lang-art').textContent = LANG === 'pt' ? '🌐 EN' : '🌐 PT';
         document.querySelectorAll('[data-art-i18n]').forEach(el => el.textContent = t(el.dataset.artI18n));
+        document.querySelectorAll('.btn-lang-flag').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === LANG);
+        });
     }
 
-    document.getElementById('btn-lang-art').addEventListener('click', () => {
-        LANG = LANG === 'pt' ? 'en' : 'pt';
-        localStorage.setItem('dr_lang', LANG);
-        applyLang();
+    document.querySelectorAll('.btn-lang-flag').forEach(btn => {
+        btn.addEventListener('click', () => {
+            LANG = btn.dataset.lang;
+            localStorage.setItem('dr_lang', LANG);
+            applyLang();
+        });
     });
     // ─── /i18n ────────────────────────────────────────────────────────────────
 
@@ -386,7 +422,10 @@
         if (iniciarInterstitial.done) return;
         iniciarInterstitial.done = true;
 
-        if (sessionStorage.getItem('interstitial_seen')) { pularInterstitial(); return; }
+        const wrap = document.getElementById('article-wrap');
+        wrap.style.filter = 'blur(6px)';
+        wrap.style.pointerEvents = 'none';
+        wrap.style.userSelect = 'none';
 
         ;(window.adsbygoogle = window.adsbygoogle || []).push({});
 
@@ -405,7 +444,6 @@
     }
 
     document.getElementById('btn-fechar').addEventListener('click', () => {
-        sessionStorage.setItem('interstitial_seen', '1');
         document.getElementById('interstitial').remove();
         const wrap = document.getElementById('article-wrap');
         wrap.style.filter = wrap.style.pointerEvents = wrap.style.userSelect = '';
@@ -473,7 +511,7 @@
 
             if (post.data?.toDate) {
                 document.getElementById('article-data').textContent =
-                    post.data.toDate().toLocaleDateString(LANG === 'pt' ? 'pt-BR' : 'en-US',
+                    post.data.toDate().toLocaleDateString({ en: 'en-US', es: 'es-ES', pt: 'pt-BR' }[LANG] || 'en-US',
                         { day: '2-digit', month: 'long', year: 'numeric' });
             }
 
