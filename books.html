@@ -107,33 +107,6 @@
         .book-buy-btn { display: block; width: 100%; text-align: center; background: var(--accent); color: #fff; font-weight: 700; font-size: 13px; padding: 11px 16px; border-radius: 8px; border: none; cursor: pointer; font-family: 'Roboto', sans-serif; transition: background .2s; margin-top: auto; }
         .book-buy-btn:hover { background: #0046a0; }
 
-        /* ── Admin Panel ── */
-        .admin-books { max-width: 700px; margin: 0 auto 60px; background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,.1); overflow: hidden; }
-        .admin-books-header { background: #1e3a5f; padding: 20px 28px; }
-        .admin-books-header h2 { color: #fff; margin: 0; font-size: 18px; font-weight: 800; }
-        .admin-books-body { padding: 28px; display: flex; flex-direction: column; gap: 16px; }
-        .afield label { display: block; font-size: 12px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; }
-        .afield input, .afield textarea, .afield select { width: 100%; border: 1.5px solid #e0e0e0; border-radius: 8px; padding: 10px 14px; font-size: 14px; font-family: 'Roboto', sans-serif; color: #333; outline: none; transition: border .2s; }
-        .afield input:focus, .afield textarea:focus, .afield select:focus { border-color: var(--accent); }
-        .afield textarea { resize: vertical; }
-        .afield-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .drop-area { border: 2px dashed #d0d5e0; border-radius: 12px; padding: 32px 20px; text-align: center; cursor: pointer; transition: all .2s; }
-        .drop-area:hover, .drop-area.drag { border-color: var(--accent); background: #f0f4ff; }
-        .drop-area input[type=file] { display: none; }
-        .drop-icon { font-size: 36px; margin-bottom: 8px; }
-        .drop-label { font-size: 13px; color: #888; }
-        .drop-label span { color: var(--accent); font-weight: 700; cursor: pointer; }
-        .upload-bar-wrap { display: none; margin-top: 12px; }
-        .upload-bar-track { background: #e5e7eb; border-radius: 99px; height: 6px; overflow: hidden; }
-        .upload-bar-fill { background: var(--accent); height: 100%; border-radius: 99px; width: 0; transition: width .2s; }
-        .upload-bar-pct { font-size: 11px; color: #888; margin-top: 4px; text-align: right; }
-        .cover-preview { display: none; margin-top: 12px; border-radius: 8px; max-height: 160px; object-fit: cover; width: 100%; }
-        .star-picker { display: flex; gap: 6px; align-items: center; }
-        .star-picker input[type=number] { width: 80px; }
-        .star-preview-admin { font-size: 20px; color: #f59e0b; letter-spacing: 2px; }
-        .admin-publish-btn { background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 13px 20px; font-size: 15px; font-weight: 700; font-family: 'Roboto', sans-serif; cursor: pointer; width: 100%; transition: background .2s; }
-        .admin-publish-btn:hover { background: #0046a0; }
-        .admin-publish-btn:disabled { opacity: .5; cursor: not-allowed; }
 
         .btn-delete-book { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,.9); border: 1.5px solid #dc2626; color: #dc2626; border-radius: 6px; padding: 4px 8px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: 'Roboto', sans-serif; transition: background .15s, color .15s; z-index: 2; }
         .btn-delete-book:hover { background: #dc2626; color: #fff; }
@@ -295,74 +268,6 @@
     </div>
 </div>
 
-<!-- ═══ ADMIN PANEL ════════════════════════════════════════════════════════════ -->
-<div id="admin-books" class="admin-books" style="display:none;">
-    <div class="admin-books-header">
-        <h2>📖 Add Book to Catalog</h2>
-    </div>
-    <div class="admin-books-body">
-        <div class="afield-row">
-            <div class="afield">
-                <label>Book Title</label>
-                <input id="b-titulo" type="text" placeholder="Ex: Atomic Habits">
-            </div>
-            <div class="afield">
-                <label>Author</label>
-                <input id="b-autor" type="text" placeholder="Ex: James Clear">
-            </div>
-        </div>
-        <div class="afield-row">
-            <div class="afield">
-                <label>Category</label>
-                <select id="b-categoria">
-                    <option value="carreira">Career</option>
-                    <option value="mente">Mindset</option>
-                    <option value="financas">Finance</option>
-                    <option value="produtividade">Productivity</option>
-                    <option value="autoconhecimento">Self-Knowledge</option>
-                    <option value="negocios">Business</option>
-                    <option value="outros">Other</option>
-                </select>
-            </div>
-            <div class="afield">
-                <label>Rating (0 to 5)</label>
-                <div class="star-picker">
-                    <input id="b-nota" type="number" min="0" max="5" step="0.1" value="4.5" placeholder="4.5">
-                    <div class="star-preview-admin" id="star-preview-admin">★★★★½</div>
-                </div>
-            </div>
-        </div>
-        <div class="afield">
-            <label>Short Summary</label>
-            <textarea id="b-resumo" rows="3" placeholder="Brief book description (appears on card)..."></textarea>
-        </div>
-        <div class="afield">
-            <label>Why We Recommend This Book</label>
-            <textarea id="b-porque" rows="3" placeholder="Highlight the main benefits and learnings..."></textarea>
-        </div>
-        <div class="afield">
-            <label>Affiliate Link</label>
-            <input id="b-link" type="url" placeholder="https://www.amazon.com/dp/...">
-        </div>
-        <div class="afield">
-            <label>Book Cover</label>
-            <div class="drop-area" id="b-drop-area">
-                <input type="file" id="b-imagem" accept="image/*">
-                <div class="drop-icon">🖼️</div>
-                <div class="drop-label">
-                    <span id="b-drop-label">Click to select</span> or drag image here<br>
-                    <small style="color:#bbb;">JPG, PNG, WEBP — max. 10 MB</small>
-                </div>
-            </div>
-            <div class="upload-bar-wrap" id="b-bar-wrap">
-                <div class="upload-bar-track"><div class="upload-bar-fill" id="b-bar-fill"></div></div>
-                <div class="upload-bar-pct" id="b-bar-pct">0%</div>
-            </div>
-            <img id="b-cover-preview" class="cover-preview" src="" alt="Book cover preview">
-        </div>
-        <button class="admin-publish-btn" id="btn-publicar-livro">Publish Book to Catalog</button>
-    </div>
-</div>
 
 <!-- ═══ INTERSTITIAL ════════════════════════════════════════════════════════ -->
 <div id="interstitial-livro" class="interstitial-overlay">
@@ -431,14 +336,12 @@
 <!-- ═══ SCRIPT ════════════════════════════════════════════════════════════════ -->
 <script type="module">
     import { initializeApp }    from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, query, orderBy, doc, getDoc }
+    import { getFirestore, collection, getDocs, deleteDoc, query, orderBy, doc, getDoc }
                                 from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged,
              createUserWithEmailAndPassword, signInWithEmailAndPassword,
              setPersistence, browserLocalPersistence, browserSessionPersistence, updateProfile }
                                 from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-    import { getStorage, ref, uploadBytesResumable, getDownloadURL }
-                                from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAKbBvmfcJ-_FmRndrXypVm4DjK3cqpB6k",
@@ -452,7 +355,6 @@
     const app     = initializeApp(firebaseConfig);
     const db      = getFirestore(app);
     const auth    = getAuth(app);
-    const storage = getStorage(app);
     const provider = new GoogleAuthProvider();
 
     // ── Cores de categoria ────────────────────────────────────────────────────
@@ -682,7 +584,6 @@
             try {
                 const snap = await getDoc(doc(db, 'usuarios', user.uid));
                 if (snap.exists() && snap.data().admin) {
-                    document.getElementById('admin-books').style.display = 'block';
                     isAdmin = true;
                     renderBooks();
                 }
@@ -690,7 +591,6 @@
         } else {
             userInfo.style.display = 'none';
             authButtons.style.display = 'flex';
-            document.getElementById('admin-books').style.display = 'none';
         }
     });
 
@@ -751,87 +651,6 @@
             const cred = await createUserWithEmailAndPassword(auth, email, senha);
             await updateProfile(cred.user, { displayName: nome });
         } catch(e) { erroModal('cadastro-error', mapErr(e.code)); }
-    });
-
-    // ── Admin: upload de capa ─────────────────────────────────────────────────
-    const dropArea    = document.getElementById('b-drop-area');
-    const inputImagem = document.getElementById('b-imagem');
-    const barWrap     = document.getElementById('b-bar-wrap');
-    const barFill     = document.getElementById('b-bar-fill');
-    const barPct      = document.getElementById('b-bar-pct');
-    const coverPreview = document.getElementById('b-cover-preview');
-    let   uploadedUrl  = '';
-
-    dropArea.addEventListener('click', () => inputImagem.click());
-    dropArea.addEventListener('dragover', e => { e.preventDefault(); dropArea.classList.add('drag'); });
-    dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag'));
-    dropArea.addEventListener('drop', e => {
-        e.preventDefault(); dropArea.classList.remove('drag');
-        if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
-    });
-    inputImagem.addEventListener('change', () => { if (inputImagem.files[0]) handleFile(inputImagem.files[0]); });
-
-    function handleFile(file) {
-        document.getElementById('b-drop-label').textContent = file.name;
-        const storageRef = ref(storage, `livros/${Date.now()}_${file.name}`);
-        const task = uploadBytesResumable(storageRef, file);
-        barWrap.style.display = 'block'; uploadedUrl = '';
-        task.on('state_changed',
-            snap => {
-                const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
-                barFill.style.width = pct + '%'; barPct.textContent = pct + '%';
-            },
-            err => { alert('Upload error: ' + err.message); barWrap.style.display = 'none'; },
-            async () => {
-                uploadedUrl = await getDownloadURL(task.snapshot.ref);
-                coverPreview.src = uploadedUrl;
-                coverPreview.style.display = 'block';
-                barWrap.style.display = 'none';
-            }
-        );
-    }
-
-    // ── Admin: preview de estrelas ────────────────────────────────────────────
-    document.getElementById('b-nota').addEventListener('input', function() {
-        document.getElementById('star-preview-admin').textContent = renderStars(this.value);
-    });
-
-    // ── Admin: publicar livro ─────────────────────────────────────────────────
-    document.getElementById('btn-publicar-livro').addEventListener('click', async () => {
-        const titulo   = document.getElementById('b-titulo').value.trim();
-        const autor    = document.getElementById('b-autor').value.trim();
-        const categoria= document.getElementById('b-categoria').value;
-        const nota     = parseFloat(document.getElementById('b-nota').value) || 0;
-        const resumo   = document.getElementById('b-resumo').value.trim();
-        const porque   = document.getElementById('b-porque').value.trim();
-        const link     = document.getElementById('b-link').value.trim();
-
-        if (!titulo || !autor) { alert('Please fill in at least title and author.'); return; }
-
-        const btn = document.getElementById('btn-publicar-livro');
-        btn.disabled = true; btn.textContent = 'Publicando...';
-
-        try {
-            const docRef = await addDoc(collection(db, 'livros'), {
-                titulo, autor, categoria, nota, resumo, porque, link,
-                imagem: uploadedUrl || '',
-                data: new Date()
-            });
-            allBooks.unshift({ id: docRef.id, titulo, autor, categoria, nota, resumo, porque, link, imagem: uploadedUrl });
-            renderBooks();
-
-            // Limpar form
-            ['b-titulo','b-autor','b-resumo','b-porque','b-link'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('b-nota').value = '4.5';
-            document.getElementById('star-preview-admin').textContent = renderStars(4.5);
-            document.getElementById('b-drop-label').textContent = 'Click to select';
-            coverPreview.style.display = 'none'; coverPreview.src = ''; uploadedUrl = '';
-            alert('Book published successfully!');
-        } catch(e) {
-            alert('Erro ao publicar: ' + e.message);
-        } finally {
-            btn.disabled = false; btn.textContent = 'Publish Book to Catalog';
-        }
     });
 
     // ── Init ──────────────────────────────────────────────────────────────────
