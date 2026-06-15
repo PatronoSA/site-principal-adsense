@@ -59,6 +59,16 @@
         .fav-btn-art { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1.5px solid #e5e7eb; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 700; font-family: 'Roboto', sans-serif; color: #555; cursor: pointer; transition: all .15s; }
         .fav-btn-art:hover { border-color: #ef4444; color: #ef4444; }
         .fav-btn-art.saved { border-color: #ef4444; color: #ef4444; background: #fff5f5; }
+        /* ── Share bar ───────────────────────────────────────────────────────── */
+        .share-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .share-label { font-size: 11px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: .5px; font-family: 'Roboto', sans-serif; margin-right: 2px; }
+        .share-btn { display: inline-flex; align-items: center; gap: 5px; border: 1.5px solid #e5e7eb; border-radius: 20px; padding: 6px 13px; font-size: 12px; font-weight: 700; font-family: 'Roboto', sans-serif; cursor: pointer; text-decoration: none; transition: all .15s; background: #fff; color: #555; line-height: 1; }
+        .share-btn svg { flex-shrink: 0; }
+        .share-btn.sh-x:hover       { background: #000;     color: #fff; border-color: #000;     }
+        .share-btn.sh-fb:hover      { background: #1877f2;  color: #fff; border-color: #1877f2;  }
+        .share-btn.sh-wa:hover      { background: #25d366;  color: #fff; border-color: #25d366;  }
+        .share-btn.sh-copy:hover    { background: #f3f4f6;  border-color: #aaa; }
+        .share-btn.sh-copy.copied   { border-color: #059669; color: #059669; }
         /* ── Toast ───────────────────────────────────────────────────────────── */
         #toast { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%) translateY(20px); background: #1a1a2e; color: #fff; padding: 10px 22px; border-radius: 20px; font-size: 13px; font-weight: 600; font-family: 'Roboto', sans-serif; opacity: 0; transition: opacity .3s, transform .3s; z-index: 9999; pointer-events: none; white-space: nowrap; }
         #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -233,8 +243,31 @@
                 class="text-4xl font-black leading-tight text-gray-900 mb-3"
                 style="font-family:'Roboto',sans-serif;letter-spacing:-0.5px;"></h1>
             <p id="article-byline" class="text-sm text-gray-500 mb-4" style="font-family:'Roboto',sans-serif;font-weight:600;"></p>
-            <div id="fav-btn-wrap" style="display:none;margin-bottom:28px;">
-                <button id="btn-fav-artigo" class="fav-btn-art" aria-label="Save to favorites">🤍 <span id="fav-label">Save article</span></button>
+            <div id="action-bar" style="display:none;margin-bottom:28px;align-items:center;gap:10px;flex-wrap:wrap;">
+                <div id="fav-btn-wrap" style="display:none;">
+                    <button id="btn-fav-artigo" class="fav-btn-art" aria-label="Save to favorites">🤍 <span id="fav-label">Save article</span></button>
+                </div>
+                <div id="share-bar-wrap">
+                    <div class="share-bar">
+                        <span class="share-label">Share:</span>
+                        <a id="share-x" href="#" target="_blank" rel="noopener noreferrer" class="share-btn sh-x" aria-label="Share on X / Twitter">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                            <span>X</span>
+                        </a>
+                        <a id="share-fb" href="#" target="_blank" rel="noopener noreferrer" class="share-btn sh-fb" aria-label="Share on Facebook">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                            <span>Facebook</span>
+                        </a>
+                        <a id="share-wa" href="#" target="_blank" rel="noopener noreferrer" class="share-btn sh-wa" aria-label="Share on WhatsApp">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            <span>WhatsApp</span>
+                        </a>
+                        <button id="share-copy" class="share-btn sh-copy" aria-label="Copy link">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                            <span>Copy link</span>
+                        </button>
+                    </div>
+                </div>
             </div>
             <img id="article-imagem" src="" alt="Article featured image"
                  class="hidden w-full object-cover rounded-2xl mb-10 shadow-md"
@@ -434,11 +467,32 @@
         setTimeout(() => t.classList.remove('show'), ms);
     }
 
+    // ─── Share bar ────────────────────────────────────────────────────────────
+    function atualizarShareBar(post) {
+        const url   = encodeURIComponent(window.location.href);
+        const texto = encodeURIComponent((post.titulo || '') + ' — Life Mastery Path');
+        document.getElementById('share-x').href  = `https://twitter.com/intent/tweet?url=${url}&text=${texto}`;
+        document.getElementById('share-fb').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+        document.getElementById('share-wa').href = `https://wa.me/?text=${texto}%20${url}`;
+        const bar = document.getElementById('action-bar');
+        bar.style.display = 'flex';
+    }
+
+    document.getElementById('share-copy').addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            const btn  = document.getElementById('share-copy');
+            const span = btn.querySelector('span');
+            span.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => { span.textContent = 'Copy link'; btn.classList.remove('copied'); }, 2000);
+        } catch { showToast('Could not copy link'); }
+    });
+
     // ─── Favorites ────────────────────────────────────────────────────────────
     function atualizarBotaoFav() {
         const wrap = document.getElementById('fav-btn-wrap');
         const btn  = document.getElementById('btn-fav-artigo');
-        const lbl  = document.getElementById('fav-label');
         if (!auth.currentUser || !currentDocId) { wrap.style.display = 'none'; return; }
         wrap.style.display = 'block';
         const saved = userFavorites.has(currentDocId);
@@ -541,6 +595,7 @@
             document.getElementById('article-skeleton').classList.add('hidden');
             document.getElementById('article-content').classList.remove('hidden');
 
+            atualizarShareBar(post);
             atualizarBotaoFav();
             updateArticleSchema(post);
 
