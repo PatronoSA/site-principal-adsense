@@ -393,7 +393,7 @@
 </footer>
 
 <!-- ═══ PAINEL ADMIN ══════════════════════════════════════════════════════════ -->
-<div id="admin-panel" class="hidden max-w-2xl mx-auto my-10 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+<div id="admin-panel" class="hidden max-w-2xl mx-auto my-10 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden" style="display:none;">
     <div class="bg-blue-700 px-8 py-5">
         <h2 class="text-xl font-bold text-white">Publishing Panel</h2>
     </div>
@@ -782,16 +782,25 @@
             authButtons.style.display = 'none';
             fecharModais();
             loadFavorites(user.uid);
-            try {
-                const snap = await getDoc(doc(db, "usuarios", user.uid));
-                const data = snap.exists() ? snap.data() : {};
-                if (data.admin)   adminPanel.classList.remove('hidden');
-                if (data.premium) ocultarAnuncios();
-            } catch (e) { console.warn('Firestore read error:', e); }
+            // Admin panel: only reveal for the exact admin email AND Firestore admin flag
+            adminPanel.style.display = 'none';
+            adminPanel.classList.add('hidden');
+            if (user.email === ADMIN_EMAIL) {
+                try {
+                    const snap = await getDoc(doc(db, "usuarios", user.uid));
+                    const data = snap.exists() ? snap.data() : {};
+                    if (data.admin) {
+                        adminPanel.classList.remove('hidden');
+                        adminPanel.style.display = '';
+                    }
+                    if (data.premium) ocultarAnuncios();
+                } catch (e) { console.warn('Firestore read error:', e); }
+            }
         } else {
             userInfo.style.display = 'none';
             authButtons.style.display = 'flex';
             adminPanel.classList.add('hidden');
+            adminPanel.style.display = 'none';
             fecharDropdown();
             userFavorites = new Set();
         }
@@ -983,11 +992,15 @@
     }
 
     async function carregarPosts() {
+        const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 10000));
         try {
-            const snap = await getDocs(query(collection(db, "posts"), orderBy("data", "desc")));
+            const snap = await Promise.race([
+                getDocs(query(collection(db, "posts"), orderBy("data", "desc"))),
+                timeout
+            ]);
             allPosts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         } catch (e) {
-            console.warn('Firestore indisponível (normal em dev):', e.message);
+            console.warn('Firestore error:', e.message);
             allPosts = [];
         }
         renderPosts();
@@ -1292,7 +1305,7 @@
         }
     });
 
-    window.onload = () => { carregarPosts(); };
+    carregarPosts();
 </script>
 
 <!-- ═══ MODAL LOGIN ════════════════════════════════════════════════════════════ -->
