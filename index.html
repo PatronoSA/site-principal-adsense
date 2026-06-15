@@ -599,6 +599,15 @@
     let allPosts       = [];
     let activeCategory = 'todas';
     const ADMIN_EMAIL  = 'devonkater01@gmail.com';
+
+    // Apply ?category= from URL (navigation from artigo.html)
+    const _urlCategory = new URLSearchParams(window.location.search).get('category');
+    if (_urlCategory) {
+        activeCategory = _urlCategory;
+        document.querySelectorAll('nav a.cat-link').forEach(a => {
+            a.classList.toggle('ativo', a.dataset.categoria === _urlCategory);
+        });
+    }
     let userFavorites  = new Set();
 
     // ─── Premium / Admin ──────────────────────────────────────────────────────
