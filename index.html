@@ -964,6 +964,12 @@
         });
     });
 
+    function formatPostDate(p) {
+        const raw = p.data || p.createdAt || p.publishedAt;
+        if (!raw?.toDate) return '';
+        return raw.toDate().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
     function textoLimpo(texto, max) {
         const limpo = (texto || '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/^#{1,2} .+/gm, '').replace(/\n+/g, ' ').trim();
         return limpo.length > max ? limpo.substring(0, max) + '…' : limpo;
@@ -1008,6 +1014,7 @@
                    <div class="destaque-overlay">
                        ${categoriaBadge(destaque.categoria)}
                        <h1>${destaque.titulo}</h1>
+                       <p style="font-size:12px;color:rgba(255,255,255,.65);margin:0 0 8px;font-weight:600;">By Life Mastery Path Team${formatPostDate(destaque) ? ' · ' + formatPostDate(destaque) : ''}</p>
                        <p>${textoLimpo(destaque.conteudo, 200)}</p>
                        <a href="${postUrl(destaque)}" class="btn-read-full">${t('read_full')}</a>
                    </div>
@@ -1023,6 +1030,7 @@
                         <div>
                             ${categoriaBadge(p.categoria)}
                             <h4>${p.titulo}</h4>
+                            <p style="margin:1px 0 4px;font-size:11px;color:#aaa;font-weight:600;">By Life Mastery Path Team${formatPostDate(p) ? ' · ' + formatPostDate(p) : ''}</p>
                             <p style="margin:4px 0 6px;font-size:13px;color:#666;">${textoLimpo(p.conteudo, 300)}</p>
                             <span class="btn-read-more">${t('read_more')}</span>
                         </div>

@@ -193,8 +193,9 @@
                 <span id="article-data" class="text-sm text-gray-400"></span>
             </div>
             <h1 id="article-titulo"
-                class="text-4xl font-black leading-tight text-gray-900 mb-8"
+                class="text-4xl font-black leading-tight text-gray-900 mb-3"
                 style="font-family:'Roboto',sans-serif;letter-spacing:-0.5px;"></h1>
+            <p id="article-byline" class="text-sm text-gray-500 mb-8" style="font-family:'Roboto',sans-serif;font-weight:600;"></p>
             <img id="article-imagem" src="" alt=""
                  class="hidden w-full object-cover rounded-2xl mb-10 shadow-md"
                  style="max-height:480px;">
@@ -521,6 +522,13 @@
             }
 
             document.getElementById('article-titulo').textContent = post.titulo;
+
+            const rawDate = post.data || post.createdAt || post.publishedAt;
+            const dateStr = rawDate?.toDate
+                ? rawDate.toDate().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
+                : '';
+            document.getElementById('article-byline').textContent =
+                'By Life Mastery Path Team' + (dateStr ? ' · ' + dateStr : '');
 
             const imgEl = document.getElementById('article-imagem');
             if (post.imagem) { imgEl.src = post.imagem; imgEl.alt = post.titulo; imgEl.classList.remove('hidden'); }
