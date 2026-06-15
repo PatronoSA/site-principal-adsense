@@ -455,18 +455,15 @@
     const storage = getStorage(app);
     const provider = new GoogleAuthProvider();
 
-    // ── i18n (básico) ────────────────────────────────────────────────────────
-    let LANG = 'en';
-
     // ── Cores de categoria ────────────────────────────────────────────────────
     const CAT_MAP = {
-        carreira:         { label: 'Carreira',         color: '#2563eb' },
-        mente:            { label: 'Mente',             color: '#7c3aed' },
-        financas:         { label: 'Finanças',          color: '#059669' },
-        produtividade:    { label: 'Produtividade',     color: '#b45309' },
-        autoconhecimento: { label: 'Autoconhecimento',  color: '#0891b2' },
-        negocios:         { label: 'Negócios',          color: '#be185d' },
-        outros:           { label: 'Outros',            color: '#6b7280' },
+        carreira:         { label: 'Career',          color: '#2563eb' },
+        mente:            { label: 'Mindset',          color: '#7c3aed' },
+        financas:         { label: 'Finance',          color: '#059669' },
+        produtividade:    { label: 'Productivity',     color: '#b45309' },
+        autoconhecimento: { label: 'Self-Knowledge',   color: '#0891b2' },
+        negocios:         { label: 'Business',         color: '#be185d' },
+        outros:           { label: 'Other',             color: '#6b7280' },
     };
 
     function catBadge(cat) {
@@ -809,7 +806,7 @@
         const porque   = document.getElementById('b-porque').value.trim();
         const link     = document.getElementById('b-link').value.trim();
 
-        if (!titulo || !autor) { alert('Preencha pelo menos título e autor.'); return; }
+        if (!titulo || !autor) { alert('Please fill in at least title and author.'); return; }
 
         const btn = document.getElementById('btn-publicar-livro');
         btn.disabled = true; btn.textContent = 'Publicando...';

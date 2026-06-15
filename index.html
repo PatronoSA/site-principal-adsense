@@ -41,8 +41,6 @@
         .header-controls { display: flex; align-items: center; gap: 10px; }
 
         /* Language toggle */
-        .btn-lang-flag { background: none; border: 1px solid rgba(255,255,255,.3); color: #fff; padding: 3px 7px; border-radius: 6px; cursor: pointer; font-size: 15px; line-height: 1; transition: all .2s; }
-        .btn-lang-flag:hover, .btn-lang-flag.active { border-color: #fff; background: rgba(255,255,255,.18); }
 
         /* Nav */
         nav { background: var(--dark-blue); padding: 9px 15px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; position: relative; gap: 2px; }
@@ -235,14 +233,14 @@
 <!-- ═══ NAV ═══════════════════════════════════════════════════════════════════ -->
 <nav>
     <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:2px;">
-        <a href="#" class="cat-link ativo" data-categoria="todas" data-i18n="nav_all">INÍCIO</a>
-        <a href="#" class="cat-link" data-categoria="carreira" data-i18n="nav_career">CARREIRA</a>
-        <a href="#" class="cat-link" data-categoria="mente" data-i18n="nav_mind">MENTE</a>
-        <a href="#" class="cat-link" data-categoria="financas" data-i18n="nav_finance">FINANÇAS</a>
-        <a href="#" class="cat-link" data-categoria="produtividade" data-i18n="nav_productivity">PRODUTIVIDADE</a>
-        <a href="#" class="cat-link" data-categoria="hobbies" data-i18n="nav_hobbies">HOBBIES</a>
-        <a href="#" class="cat-link" data-categoria="estilo-de-vida" data-i18n="nav_lifestyle">ESTILO DE VIDA</a>
-        <a href="books.html" class="cat-link" data-i18n="nav_books">📚 LIVROS</a>
+        <a href="#" class="cat-link ativo" data-categoria="todas">HOME</a>
+        <a href="#" class="cat-link" data-categoria="carreira">CAREER</a>
+        <a href="#" class="cat-link" data-categoria="mente">MINDSET</a>
+        <a href="#" class="cat-link" data-categoria="financas">FINANCE</a>
+        <a href="#" class="cat-link" data-categoria="produtividade">PRODUCTIVITY</a>
+        <a href="#" class="cat-link" data-categoria="hobbies">HOBBIES</a>
+        <a href="#" class="cat-link" data-categoria="estilo-de-vida">LIFESTYLE</a>
+        <a href="books.html" class="cat-link">📚 BOOKS</a>
     </div>
     <div class="nav-auth">
         <div id="user-info" style="display:none;">
@@ -262,39 +260,39 @@
                 <div class="dropdown-section">
                     <a href="#" class="dropdown-item" id="dd-perfil">
                         <span class="dropdown-item-icon">👤</span>
-                        <span data-i18n="dd_perfil">Meu Perfil</span>
+                        <span>My Profile</span>
                     </a>
                     <a href="#" class="dropdown-item" id="dd-leituras">
                         <span class="dropdown-item-icon">🔖</span>
-                        <span data-i18n="dd_leituras">Leituras Salvas</span>
+                        <span>Saved Readings</span>
                     </a>
                     <a href="#" class="dropdown-item" id="dd-config">
                         <span class="dropdown-item-icon">⚙️</span>
-                        <span data-i18n="dd_config">Configurações</span>
+                        <span>Settings</span>
                     </a>
                 </div>
                 <div class="dropdown-divider"></div>
                 <div class="dropdown-section">
                     <button class="dropdown-item dropdown-item-danger" id="btn-logout">
                         <span class="dropdown-item-icon">↩</span>
-                        <span data-i18n="btn_logout">Sair</span>
+                        <span>Sign out</span>
                     </button>
                 </div>
             </div>
         </div>
         <div id="auth-buttons" style="display:flex;gap:6px;">
-            <button id="btn-abrir-login" class="btn-auth-outline" data-i18n="btn_entrar">Entrar</button>
-            <button id="btn-abrir-cadastro" class="btn-auth-fill" data-i18n="btn_cadastrar">Cadastrar</button>
+            <button id="btn-abrir-login" class="btn-auth-outline">Sign in</button>
+            <button id="btn-abrir-cadastro" class="btn-auth-fill">Sign up</button>
         </div>
     </div>
 </nav>
 
 <!-- ═══ BANNER PREMIUM ════════════════════════════════════════════════════════ -->
 <div id="premium-banner" style="display:none;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;text-align:center;padding:10px 50px;font-size:14px;position:relative;">
-    ✨ <span data-i18n="premium_banner">Leia o portal sem anúncios.</span>
-    <a href="#" id="btn-assinar-mensal" style="color:#fff;font-weight:900;margin-left:8px;" data-i18n="premium_cta_monthly">Mensal $4,99 →</a>
+    ✨ <span>Read the portal without ads.</span>
+    <a href="#" id="btn-assinar-mensal" style="color:#fff;font-weight:900;margin-left:8px;">Monthly $4.99 →</a>
     <span style="color:rgba(255,255,255,.45);margin:0 6px;">|</span>
-    <a href="#" id="btn-assinar-anual" style="color:#fff;font-weight:900;" data-i18n="premium_cta_yearly">Anual →</a>
+    <a href="#" id="btn-assinar-anual" style="color:#fff;font-weight:900;">Yearly →</a>
     <button id="btn-fechar-banner" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1;">×</button>
 </div>
 
@@ -313,10 +311,10 @@
     <div class="hero-grid">
         <main>
             <div id="area-destaque">
-                <div class="thumb-main" data-i18n="loading">Carregando...</div>
+                <div class="thumb-main">Loading...</div>
             </div>
             <hr style="margin:30px 0;">
-            <h3 data-i18n="section_other_news">Outros Artigos</h3>
+            <h3>More Articles</h3>
             <div id="lista-artigos"></div>
         </main>
         <aside>
@@ -325,7 +323,7 @@
                      data-ad-client="ca-pub-7485615657043606" data-ad-slot="5138413669"></ins>
                 <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
-            <h3 style="border-bottom:2px solid var(--black);" data-i18n="section_most_read">Mais Lidas</h3>
+            <h3 style="border-bottom:2px solid var(--black);">Most Read</h3>
             <div id="lista-mais-lidas"></div>
             <div class="ad-slot ad-slot-square" data-label="AdSense • Sidebar 300×250">
                 <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px"
@@ -355,13 +353,13 @@
         <a href="cookie-policy.html" style="color:#aaa;text-decoration:none;font-size:13px;font-weight:700;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">Cookie Policy</a>
         <a href="contact.html" style="color:#aaa;text-decoration:none;font-size:13px;font-weight:700;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">Contact</a>
     </div>
-    <span data-i18n="footer_text">© 2026 Life Mastery Path.</span>
+    <span>© 2026 Life Mastery Path.</span>
 </footer>
 
 <!-- ═══ PAINEL ADMIN ══════════════════════════════════════════════════════════ -->
 <div id="admin-panel" class="hidden max-w-2xl mx-auto my-10 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
     <div class="bg-blue-700 px-8 py-5">
-        <h2 class="text-xl font-bold text-white" data-i18n="admin_title">Painel de Publicação</h2>
+        <h2 class="text-xl font-bold text-white">Publishing Panel</h2>
     </div>
 
     <!-- Abas -->
@@ -373,45 +371,45 @@
     <!-- ── Aba Artigo (existente) ── -->
     <div id="aba-artigo" class="px-8 py-6 space-y-5">
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1" data-i18n="admin_category_label">Categoria:</label>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Category:</label>
             <select id="select-categoria" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="geral" data-i18n="cat_geral">Geral</option>
-                <option value="carreira" data-i18n="cat_carreira">Carreira</option>
-                <option value="mente" data-i18n="cat_mente">Mente</option>
-                <option value="financas" data-i18n="cat_financas">Finanças</option>
-                <option value="livros" data-i18n="cat_livros">Livros</option>
-                <option value="produtividade" data-i18n="cat_produtividade">Produtividade</option>
-                <option value="hobbies" data-i18n="cat_hobbies">Hobbies</option>
-                <option value="estilo-de-vida" data-i18n="cat_estilo">Estilo de Vida</option>
+                <option value="geral">General</option>
+                <option value="carreira">Career</option>
+                <option value="mente">Mindset</option>
+                <option value="financas">Finance</option>
+                <option value="livros">Books</option>
+                <option value="produtividade">Productivity</option>
+                <option value="hobbies">Hobbies</option>
+                <option value="estilo-de-vida">Lifestyle</option>
             </select>
         </div>
         <div>
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-                <label class="text-sm font-semibold text-gray-700" data-i18n="admin_title_label">Título:</label>
+                <label class="text-sm font-semibold text-gray-700">Title:</label>
                 <button type="button" class="paste-btn" data-paste="input-titulo" title="Paste from clipboard">📋</button>
             </div>
-            <input id="input-titulo" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n-placeholder="admin_title_placeholder">
+            <input id="input-titulo" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: How discipline beats talent in 2026">
         </div>
         <div>
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-                <label class="text-sm font-semibold text-gray-700" data-i18n="admin_content_label">Conteúdo:</label>
+                <label class="text-sm font-semibold text-gray-700">Content:</label>
                 <button type="button" class="paste-btn" data-paste="input-conteudo" title="Paste from clipboard">📋</button>
             </div>
-            <textarea id="input-conteudo" rows="5" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y" data-i18n-placeholder="admin_content_placeholder"></textarea>
+            <textarea id="input-conteudo" rows="5" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y" placeholder="Write the article summary or full text..."></textarea>
         </div>
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1" data-i18n="admin_image_label">Imagem:</label>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Image:</label>
             <div id="drop-area" class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors">
                 <input type="file" id="input-imagem" accept="image/*" class="hidden">
                 <svg class="mx-auto mb-3 text-gray-400 w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
-                <p id="file-label" class="text-sm text-gray-500" data-i18n="file_select_label">Clique para selecionar ou arraste a imagem aqui</p>
+                <p id="file-label" class="text-sm text-gray-500">Click to select or drag the image here</p>
                 <p class="text-xs text-gray-400 mt-1">PNG, JPG, WEBP — máx. 10 MB</p>
             </div>
             <div id="upload-progress-wrap" class="hidden mt-3">
                 <div class="flex justify-between text-xs text-gray-500 mb-1">
-                    <span data-i18n="upload_sending">Enviando imagem...</span>
+                    <span>Uploading image...</span>
                     <span id="upload-percent">0%</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2.5">
@@ -423,28 +421,28 @@
 
         <!-- ── SEO ── -->
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1" data-i18n="admin_slug_label">Slug (URL):</label>
-            <input id="input-slug" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" data-i18n-placeholder="admin_slug_placeholder">
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Slug (URL):</label>
+            <input id="input-slug" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono" placeholder="auto-generated-from-title">
             <p class="text-xs text-gray-400 mt-1">artigo.html?slug=<span id="slug-preview" class="text-gray-500">...</span></p>
         </div>
         <div>
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-                <label class="text-sm font-semibold text-gray-700" data-i18n="admin_metadesc_label">Meta Description:</label>
+                <label class="text-sm font-semibold text-gray-700">Meta Description:</label>
                 <button type="button" class="paste-btn" data-paste="input-metadesc" title="Paste from clipboard">📋</button>
             </div>
-            <textarea id="input-metadesc" rows="3" maxlength="160" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" data-i18n-placeholder="admin_metadesc_placeholder"></textarea>
-            <p class="text-xs text-right mt-1"><span id="metadesc-count" class="text-gray-400">160</span> <span class="text-gray-400" data-i18n="admin_chars_left">caracteres restantes</span></p>
+            <textarea id="input-metadesc" rows="3" maxlength="160" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" placeholder="Summary for search engines (max 160 characters)"></textarea>
+            <p class="text-xs text-right mt-1"><span id="metadesc-count" class="text-gray-400">160</span> <span class="text-gray-400">characters left</span></p>
         </div>
         <div>
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-                <label class="text-sm font-semibold text-gray-700" data-i18n="admin_keywords_label">Keywords:</label>
+                <label class="text-sm font-semibold text-gray-700">Keywords:</label>
                 <button type="button" class="paste-btn" data-paste="input-keywords" title="Paste from clipboard">📋</button>
             </div>
-            <input id="input-keywords" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n-placeholder="admin_keywords_placeholder">
+            <input id="input-keywords" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="keyword, another, one-more">
         </div>
 
-        <button id="btn-publicar" class="w-full bg-blue-700 hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 rounded-xl text-sm transition-colors" data-i18n="admin_publish_btn">
-            Publicar Post
+        <button id="btn-publicar" class="w-full bg-blue-700 hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 rounded-xl text-sm transition-colors">
+            Publish Post
         </button>
     </div>
 
@@ -530,284 +528,6 @@
     const STRIPE_MONTHLY = 'https://buy.stripe.com/test_28E9ASeQodkO99ucUS5AQ00';
     const STRIPE_YEARLY  = 'https://buy.stripe.com/test_3cIbJ04bK6Wq3Pa9IG5AQ01';
 
-    // ─── i18n ─────────────────────────────────────────────────────────────────
-    // Troca de idioma persistida no localStorage — uma linha para mudar o padrão:
-    let LANG = 'en';
-
-    const T = {
-        pt: {
-            page_title:               'Life Mastery Path | O Portal do Autoconhecimento',
-            html_lang:                'pt-BR',
-            site_title:               'Life Mastery Path',
-            nav_all:                  'INÍCIO',
-            nav_career:               'CARREIRA',
-            nav_mind:                 'MENTE',
-            nav_finance:              'FINANÇAS',
-            nav_books:                '📚 LIVROS',
-            nav_productivity:         'PRODUTIVIDADE',
-            nav_hobbies:              'HOBBIES',
-            nav_lifestyle:            'ESTILO DE VIDA',
-            btn_google:               'Entrar com Google',
-            btn_logout:               'Sair',
-            btn_entrar:               'Entrar',
-            btn_cadastrar:            'Cadastrar',
-            modal_login_title:        'Bem-vindo de volta',
-            modal_login_subtitle:     'Entre na sua conta',
-            modal_signup_title:       'Criar conta',
-            modal_signup_subtitle:    'É rápido e gratuito',
-            label_remember:           'Manter conectado',
-            btn_entrar_email:         'Entrar',
-            btn_cadastrar_email:      'Criar conta',
-            btn_google_login:         'Continuar com Google',
-            or_divider:               'ou',
-            placeholder_name:         'Seu nome',
-            placeholder_email:        'seuemail@exemplo.com',
-            placeholder_password:     'Mínimo 6 caracteres',
-            link_sem_conta_texto:     'Não tem conta?',
-            link_sem_conta_cta:       'Cadastrar',
-            link_tem_conta_texto:     'Já tem conta?',
-            link_tem_conta_cta:       'Entrar',
-            err_fill:                 'Preencha todos os campos.',
-            err_credentials:          'E-mail ou senha incorretos.',
-            err_email_use:            'Este e-mail já está em uso.',
-            err_weak_pass:            'A senha precisa ter no mínimo 6 caracteres.',
-            loading:                  'Carregando...',
-            section_other_news:       'Outros Artigos',
-            section_most_read:        'Mais Lidas',
-            footer_text:              '© 2026 Life Mastery Path.',
-            no_featured:              'Nenhum destaque publicado ainda.',
-            no_articles:              'Nenhum artigo nesta categoria ainda.',
-            no_most_read:             'Nenhum artigo ainda.',
-            read_more:                'Leia Mais →',
-            read_full:                'Ler Artigo Completo →',
-            no_image:                 'SEM IMAGEM',
-            premium_banner:           'Leia o portal sem anúncios.',
-            premium_cta_monthly:      'Mensal $4,99 →',
-            premium_cta_yearly:       'Anual →',
-            admin_title:              'Painel de Publicação',
-            admin_type_label:         'Tipo:',
-            admin_type_featured:      'Destaque Principal',
-            admin_type_normal:        'Artigo Normal',
-            admin_category_label:     'Categoria:',
-            cat_geral:                'Geral',
-            cat_carreira:             'Carreira',
-            cat_mente:                'Mente',
-            cat_financas:             'Finanças',
-            cat_livros:               'Livros',
-            cat_produtividade:        'Produtividade',
-            cat_hobbies:              'Hobbies',
-            cat_estilo:               'Estilo de Vida',
-            admin_title_label:        'Título:',
-            admin_image_label:        'Imagem:',
-            admin_content_label:      'Conteúdo:',
-            admin_title_placeholder:  'Ex: Como a disciplina vence o talento em 2026',
-            admin_content_placeholder:'Escreva o resumo ou texto completo do artigo...',
-            admin_slug_label:         'Slug (URL):',
-            admin_slug_placeholder:   'gerado-automaticamente-do-titulo',
-            admin_metadesc_label:     'Meta Description:',
-            admin_metadesc_placeholder:'Resumo para mecanismos de busca (máx. 160 caracteres)',
-            admin_keywords_label:     'Keywords:',
-            admin_keywords_placeholder:'palavra-chave, outra, mais-uma',
-            admin_chars_left:         'caracteres restantes',
-            admin_publish_btn:        'Publicar Post',
-            file_select_label:        'Clique para selecionar ou arraste a imagem aqui',
-            upload_sending:           'Enviando imagem...',
-            publish_success:          'Post publicado com sucesso!',
-            publish_fill:             'Preencha título e conteúdo!',
-            publish_error:            'Erro ao publicar: ',
-            upload_error:             'Erro no upload: ',
-            err_login:                'Erro ao fazer login. Tente novamente.',
-            dd_perfil:                'Meu Perfil',
-            dd_leituras:              'Leituras Salvas',
-            dd_config:                'Configurações',
-        },
-        en: {
-            page_title:               'Life Mastery Path | The Portal of Self-Knowledge',
-            html_lang:                'en-US',
-            site_title:               'Life Mastery Path',
-            nav_all:                  'HOME',
-            nav_career:               'CAREER',
-            nav_mind:                 'MINDSET',
-            nav_finance:              'FINANCE',
-            nav_books:                '📚 BOOKS',
-            nav_productivity:         'PRODUCTIVITY',
-            nav_hobbies:              'HOBBIES',
-            nav_lifestyle:            'LIFESTYLE',
-            btn_google:               'Sign in with Google',
-            btn_logout:               'Sign out',
-            btn_entrar:               'Sign in',
-            btn_cadastrar:            'Sign up',
-            modal_login_title:        'Welcome back',
-            modal_login_subtitle:     'Sign in to your account',
-            modal_signup_title:       'Create account',
-            modal_signup_subtitle:    'It\'s quick and free',
-            label_remember:           'Keep me signed in',
-            btn_entrar_email:         'Sign in',
-            btn_cadastrar_email:      'Create account',
-            btn_google_login:         'Continue with Google',
-            or_divider:               'or',
-            placeholder_name:         'Your name',
-            placeholder_email:        'youremail@example.com',
-            placeholder_password:     'At least 6 characters',
-            link_sem_conta_texto:     'No account?',
-            link_sem_conta_cta:       'Sign up',
-            link_tem_conta_texto:     'Already have an account?',
-            link_tem_conta_cta:       'Sign in',
-            err_fill:                 'Please fill in all fields.',
-            err_credentials:          'Incorrect email or password.',
-            err_email_use:            'This email is already in use.',
-            err_weak_pass:            'Password must be at least 6 characters.',
-            loading:                  'Loading...',
-            section_other_news:       'More Articles',
-            section_most_read:        'Most Read',
-            footer_text:              '© 2026 Life Mastery Path.',
-            no_featured:              'No featured post yet.',
-            no_articles:              'No articles in this category yet.',
-            no_most_read:             'No articles yet.',
-            read_more:                'Read More →',
-            read_full:                'Read Full Article →',
-            no_image:                 'NO IMAGE',
-            premium_banner:           'Read the portal without ads.',
-            premium_cta_monthly:      'Monthly $4.99 →',
-            premium_cta_yearly:       'Yearly →',
-            admin_title:              'Publishing Panel',
-            admin_type_label:         'Type:',
-            admin_type_featured:      'Featured Post',
-            admin_type_normal:        'Regular Article',
-            admin_category_label:     'Category:',
-            cat_geral:                'General',
-            cat_carreira:             'Career',
-            cat_mente:                'Mindset',
-            cat_financas:             'Finance',
-            cat_livros:               'Books',
-            cat_produtividade:        'Productivity',
-            cat_hobbies:              'Hobbies',
-            cat_estilo:               'Lifestyle',
-            admin_title_label:        'Title:',
-            admin_image_label:        'Image:',
-            admin_content_label:      'Content:',
-            admin_title_placeholder:  'Ex: How discipline beats talent in 2026',
-            admin_content_placeholder:'Write the article summary or full text...',
-            admin_slug_label:         'Slug (URL):',
-            admin_slug_placeholder:   'auto-generated-from-title',
-            admin_metadesc_label:     'Meta Description:',
-            admin_metadesc_placeholder:'Summary for search engines (max 160 characters)',
-            admin_keywords_label:     'Keywords:',
-            admin_keywords_placeholder:'keyword, another, one-more',
-            admin_chars_left:         'characters left',
-            admin_publish_btn:        'Publish Post',
-            file_select_label:        'Click to select or drag the image here',
-            upload_sending:           'Uploading image...',
-            publish_success:          'Post published successfully!',
-            publish_fill:             'Please fill in title and content!',
-            publish_error:            'Publish error: ',
-            upload_error:             'Upload error: ',
-            err_login:                'Login error. Please try again.',
-            dd_perfil:                'My Profile',
-            dd_leituras:              'Saved Readings',
-            dd_config:                'Settings',
-        },
-        es: {
-            page_title:               'Life Mastery Path | El Portal del Autoconocimiento',
-            html_lang:                'es-ES',
-            site_title:               'Life Mastery Path',
-            nav_all:                  'INICIO',
-            nav_career:               'CARRERA',
-            nav_mind:                 'MENTALIDAD',
-            nav_finance:              'FINANZAS',
-            nav_books:                '📚 LIBROS',
-            nav_productivity:         'PRODUCTIVIDAD',
-            nav_hobbies:              'HOBBIES',
-            nav_lifestyle:            'ESTILO DE VIDA',
-            btn_google:               'Iniciar sesión con Google',
-            btn_logout:               'Cerrar sesión',
-            btn_entrar:               'Entrar',
-            btn_cadastrar:            'Registrarse',
-            modal_login_title:        'Bienvenido de nuevo',
-            modal_login_subtitle:     'Inicia sesión en tu cuenta',
-            modal_signup_title:       'Crear cuenta',
-            modal_signup_subtitle:    'Es rápido y gratuito',
-            label_remember:           'Mantener sesión iniciada',
-            btn_entrar_email:         'Entrar',
-            btn_cadastrar_email:      'Crear cuenta',
-            btn_google_login:         'Continuar con Google',
-            or_divider:               'o',
-            placeholder_name:         'Tu nombre',
-            placeholder_email:        'tuemail@ejemplo.com',
-            placeholder_password:     'Mínimo 6 caracteres',
-            link_sem_conta_texto:     '¿No tienes cuenta?',
-            link_sem_conta_cta:       'Registrarse',
-            link_tem_conta_texto:     '¿Ya tienes cuenta?',
-            link_tem_conta_cta:       'Entrar',
-            err_fill:                 'Por favor completa todos los campos.',
-            err_credentials:          'Correo o contraseña incorrectos.',
-            err_email_use:            'Este correo ya está en uso.',
-            err_weak_pass:            'La contraseña debe tener al menos 6 caracteres.',
-            loading:                  'Cargando...',
-            section_other_news:       'Más Artículos',
-            section_most_read:        'Más Leídas',
-            footer_text:              '© 2026 Life Mastery Path.',
-            no_featured:              'Aún no hay publicación destacada.',
-            no_articles:              'Aún no hay artículos en esta categoría.',
-            no_most_read:             'Aún no hay artículos.',
-            read_more:                'Leer Más →',
-            read_full:                'Leer Artículo Completo →',
-            no_image:                 'SIN IMAGEN',
-            premium_banner:           'Lee el portal sin anuncios.',
-            premium_cta_monthly:      'Mensual $4.99 →',
-            premium_cta_yearly:       'Anual →',
-            admin_title:              'Panel de Publicación',
-            admin_type_label:         'Tipo:',
-            admin_type_featured:      'Destacado Principal',
-            admin_type_normal:        'Artículo Normal',
-            admin_category_label:     'Categoría:',
-            cat_geral:                'General',
-            cat_carreira:             'Carrera',
-            cat_mente:                'Mentalidad',
-            cat_financas:             'Finanzas',
-            cat_livros:               'Libros',
-            cat_produtividade:        'Productividad',
-            cat_hobbies:              'Hobbies',
-            cat_estilo:               'Estilo de Vida',
-            admin_title_label:        'Título:',
-            admin_image_label:        'Imagen:',
-            admin_content_label:      'Contenido:',
-            admin_title_placeholder:  'Ej: Cómo la disciplina vence al talento en 2026',
-            admin_content_placeholder:'Escribe el resumen o texto completo del artículo...',
-            admin_slug_label:         'Slug (URL):',
-            admin_slug_placeholder:   'generado-automáticamente-del-título',
-            admin_metadesc_label:     'Meta Description:',
-            admin_metadesc_placeholder:'Resumen para motores de búsqueda (máx 160 caracteres)',
-            admin_keywords_label:     'Palabras clave:',
-            admin_keywords_placeholder:'palabra-clave, otra, una-más',
-            admin_chars_left:         'caracteres restantes',
-            admin_publish_btn:        'Publicar Post',
-            file_select_label:        'Haz clic para seleccionar o arrastra la imagen aquí',
-            upload_sending:           'Subiendo imagen...',
-            publish_success:          '¡Post publicado con éxito!',
-            publish_fill:             '¡Por favor completa título y contenido!',
-            publish_error:            'Error al publicar: ',
-            upload_error:             'Error en la subida: ',
-            err_login:                'Error al iniciar sesión. Inténtalo de nuevo.',
-            dd_perfil:                'Mi Perfil',
-            dd_leituras:              'Lecturas Guardadas',
-            dd_config:                'Configuración',
-        }
-    };
-
-    function t(k) { return T[LANG][k] || k; }
-
-    function applyLang() {
-        document.getElementById('html-root').lang = t('html_lang');
-        document.title = t('page_title');
-        document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
-        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.placeholder = t(el.dataset.i18nPlaceholder));
-        document.querySelectorAll('.btn-lang-flag').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.lang === LANG);
-        });
-    }
-
-    // ─── /i18n ────────────────────────────────────────────────────────────────
 
     const firebaseConfig = {
         apiKey: "AIzaSyAKbBvmfcJ-_FmRndrXypVm4DjK3cqpB6k",
@@ -929,9 +649,9 @@
     }
     function mapFirebaseError(code) {
         if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found')
-            return t('err_credentials');
-        if (code === 'auth/email-already-in-use') return t('err_email_use');
-        if (code === 'auth/weak-password')        return t('err_weak_pass');
+            return 'Incorrect email or password.';
+        if (code === 'auth/email-already-in-use') return 'This email is already in use.';
+        if (code === 'auth/weak-password')        return 'Password must be at least 6 characters.';
         return code;
     }
 
@@ -950,7 +670,7 @@
         const email  = document.getElementById('login-email').value.trim();
         const senha  = document.getElementById('login-senha').value;
         const lembrar = document.getElementById('login-remember').checked;
-        if (!email || !senha) { mostrarErroModal('login-error', t('err_fill')); return; }
+        if (!email || !senha) { mostrarErroModal('login-error', 'Please fill in all fields.'); return; }
         try {
             await setPersistence(auth, lembrar ? browserLocalPersistence : browserSessionPersistence);
             await signInWithEmailAndPassword(auth, email, senha);
@@ -970,7 +690,7 @@
         const nome  = document.getElementById('cadastro-nome').value.trim();
         const email = document.getElementById('cadastro-email').value.trim();
         const senha = document.getElementById('cadastro-senha').value;
-        if (!nome || !email || !senha) { mostrarErroModal('cadastro-error', t('err_fill')); return; }
+        if (!nome || !email || !senha) { mostrarErroModal('cadastro-error', 'Please fill in all fields.'); return; }
         try {
             await setPersistence(auth, browserLocalPersistence);
             const cred = await createUserWithEmailAndPassword(auth, email, senha);
@@ -1024,13 +744,13 @@
 
     // ─── Renderização ─────────────────────────────────────────────────────────
     const CAT_COLORS = {
-        carreira:         { label: () => t('nav_career'),       color: '#2563eb' },
-        mente:            { label: () => t('nav_mind'),         color: '#7c3aed' },
-        financas:         { label: () => t('nav_finance'),      color: '#059669' },
-        livros:           { label: () => t('nav_books'),        color: '#ea580c' },
-        produtividade:    { label: () => t('nav_productivity'), color: '#b45309' },
-        hobbies:          { label: () => t('nav_hobbies'),      color: '#b91c1c' },
-        'estilo-de-vida': { label: () => t('nav_lifestyle'),    color: '#0891b2' },
+        carreira:         { label: () => 'Career',       color: '#2563eb' },
+        mente:            { label: () => 'Mindset',      color: '#7c3aed' },
+        financas:         { label: () => 'Finance',      color: '#059669' },
+        livros:           { label: () => '📚 Books',     color: '#ea580c' },
+        produtividade:    { label: () => 'Productivity', color: '#b45309' },
+        hobbies:          { label: () => 'Hobbies',      color: '#b91c1c' },
+        'estilo-de-vida': { label: () => 'Lifestyle',    color: '#0891b2' },
     };
 
     function categoriaBadge(cat) {
@@ -1053,16 +773,16 @@
         const areaDestaque = document.getElementById('area-destaque');
         areaDestaque.innerHTML = destaque
             ? `<div class="destaque-wrap">
-                   ${destaque.imagem ? `<img src="${destaque.imagem}" class="destaque-img" alt="${destaque.titulo}">` : `<div class="thumb-main">${t('no_image')}</div>`}
+                   ${destaque.imagem ? `<img src="${destaque.imagem}" class="destaque-img" alt="${destaque.titulo}">` : `<div class="thumb-main">NO IMAGE</div>`}
                    <div class="destaque-overlay">
                        ${categoriaBadge(destaque.categoria)}
                        <h1>${destaque.titulo}</h1>
                        <p style="font-size:12px;color:rgba(255,255,255,.65);margin:0 0 8px;font-weight:600;">By Life Mastery Path Team${formatPostDate(destaque) ? ' · ' + formatPostDate(destaque) : ''}</p>
                        <p>${textoLimpo(destaque.conteudo, 200)}</p>
-                       <a href="${postUrl(destaque)}" class="btn-read-full">${t('read_full')}</a>
+                       <a href="${postUrl(destaque)}" class="btn-read-full">Read Full Article →</a>
                    </div>
                </div>`
-            : `<div class="thumb-main">${t('no_featured')}</div>`;
+            : `<div class="thumb-main">No featured post yet.</div>`;
 
         // Artigos filtrados
         document.getElementById('lista-artigos').innerHTML = artigos.length
@@ -1075,11 +795,11 @@
                             <h4>${p.titulo}</h4>
                             <p style="margin:1px 0 4px;font-size:11px;color:#aaa;font-weight:600;">By Life Mastery Path Team${formatPostDate(p) ? ' · ' + formatPostDate(p) : ''}</p>
                             <p style="margin:4px 0 6px;font-size:13px;color:#666;">${textoLimpo(p.conteudo, 300)}</p>
-                            <span class="btn-read-more">${t('read_more')}</span>
+                            <span class="btn-read-more">Read More →</span>
                         </div>
                     </div>
                 </a>`).join('')
-            : `<p style="color:#999;padding:20px 0;">${t('no_articles')}</p>`;
+            : `<p style="color:#999;padding:20px 0;">No articles in this category yet.</p>`;
 
         // Mais lidas (sempre globais)
         const maisLidas = allPosts.slice(0, 5);
@@ -1088,7 +808,7 @@
                 <a href="${postUrl(p)}" style="text-decoration:none;color:inherit;">
                     <div class="post-card" style="cursor:pointer;">${thumbHtml(p.imagem, p.titulo)}<h4>${i + 1}. ${p.titulo}</h4></div>
                 </a>`).join('')
-            : `<p style="color:#999;font-size:13px;">${t('no_most_read')}</p>`;
+            : `<p style="color:#999;font-size:13px;">No articles yet.</p>`;
     }
 
     async function carregarPosts() {
@@ -1176,7 +896,7 @@
         ['input-titulo','input-conteudo','input-keywords'].forEach(id => document.getElementById(id).value = '');
         inputSlug.value = ''; slugPreview.textContent = '...'; slugManuallyEdited = false;
         inputMetadesc.value = ''; metadescCount.textContent = '160'; metadescCount.style.color = '';
-        fileInput.value = ''; fileLabel.textContent = t('file_select_label');
+        fileInput.value = ''; fileLabel.textContent = 'Click to select or drag the image here';
         imgPreview.src = ''; imgPreview.classList.add('hidden');
         document.getElementById('upload-progress-wrap').classList.add('hidden');
         document.getElementById('upload-bar').style.width = '0%';
@@ -1194,7 +914,7 @@
         const keywords     = document.getElementById('input-keywords').value.trim();
         const file         = fileInput.files[0];
 
-        if (!titulo || !conteudo) { alert(t('publish_fill')); return; }
+        if (!titulo || !conteudo) { alert('Please fill in title and content!'); return; }
 
         const btn = document.getElementById('btn-publicar');
         btn.disabled = true;
@@ -1215,11 +935,11 @@
                 });
             }
             await addDoc(collection(db, "posts"), { tipo, categoria, titulo, imagem: imagemUrl, conteudo, slug, metaDescricao, keywords, data: new Date() });
-            alert(t('publish_success'));
+            alert('Post published successfully!');
             resetForm();
             carregarPosts();
         } catch (e) {
-            alert((e.code?.startsWith('storage/') ? t('upload_error') : t('publish_error')) + e.message);
+            alert((e.code?.startsWith('storage/') ? 'Upload error: ' : 'Publish error: ') + e.message);
         } finally { btn.disabled = false; }
     });
 
@@ -1324,31 +1044,31 @@
         });
     });
 
-    window.onload = () => { applyLang(); carregarPosts(); };
+    window.onload = () => { carregarPosts(); };
 </script>
 
 <!-- ═══ MODAL LOGIN ════════════════════════════════════════════════════════════ -->
 <div id="modal-login" class="modal-overlay" role="dialog" aria-modal="true">
     <div class="modal-card">
         <button class="modal-close" id="fechar-login">×</button>
-        <h2 class="modal-title" data-i18n="modal_login_title">Bem-vindo de volta</h2>
-        <p class="modal-subtitle" data-i18n="modal_login_subtitle">Entre na sua conta</p>
+        <h2 class="modal-title">Welcome back</h2>
+        <p class="modal-subtitle">Sign in to your account</p>
         <div id="login-error" class="modal-error"></div>
-        <input id="login-email" class="modal-input" type="email" data-i18n-placeholder="placeholder_email" placeholder="seuemail@exemplo.com">
-        <input id="login-senha" class="modal-input" type="password" data-i18n-placeholder="placeholder_password" placeholder="Sua senha">
+        <input id="login-email" class="modal-input" type="email" placeholder="youremail@example.com">
+        <input id="login-senha" class="modal-input" type="password" placeholder="At least 6 characters">
         <label class="modal-remember">
             <input type="checkbox" id="login-remember">
-            <span data-i18n="label_remember">Manter conectado</span>
+            <span>Keep me signed in</span>
         </label>
-        <button id="btn-login-email" class="modal-btn-primary" data-i18n="btn_entrar_email">Entrar</button>
-        <div class="modal-divider"><span data-i18n="or_divider">ou</span></div>
+        <button id="btn-login-email" class="modal-btn-primary">Sign in</button>
+        <div class="modal-divider"><span>or</span></div>
         <button id="btn-login-google" class="modal-btn-google">
             <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-            <span data-i18n="btn_google_login">Continuar com Google</span>
+            <span>Continue with Google</span>
         </button>
         <div class="modal-footer-link">
-            <span data-i18n="link_sem_conta_texto">Não tem conta?</span>
-            <a id="ir-para-cadastro" data-i18n="link_sem_conta_cta">Cadastrar</a>
+            <span>No account?</span>
+            <a id="ir-para-cadastro">Sign up</a>
         </div>
     </div>
 </div>
@@ -1357,16 +1077,16 @@
 <div id="modal-cadastro" class="modal-overlay" role="dialog" aria-modal="true">
     <div class="modal-card">
         <button class="modal-close" id="fechar-cadastro">×</button>
-        <h2 class="modal-title" data-i18n="modal_signup_title">Criar conta</h2>
-        <p class="modal-subtitle" data-i18n="modal_signup_subtitle">É rápido e gratuito</p>
+        <h2 class="modal-title">Create account</h2>
+        <p class="modal-subtitle">It's quick and free</p>
         <div id="cadastro-error" class="modal-error"></div>
-        <input id="cadastro-nome" class="modal-input" type="text" data-i18n-placeholder="placeholder_name" placeholder="Seu nome">
-        <input id="cadastro-email" class="modal-input" type="email" data-i18n-placeholder="placeholder_email" placeholder="seuemail@exemplo.com">
-        <input id="cadastro-senha" class="modal-input" type="password" data-i18n-placeholder="placeholder_password" placeholder="Mínimo 6 caracteres">
-        <button id="btn-cadastrar-email" class="modal-btn-primary" data-i18n="btn_cadastrar_email">Criar conta</button>
+        <input id="cadastro-nome" class="modal-input" type="text" placeholder="Your name">
+        <input id="cadastro-email" class="modal-input" type="email" placeholder="youremail@example.com">
+        <input id="cadastro-senha" class="modal-input" type="password" placeholder="At least 6 characters">
+        <button id="btn-cadastrar-email" class="modal-btn-primary">Create account</button>
         <div class="modal-footer-link">
-            <span data-i18n="link_tem_conta_texto">Já tem conta?</span>
-            <a id="ir-para-login" data-i18n="link_tem_conta_cta">Entrar</a>
+            <span>Already have an account?</span>
+            <a id="ir-para-login">Sign in</a>
         </div>
     </div>
 </div>

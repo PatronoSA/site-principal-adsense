@@ -27,8 +27,6 @@
         .logo { font-size: 26px; font-weight: 300; letter-spacing: 3px; text-transform: uppercase; line-height: 1.1; text-decoration: none; color: #fff; }
         .logo span.logo-bold { font-weight: 800; color: #0056b3; letter-spacing: 2px; }
         .logo span.logo-light { font-weight: 300; opacity: 0.85; }
-        .btn-lang-flag { background: none; border: 1px solid rgba(255,255,255,.3); color: #fff; padding: 3px 7px; border-radius: 6px; cursor: pointer; font-size: 15px; line-height: 1; transition: all .2s; }
-        .btn-lang-flag:hover, .btn-lang-flag.active { border-color: #fff; background: rgba(255,255,255,.18); }
 
         /* Nav */
         nav { background: #0B172A; padding: 9px 15px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; }
@@ -123,14 +121,14 @@
 <nav>
     <div class="nav-links">
         <a href="index.html" id="nav-back">← Voltar</a>
-        <a href="index.html" data-art-i18n="nav_latest">Início</a>
-        <a href="index.html" data-art-i18n="nav_career">Carreira</a>
-        <a href="index.html" data-art-i18n="nav_mind">Mente</a>
-        <a href="index.html" data-art-i18n="nav_finance">Finanças</a>
-        <a href="index.html" data-art-i18n="nav_productivity">Produtividade</a>
-        <a href="index.html" data-art-i18n="nav_hobbies">Hobbies</a>
-        <a href="index.html" data-art-i18n="nav_lifestyle">Estilo de Vida</a>
-        <a href="books.html" data-art-i18n="nav_books">📚 Books</a>
+        <a href="index.html">Home</a>
+        <a href="index.html">Career</a>
+        <a href="index.html">Mindset</a>
+        <a href="index.html">Finance</a>
+        <a href="index.html">Productivity</a>
+        <a href="index.html">Hobbies</a>
+        <a href="index.html">Lifestyle</a>
+        <a href="books.html">📚 Books</a>
     </div>
     <div class="nav-auth">
         <div id="user-info-art">
@@ -144,17 +142,17 @@
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
             </svg>
-            <span id="btn-login-art-label" data-art-i18n="btn_google">Entrar</span>
+            <span id="btn-login-art-label">Sign in</span>
         </button>
     </div>
 </nav>
 
 <!-- ═══ BANNER PREMIUM ════════════════════════════════════════════════════════ -->
 <div id="premium-banner-artigo" style="display:none;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;text-align:center;padding:9px 50px;font-size:14px;position:relative;">
-    ✨ <span data-art-i18n="premium_banner">Leia sem anúncios.</span>
-    <a href="#" id="btn-assinar-artigo-mensal" style="color:#fff;font-weight:bold;margin-left:8px;" data-art-i18n="premium_cta_monthly">Mensal $4,99 →</a>
+    ✨ <span>Read without ads.</span>
+    <a href="#" id="btn-assinar-artigo-mensal" style="color:#fff;font-weight:bold;margin-left:8px;">Monthly $4.99 →</a>
     <span style="color:rgba(255,255,255,.45);margin:0 6px;">|</span>
-    <a href="#" id="btn-assinar-artigo-anual" style="color:#fff;font-weight:bold;" data-art-i18n="premium_cta_yearly">Anual →</a>
+    <a href="#" id="btn-assinar-artigo-anual" style="color:#fff;font-weight:bold;">Yearly →</a>
     <button onclick="this.parentElement.remove()" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1;">×</button>
 </div>
 
@@ -162,7 +160,7 @@
 <div id="interstitial" class="fixed inset-0 z-50 bg-black bg-opacity-95 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
         <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 flex items-center justify-between">
-            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest" data-art-i18n="ad_label">Publicidade</span>
+            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Advertisement</span>
             <span id="countdown-chip" class="bg-gray-200 text-gray-500 text-xs font-bold px-2 py-0.5 rounded-full">
                 <span id="count">5</span>s
             </span>
@@ -176,12 +174,12 @@
         </div>
         <div class="px-6 py-4 text-center border-t border-gray-100">
             <p id="countdown-msg" class="text-sm text-gray-400 mb-2">
-                <span data-art-i18n="wait_msg">Aguarde</span> <span id="count2">5</span>s...
+                <span>Wait</span> <span id="count2">5</span>s...
             </p>
             <button id="btn-fechar"
                     class="hidden w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 rounded-xl text-sm transition-colors"
-                    data-art-i18n="continue_btn">
-                Continuar lendo →
+                    >
+                Continue reading →
             </button>
         </div>
     </div>
@@ -262,107 +260,6 @@
     const STRIPE_MONTHLY = 'https://buy.stripe.com/test_28E9ASeQodkO99ucUS5AQ00';
     const STRIPE_YEARLY  = 'https://buy.stripe.com/test_3cIbJ04bK6Wq3Pa9IG5AQ01';
 
-    // ─── i18n ─────────────────────────────────────────────────────────────────
-    let LANG = 'en';
-
-    const T = {
-        en: {
-            site_title:    'Life Mastery Path',
-            nav_back:      '← Back',
-            nav_latest:    'Home',
-            nav_career:    'Career',
-            nav_mind:      'Mindset',
-            nav_finance:   'Finance',
-            nav_books:     '📚 Books',
-            nav_productivity: 'Productivity',
-            nav_hobbies:   'Hobbies',
-            nav_lifestyle: 'Lifestyle',
-            btn_google:    'Sign in',
-            btn_logout:    'Sign out',
-            premium_banner:      'Read without ads.',
-            premium_cta_monthly: 'Monthly $4.99 →',
-            premium_cta_yearly:  'Yearly →',
-            ad_label:      'Advertisement',
-            wait_msg:      'Wait',
-            continue_btn:  'Continue reading →',
-            footer_text:   '© 2026 Life Mastery Path.',
-            err_not_found: 'Article not found.',
-            err_no_id:     'No article selected.',
-            err_load:      'Load error: ',
-            back_home:     '← Back to home',
-            cat_destaque:  'Featured',
-            cat_artigo:    'Article',
-        },
-        es: {
-            site_title:    'Life Mastery Path',
-            nav_back:      '← Volver',
-            nav_latest:    'Inicio',
-            nav_career:    'Carrera',
-            nav_mind:      'Mentalidad',
-            nav_finance:   'Finanzas',
-            nav_books:     '📚 Libros',
-            nav_productivity: 'Productividad',
-            nav_hobbies:   'Hobbies',
-            nav_lifestyle: 'Estilo de Vida',
-            btn_google:    'Iniciar sesión',
-            btn_logout:    'Cerrar sesión',
-            premium_banner:      'Lee sin anuncios.',
-            premium_cta_monthly: 'Mensual $4.99 →',
-            premium_cta_yearly:  'Anual →',
-            ad_label:      'Publicidad',
-            wait_msg:      'Espera',
-            continue_btn:  'Continuar leyendo →',
-            footer_text:   '© 2026 Life Mastery Path.',
-            err_not_found: 'Artículo no encontrado.',
-            err_no_id:     'Ningún artículo seleccionado.',
-            err_load:      'Error al cargar: ',
-            back_home:     '← Volver al inicio',
-            cat_destaque:  'Destacado',
-            cat_artigo:    'Artículo',
-        },
-        pt: {
-            site_title:    'Life Mastery Path',
-            nav_back:      '← Voltar',
-            nav_latest:    'Início',
-            nav_career:    'Carreira',
-            nav_mind:      'Mente',
-            nav_finance:   'Finanças',
-            nav_books:     '📚 Livros',
-            nav_productivity: 'Produtividade',
-            nav_hobbies:   'Hobbies',
-            nav_lifestyle: 'Estilo de Vida',
-            btn_google:    'Entrar',
-            btn_logout:    'Sair',
-            premium_banner:      'Leia sem anúncios.',
-            premium_cta_monthly: 'Mensal $4,99 →',
-            premium_cta_yearly:  'Anual →',
-            ad_label:      'Publicidade',
-            wait_msg:      'Aguarde',
-            continue_btn:  'Continuar lendo →',
-            footer_text:   '© 2026 Life Mastery Path.',
-            err_not_found: 'Artigo não encontrado.',
-            err_no_id:     'Nenhum artigo selecionado.',
-            err_load:      'Erro ao carregar: ',
-            back_home:     '← Voltar para o início',
-            cat_destaque:  'Destaque',
-            cat_artigo:    'Artigo',
-        }
-    };
-
-    function t(k) { return T[LANG][k] || k; }
-
-    function applyLang() {
-        const langMap = { en: 'en-US', es: 'es-ES', pt: 'pt-BR' };
-        document.getElementById('html-root').lang = langMap[LANG] || 'en-US';
-        document.getElementById('nav-back').textContent = t('nav_back');
-        document.getElementById('footer-text').textContent = t('footer_text');
-        document.querySelectorAll('[data-art-i18n]').forEach(el => el.textContent = t(el.dataset.artI18n));
-        document.querySelectorAll('.btn-lang-flag').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.lang === LANG);
-        });
-    }
-
-    // ─── /i18n ────────────────────────────────────────────────────────────────
 
     const firebaseConfig = {
         apiKey: "AIzaSyAKbBvmfcJ-_FmRndrXypVm4DjK3cqpB6k",
@@ -394,7 +291,7 @@
             userNameArt.textContent = user.displayName?.split(' ')[0] || user.email;
             userInfoArt.style.display = 'flex';
             btnLoginArt.className = 'btn-logout-sm';
-            btnLoginArt.innerHTML = `<span data-art-i18n="btn_logout">${t('btn_logout')}</span>`;
+            btnLoginArt.innerHTML = '<span>Sign out</span>';
 
             const snap = await getDoc(doc(db, "usuarios", user.uid)).catch(() => null);
             isPremium = snap?.exists() && snap.data().premium === true;
@@ -415,11 +312,11 @@
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-            </svg><span data-art-i18n="btn_google">${t('btn_google')}</span>`;
+            </svg><span>Sign in with Google</span>`;
             userInfoArt.style.display = 'none';
         } else {
             try { await signInWithPopup(auth, provider); }
-            catch (e) { if (e.code !== 'auth/popup-closed-by-user') alert('Erro ao fazer login.'); }
+            catch (e) { if (e.code !== 'auth/popup-closed-by-user') alert('Login error. Please try again.'); }
         }
     });
 
@@ -509,16 +406,16 @@
     });
 
     async function carregarArtigo() {
-        if (!id && !slug) { mostrarErro(t('err_no_id')); return; }
+        if (!id && !slug) { mostrarErro('No article selected.'); return; }
         try {
             let snap;
             if (slug) {
                 const qSnap = await getDocs(query(collection(db, "posts"), where("slug", "==", slug)));
-                if (qSnap.empty) { mostrarErro(t('err_not_found')); return; }
+                if (qSnap.empty) { mostrarErro('Article not found.'); return; }
                 snap = qSnap.docs[0];
             } else {
                 snap = await getDoc(doc(db, "posts", id));
-                if (!snap.exists()) { mostrarErro(t('err_not_found')); return; }
+                if (!snap.exists()) { mostrarErro('Article not found.'); return; }
             }
 
             currentDocId = snap.id;
@@ -527,29 +424,29 @@
             document.title = post.titulo + ' | Desenvolvimento Real';
 
             const CAT_COLORS = {
-                carreira:         { label: () => t('nav_career'),       color: '#2563eb' },
-                mente:            { label: () => t('nav_mind'),         color: '#7c3aed' },
-                financas:         { label: () => t('nav_finance'),      color: '#059669' },
-                livros:           { label: () => t('nav_books'),        color: '#ea580c' },
-                produtividade:    { label: () => t('nav_productivity'), color: '#b45309' },
-                hobbies:          { label: () => t('nav_hobbies'),      color: '#b91c1c' },
-                'estilo-de-vida': { label: () => t('nav_lifestyle'),    color: '#0891b2' },
+                carreira:         { label: () => 'Career',       color: '#2563eb' },
+                mente:            { label: () => 'Mindset',      color: '#7c3aed' },
+                financas:         { label: () => 'Finance',      color: '#059669' },
+                livros:           { label: () => '📚 Books',     color: '#ea580c' },
+                produtividade:    { label: () => 'Productivity', color: '#b45309' },
+                hobbies:          { label: () => 'Hobbies',      color: '#b91c1c' },
+                'estilo-de-vida': { label: () => 'Lifestyle',    color: '#0891b2' },
             };
             const catEl = document.getElementById('article-categoria');
             if (post.tipo === 'destaque') {
-                catEl.textContent = t('cat_destaque');
+                catEl.textContent = 'Featured';
                 catEl.style.background = '#d97706';
             } else if (CAT_COLORS[post.categoria]) {
                 const c = CAT_COLORS[post.categoria];
                 catEl.textContent = c.label();
                 catEl.style.background = c.color;
             } else {
-                catEl.textContent = t('cat_artigo');
+                catEl.textContent = 'Article';
             }
 
             if (post.data?.toDate) {
                 document.getElementById('article-data').textContent =
-                    post.data.toDate().toLocaleDateString({ en: 'en-US', es: 'es-ES', pt: 'pt-BR' }[LANG] || 'en-US',
+                    post.data.toDate().toLocaleDateString('en-US',
                         { day: '2-digit', month: 'long', year: 'numeric' });
             }
 
@@ -572,7 +469,7 @@
 
             updateArticleSchema(post);
 
-        } catch (e) { mostrarErro(t('err_load') + e.message); }
+        } catch (e) { mostrarErro('Load error: ' + e.message); }
     }
 
     function updateArticleSchema(post) {
@@ -647,11 +544,10 @@
             `<div class="text-center py-20 text-gray-400">
                 <p class="text-lg font-semibold mb-2">Ops!</p>
                 <p class="text-sm">${msg}</p>
-                <a href="index.html" class="inline-block mt-6 text-blue-600 text-sm font-semibold hover:underline">${t('back_home')}</a>
+                <a href="index.html" class="inline-block mt-6 text-blue-600 text-sm font-semibold hover:underline">← Back to home</a>
              </div>`;
     }
 
-    applyLang();
     carregarArtigo();
 </script>
 
