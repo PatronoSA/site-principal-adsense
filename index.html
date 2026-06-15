@@ -463,9 +463,9 @@
             <img id="lv-cover-preview" src="" alt="" style="display:none;margin-top:10px;border-radius:8px;max-height:140px;object-fit:cover;width:100%;">
         </div>
         <button id="btn-publicar-livro" style="width:100%;background:#0056b3;color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;font-family:'Roboto',sans-serif;cursor:pointer;transition:background .2s;margin-top:4px;">
-            Publicar Livro no Catálogo
+            Publish Book to Catalog
         </button>
-        <div id="lv-success" style="display:none;background:#ecfdf5;border:1px solid #6ee7b7;color:#065f46;border-radius:8px;padding:12px 14px;font-size:13px;font-weight:600;text-align:center;">✅ Livro publicado com sucesso! Já aparece em livros.html</div>
+        <div id="lv-success" style="display:none;background:#ecfdf5;border:1px solid #6ee7b7;color:#065f46;border-radius:8px;padding:12px 14px;font-size:13px;font-weight:600;text-align:center;">✅ Book published successfully! It now appears on livros.html</div>
     </div>
 </div>
 
@@ -1237,10 +1237,10 @@
         const porque    = document.getElementById('lv-porque').value.trim();
         const link      = document.getElementById('lv-link').value.trim();
 
-        if (!titulo || !autor) { alert('Preencha pelo menos título e autor.'); return; }
+        if (!titulo || !autor) { alert('Please fill in at least title and author.'); return; }
 
         const btn = document.getElementById('btn-publicar-livro');
-        btn.disabled = true; btn.textContent = 'Publicando...';
+        btn.disabled = true; btn.textContent = 'Publishing...';
         try {
             await addDoc(collection(db, 'livros'), {
                 titulo, autor, categoria, nota, resumo, porque, link,
@@ -1252,12 +1252,12 @@
             ['lv-titulo','lv-autor','lv-resumo','lv-porque','lv-link'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('lv-nota').value = '4.5';
             document.getElementById('lv-star-preview').textContent = renderLvStars(4.5);
-            document.getElementById('lv-drop-label').textContent = 'Clique para selecionar';
+            document.getElementById('lv-drop-label').textContent = 'Click to select';
             lvPreview.style.display = 'none'; lvPreview.src = ''; lvUploadedUrl = '';
         } catch(e) {
             alert('Erro ao publicar: ' + e.message);
         } finally {
-            btn.disabled = false; btn.textContent = 'Publicar Livro no Catálogo';
+            btn.disabled = false; btn.textContent = 'Publish Book to Catalog';
         }
     });
 

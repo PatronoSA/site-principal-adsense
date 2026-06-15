@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:image" content="https://lifemasterypath.com/og-image.png">
-    <title>Assinatura Confirmada | Life Mastery Path</title>
+    <title>Subscription Confirmed | Life Mastery Path</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Roboto', sans-serif; background: #f3f4f6; margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
@@ -31,11 +31,11 @@
 
 <div class="card">
     <div class="icon">🎉</div>
-    <div class="badge">✨ PREMIUM ATIVO</div>
-    <h1 id="titulo">Bem-vindo ao Premium!</h1>
-    <p id="mensagem">Sua assinatura de <strong>$4,99/mês</strong> foi confirmada. Agora você lê o portal <strong>sem anúncios</strong> em todos os dispositivos.</p>
-    <a href="index.html" class="btn">Acessar o Portal →</a>
-    <p class="status" id="status-msg">Verificando status da assinatura...</p>
+    <div class="badge">✨ PREMIUM ACTIVE</div>
+    <h1 id="titulo">Welcome to Premium!</h1>
+    <p id="mensagem">Your <strong>$4.99/month</strong> subscription is confirmed. Read the portal <strong>without ads</strong> on all devices.</p>
+    <a href="index.html" class="btn">Go to Portal →</a>
+    <p class="status" id="status-msg">Checking subscription status...</p>
 </div>
 
 <footer>© 2026 Life Mastery Path.</footer>
@@ -44,17 +44,6 @@
     import { initializeApp }  from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-
-    const lang = localStorage.getItem('dr_lang') || 'pt';
-    if (lang === 'en') {
-        document.title = 'Subscription Confirmed | Life Mastery Path';
-        document.getElementById('titulo').textContent = 'Welcome to Premium!';
-        document.getElementById('mensagem').innerHTML =
-            'Your <strong>$4.99/month</strong> subscription is confirmed. Read the portal <strong>without ads</strong> on all devices.';
-        document.querySelector('.btn').textContent = 'Go to Portal →';
-        document.querySelector('footer').textContent = '© 2026 Life Mastery Path.';
-        document.getElementById('status-msg').textContent = 'Checking subscription status...';
-    }
 
     const app  = initializeApp({
         apiKey: "AIzaSyAKbBvmfcJ-_FmRndrXypVm4DjK3cqpB6k",
@@ -70,13 +59,10 @@
     onAuthStateChanged(auth, async (user) => {
         const statusEl = document.getElementById('status-msg');
         if (!user) {
-            statusEl.textContent = lang === 'en'
-                ? 'Sign in to confirm premium status.'
-                : 'Faça login para confirmar o status premium.';
+            statusEl.textContent = 'Sign in to confirm premium status.';
             return;
         }
 
-        // Aguarda até 8s para o webhook atualizar o Firestore
         let attempts = 0;
         const check = async () => {
             attempts++;
@@ -84,16 +70,12 @@
             const premium = snap?.exists() && snap.data().premium;
 
             if (premium) {
-                statusEl.textContent = lang === 'en'
-                    ? '✅ Premium confirmed in account!'
-                    : '✅ Premium confirmado na conta!';
+                statusEl.textContent = '✅ Premium confirmed in your account!';
                 statusEl.style.color = '#059669';
             } else if (attempts < 8) {
                 setTimeout(check, 1000);
             } else {
-                statusEl.textContent = lang === 'en'
-                    ? 'If your account is not yet premium, wait a few minutes and reload.'
-                    : 'Se sua conta ainda não está premium, aguarde alguns minutos e recarregue.';
+                statusEl.textContent = 'If your account is not yet premium, wait a few minutes and reload.';
             }
         };
         check();

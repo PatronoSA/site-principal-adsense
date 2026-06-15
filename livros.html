@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="content-language" content="en">
     <meta property="og:image" content="https://lifemasterypath.com/og-image.png">
-    <title>Livros | Life Mastery Path</title>
+    <title>Books | Life Mastery Path</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7485615657043606" crossorigin="anonymous"></script>
     <style>
@@ -225,14 +225,14 @@
                     </div>
                 </div>
                 <div class="dropdown-section">
-                    <a href="#" class="dropdown-item"><span class="dropdown-item-icon">👤</span><span>Meu Perfil</span></a>
-                    <a href="#" class="dropdown-item"><span class="dropdown-item-icon">🔖</span><span>Leituras Salvas</span></a>
-                    <a href="#" class="dropdown-item"><span class="dropdown-item-icon">⚙️</span><span>Configurações</span></a>
+                    <a href="#" class="dropdown-item"><span class="dropdown-item-icon">👤</span><span>My Profile</span></a>
+                    <a href="#" class="dropdown-item"><span class="dropdown-item-icon">🔖</span><span>Saved Readings</span></a>
+                    <a href="#" class="dropdown-item"><span class="dropdown-item-icon">⚙️</span><span>Settings</span></a>
                 </div>
                 <div class="dropdown-divider"></div>
                 <div class="dropdown-section">
                     <button class="dropdown-item dropdown-item-danger" id="btn-logout">
-                        <span class="dropdown-item-icon">↩</span><span>Sair</span>
+                        <span class="dropdown-item-icon">↩</span><span>Sign out</span>
                     </button>
                 </div>
             </div>
@@ -265,7 +265,7 @@
 <!-- ═══ CATÁLOGO ═══════════════════════════════════════════════════════════════ -->
 <div class="books-container">
     <div class="books-grid" id="books-grid">
-        <div class="books-loading">Carregando livros...</div>
+        <div class="books-loading">Loading books...</div>
     </div>
 </div>
 
@@ -350,7 +350,7 @@
         </div>
         <div class="int-footer">
             <p class="int-wait" id="int-wait">Aguarde <span id="int-count2">5</span>s...</p>
-            <button class="int-btn" id="btn-ver-livro" disabled>Ver Livro →</button>
+            <button class="int-btn" id="btn-ver-livro" disabled>View Book →</button>
         </div>
     </div>
 </div>
@@ -469,7 +469,7 @@
             await deleteDoc(doc(db, 'livros', lid));
             allBooks = allBooks.filter(b => b.id !== lid);
             renderBooks();
-        } catch (err) { alert('Erro ao excluir: ' + err.message); }
+        } catch (err) { alert('Error deleting: ' + err.message); }
     });
 
     function renderBooks() {
@@ -500,7 +500,7 @@
                         </div>
                     </div>
                     <div class="book-title">${b.titulo}</div>
-                    <div class="book-author">por ${b.autor}</div>
+                    <div class="book-author">by ${b.autor}</div>
                     ${b.resumo ? `<div class="book-summary">${b.resumo}</div>` : ''}
                     ${b.porque ? `
                     <div class="book-why">
@@ -519,7 +519,7 @@
             renderBooks();
         } catch (e) {
             document.getElementById('books-grid').innerHTML =
-                `<div class="books-empty">Erro ao carregar livros. Tente novamente.</div>`;
+                `<div class="books-empty">Error loading books. Please try again.</div>`;
         }
     }
 
@@ -702,7 +702,7 @@
         const email = document.getElementById('login-email').value.trim();
         const senha = document.getElementById('login-senha').value;
         const lembrar = document.getElementById('login-remember').checked;
-        if (!email || !senha) { erroModal('login-error', 'Preencha todos os campos.'); return; }
+        if (!email || !senha) { erroModal('login-error', 'Please fill in all fields.'); return; }
         try {
             await setPersistence(auth, lembrar ? browserLocalPersistence : browserSessionPersistence);
             await signInWithEmailAndPassword(auth, email, senha);
@@ -720,7 +720,7 @@
         const nome  = document.getElementById('cadastro-nome').value.trim();
         const email = document.getElementById('cadastro-email').value.trim();
         const senha = document.getElementById('cadastro-senha').value;
-        if (!nome || !email || !senha) { erroModal('cadastro-error', 'Preencha todos os campos.'); return; }
+        if (!nome || !email || !senha) { erroModal('cadastro-error', 'Please fill in all fields.'); return; }
         try {
             await setPersistence(auth, browserLocalPersistence);
             const cred = await createUserWithEmailAndPassword(auth, email, senha);
@@ -756,7 +756,7 @@
                 const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
                 barFill.style.width = pct + '%'; barPct.textContent = pct + '%';
             },
-            err => { alert('Erro no upload: ' + err.message); barWrap.style.display = 'none'; },
+            err => { alert('Upload error: ' + err.message); barWrap.style.display = 'none'; },
             async () => {
                 uploadedUrl = await getDownloadURL(task.snapshot.ref);
                 coverPreview.src = uploadedUrl;
@@ -799,13 +799,13 @@
             ['b-titulo','b-autor','b-resumo','b-porque','b-link'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('b-nota').value = '4.5';
             document.getElementById('star-preview-admin').textContent = renderStars(4.5);
-            document.getElementById('b-drop-label').textContent = 'Clique para selecionar';
+            document.getElementById('b-drop-label').textContent = 'Click to select';
             coverPreview.style.display = 'none'; coverPreview.src = ''; uploadedUrl = '';
-            alert('Livro publicado com sucesso!');
+            alert('Book published successfully!');
         } catch(e) {
             alert('Erro ao publicar: ' + e.message);
         } finally {
-            btn.disabled = false; btn.textContent = 'Publicar Livro no Catálogo';
+            btn.disabled = false; btn.textContent = 'Publish Book to Catalog';
         }
     });
 
