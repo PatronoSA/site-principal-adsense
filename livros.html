@@ -333,7 +333,7 @@
                 <div class="upload-bar-track"><div class="upload-bar-fill" id="b-bar-fill"></div></div>
                 <div class="upload-bar-pct" id="b-bar-pct">0%</div>
             </div>
-            <img id="b-cover-preview" class="cover-preview" src="" alt="">
+            <img id="b-cover-preview" class="cover-preview" src="" alt="Book cover preview">
         </div>
         <button class="admin-publish-btn" id="btn-publicar-livro">Publish Book to Catalog</button>
     </div>
@@ -621,14 +621,14 @@
     function renderAvatarTrigger(user) {
         const wrap = document.getElementById('user-avatar-wrap');
         wrap.innerHTML = user.photoURL
-            ? `<img src="${user.photoURL}" alt="" style="width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.5);object-fit:cover;">`
+            ? `<img src="${user.photoURL}" alt="${user.displayName || 'User'} profile photo" style="width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.5);object-fit:cover;">`
             : `<span class="user-trigger-avatar-initials">${getInitials(user)}</span>`;
     }
 
     function renderAvatarDropdown(user) {
         const wrap = document.getElementById('dropdown-avatar-wrap');
         wrap.innerHTML = user.photoURL
-            ? `<img src="${user.photoURL}" alt="" class="dropdown-header-avatar">`
+            ? `<img src="${user.photoURL}" alt="${user.displayName || 'User'} profile photo" class="dropdown-header-avatar">`
             : `<span class="dropdown-header-avatar-initials">${getInitials(user)}</span>`;
         document.getElementById('dropdown-fullname').textContent = user.displayName || user.email;
         document.getElementById('dropdown-email').textContent = user.email || '';

@@ -378,7 +378,7 @@
                     <div id="upload-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-200" style="width:0%"></div>
                 </div>
             </div>
-            <img id="img-preview" src="" alt="" class="hidden mt-3 rounded-lg max-h-48 object-cover w-full">
+            <img id="img-preview" src="" alt="Article image preview" class="hidden mt-3 rounded-lg max-h-48 object-cover w-full">
         </div>
 
         <!-- ── SEO ── -->
@@ -464,7 +464,7 @@
                 <div style="background:#e5e7eb;border-radius:99px;height:6px;overflow:hidden;"><div id="lv-bar-fill" style="background:#0056b3;height:100%;border-radius:99px;width:0;transition:width .2s;"></div></div>
                 <div id="lv-bar-pct" style="font-size:11px;color:#888;margin-top:3px;text-align:right;">0%</div>
             </div>
-            <img id="lv-cover-preview" src="" alt="" style="display:none;margin-top:10px;border-radius:8px;max-height:140px;object-fit:cover;width:100%;">
+            <img id="lv-cover-preview" src="" alt="Book cover preview" style="display:none;margin-top:10px;border-radius:8px;max-height:140px;object-fit:cover;width:100%;">
         </div>
         <button id="btn-publicar-livro" style="width:100%;background:#0056b3;color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;font-family:'Roboto',sans-serif;cursor:pointer;transition:background .2s;margin-top:4px;">
             Publish Book to Catalog
@@ -812,7 +812,7 @@
     function renderAvatarTrigger(user) {
         const wrap = document.getElementById('user-avatar-wrap');
         if (user.photoURL) {
-            wrap.innerHTML = `<img src="${user.photoURL}" alt="" style="width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.5);object-fit:cover;display:block;">`;
+            wrap.innerHTML = `<img src="${user.photoURL}" alt="${user.displayName || 'User'} profile photo" style="width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.5);object-fit:cover;display:block;">`;
         } else {
             wrap.innerHTML = `<span class="user-trigger-avatar-initials">${getInitials(user)}</span>`;
         }
@@ -821,7 +821,7 @@
     function renderAvatarDropdown(user) {
         const wrap = document.getElementById('dropdown-avatar-wrap');
         if (user.photoURL) {
-            wrap.innerHTML = `<img src="${user.photoURL}" alt="" class="dropdown-header-avatar">`;
+            wrap.innerHTML = `<img src="${user.photoURL}" alt="${user.displayName || 'User'} profile photo" class="dropdown-header-avatar">`;
         } else {
             wrap.innerHTML = `<span class="dropdown-header-avatar-initials">${getInitials(user)}</span>`;
         }
@@ -999,8 +999,8 @@
         return `<span class="cat-badge" style="background:${c.color}">${c.label()}</span>`;
     }
 
-    function thumbHtml(img) {
-        return img ? `<div class="small-thumb"><img src="${img}" alt=""></div>` : `<div class="small-thumb"></div>`;
+    function thumbHtml(img, title) {
+        return img ? `<div class="small-thumb"><img src="${img}" alt="${title || 'Article thumbnail'}"></div>` : `<div class="small-thumb"></div>`;
     }
 
     function renderPosts() {
@@ -1029,7 +1029,7 @@
             ? artigos.map(p => `
                 <a href="${postUrl(p)}" style="text-decoration:none;color:inherit;">
                     <div class="post-card" style="cursor:pointer;">
-                        ${thumbHtml(p.imagem)}
+                        ${thumbHtml(p.imagem, p.titulo)}
                         <div>
                             ${categoriaBadge(p.categoria)}
                             <h4>${p.titulo}</h4>
@@ -1046,7 +1046,7 @@
         document.getElementById('lista-mais-lidas').innerHTML = maisLidas.length
             ? maisLidas.map((p, i) => `
                 <a href="${postUrl(p)}" style="text-decoration:none;color:inherit;">
-                    <div class="post-card" style="cursor:pointer;">${thumbHtml(p.imagem)}<h4>${i + 1}. ${p.titulo}</h4></div>
+                    <div class="post-card" style="cursor:pointer;">${thumbHtml(p.imagem, p.titulo)}<h4>${i + 1}. ${p.titulo}</h4></div>
                 </a>`).join('')
             : `<p style="color:#999;font-size:13px;">${t('no_most_read')}</p>`;
     }
