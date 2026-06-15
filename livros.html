@@ -272,34 +272,34 @@
 <!-- ═══ ADMIN PANEL ════════════════════════════════════════════════════════════ -->
 <div id="admin-books" class="admin-books" style="display:none;">
     <div class="admin-books-header">
-        <h2>📖 Adicionar Livro ao Catálogo</h2>
+        <h2>📖 Add Book to Catalog</h2>
     </div>
     <div class="admin-books-body">
         <div class="afield-row">
             <div class="afield">
-                <label>Título do Livro</label>
-                <input id="b-titulo" type="text" placeholder="Ex: Hábitos Atômicos">
+                <label>Book Title</label>
+                <input id="b-titulo" type="text" placeholder="Ex: Atomic Habits">
             </div>
             <div class="afield">
-                <label>Autor</label>
+                <label>Author</label>
                 <input id="b-autor" type="text" placeholder="Ex: James Clear">
             </div>
         </div>
         <div class="afield-row">
             <div class="afield">
-                <label>Categoria</label>
+                <label>Category</label>
                 <select id="b-categoria">
-                    <option value="carreira">Carreira</option>
-                    <option value="mente">Mente</option>
-                    <option value="financas">Finanças</option>
-                    <option value="produtividade">Produtividade</option>
-                    <option value="autoconhecimento">Autoconhecimento</option>
-                    <option value="negocios">Negócios</option>
-                    <option value="outros">Outros</option>
+                    <option value="carreira">Career</option>
+                    <option value="mente">Mindset</option>
+                    <option value="financas">Finance</option>
+                    <option value="produtividade">Productivity</option>
+                    <option value="autoconhecimento">Self-Knowledge</option>
+                    <option value="negocios">Business</option>
+                    <option value="outros">Other</option>
                 </select>
             </div>
             <div class="afield">
-                <label>Nota (0 a 5)</label>
+                <label>Rating (0 to 5)</label>
                 <div class="star-picker">
                     <input id="b-nota" type="number" min="0" max="5" step="0.1" value="4.5" placeholder="4.5">
                     <div class="star-preview-admin" id="star-preview-admin">★★★★½</div>
@@ -307,25 +307,25 @@
             </div>
         </div>
         <div class="afield">
-            <label>Resumo Curto</label>
-            <textarea id="b-resumo" rows="3" placeholder="Breve descrição do livro (aparece no card)..."></textarea>
+            <label>Short Summary</label>
+            <textarea id="b-resumo" rows="3" placeholder="Brief book description (appears on card)..."></textarea>
         </div>
         <div class="afield">
-            <label>Por que recomendamos este livro</label>
-            <textarea id="b-porque" rows="3" placeholder="Destaque os principais benefícios e aprendizados..."></textarea>
+            <label>Why We Recommend This Book</label>
+            <textarea id="b-porque" rows="3" placeholder="Highlight the main benefits and learnings..."></textarea>
         </div>
         <div class="afield">
-            <label>Link de Afiliado</label>
-            <input id="b-link" type="url" placeholder="https://www.amazon.com.br/dp/...">
+            <label>Affiliate Link</label>
+            <input id="b-link" type="url" placeholder="https://www.amazon.com/dp/...">
         </div>
         <div class="afield">
-            <label>Capa do Livro</label>
+            <label>Book Cover</label>
             <div class="drop-area" id="b-drop-area">
                 <input type="file" id="b-imagem" accept="image/*">
                 <div class="drop-icon">🖼️</div>
                 <div class="drop-label">
-                    <span id="b-drop-label">Clique para selecionar</span> ou arraste a imagem aqui<br>
-                    <small style="color:#bbb;">JPG, PNG, WEBP — máx. 10 MB</small>
+                    <span id="b-drop-label">Click to select</span> or drag image here<br>
+                    <small style="color:#bbb;">JPG, PNG, WEBP — max. 10 MB</small>
                 </div>
             </div>
             <div class="upload-bar-wrap" id="b-bar-wrap">
@@ -334,7 +334,7 @@
             </div>
             <img id="b-cover-preview" class="cover-preview" src="" alt="">
         </div>
-        <button class="admin-publish-btn" id="btn-publicar-livro">Publicar Livro no Catálogo</button>
+        <button class="admin-publish-btn" id="btn-publicar-livro">Publish Book to Catalog</button>
     </div>
 </div>
 
