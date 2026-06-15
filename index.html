@@ -242,7 +242,7 @@
         <a href="#" class="cat-link" data-categoria="produtividade" data-i18n="nav_productivity">PRODUTIVIDADE</a>
         <a href="#" class="cat-link" data-categoria="hobbies" data-i18n="nav_hobbies">HOBBIES</a>
         <a href="#" class="cat-link" data-categoria="estilo-de-vida" data-i18n="nav_lifestyle">ESTILO DE VIDA</a>
-        <a href="livros.html" class="cat-link" data-i18n="nav_books">📚 LIVROS</a>
+        <a href="books.html" class="cat-link" data-i18n="nav_books">📚 LIVROS</a>
     </div>
     <div class="nav-auth">
         <div id="user-info" style="display:none;">
@@ -316,7 +316,7 @@
                 <div class="thumb-main" data-i18n="loading">Carregando...</div>
             </div>
             <hr style="margin:30px 0;">
-            <h3 data-i18n="section_other_news">Outras Notícias</h3>
+            <h3 data-i18n="section_other_news">Outros Artigos</h3>
             <div id="lista-artigos"></div>
         </main>
         <aside>
@@ -509,7 +509,7 @@
         <button id="btn-publicar-livro" style="width:100%;background:#0056b3;color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;font-family:'Roboto',sans-serif;cursor:pointer;transition:background .2s;margin-top:4px;">
             Publish Book to Catalog
         </button>
-        <div id="lv-success" style="display:none;background:#ecfdf5;border:1px solid #6ee7b7;color:#065f46;border-radius:8px;padding:12px 14px;font-size:13px;font-weight:600;text-align:center;">✅ Book published successfully! It now appears on livros.html</div>
+        <div id="lv-success" style="display:none;background:#ecfdf5;border:1px solid #6ee7b7;color:#065f46;border-radius:8px;padding:12px 14px;font-size:13px;font-weight:600;text-align:center;">✅ Book published successfully! It now appears on books.html</div>
     </div>
 </div>
 
@@ -572,7 +572,7 @@
             err_email_use:            'Este e-mail já está em uso.',
             err_weak_pass:            'A senha precisa ter no mínimo 6 caracteres.',
             loading:                  'Carregando...',
-            section_other_news:       'Outras Notícias',
+            section_other_news:       'Outros Artigos',
             section_most_read:        'Mais Lidas',
             footer_text:              '© 2026 Life Mastery Path.',
             no_featured:              'Nenhum destaque publicado ainda.',
@@ -744,7 +744,7 @@
             err_email_use:            'Este correo ya está en uso.',
             err_weak_pass:            'La contraseña debe tener al menos 6 caracteres.',
             loading:                  'Cargando...',
-            section_other_news:       'Más Noticias',
+            section_other_news:       'Más Artículos',
             section_most_read:        'Más Leídas',
             footer_text:              '© 2026 Life Mastery Path.',
             no_featured:              'Aún no hay publicación destacada.',
@@ -998,7 +998,7 @@
     // ─── Filtros de categoria ─────────────────────────────────────────────────
     document.querySelectorAll('nav a.cat-link').forEach(link => {
         link.addEventListener('click', e => {
-            if (!link.dataset.categoria) return; // link externo (ex: livros.html) — deixa navegar
+            if (!link.dataset.categoria) return; // link externo (ex: books.html) — deixa navegar
             e.preventDefault();
             activeCategory = link.dataset.categoria;
             document.querySelectorAll('nav a.cat-link').forEach(a => a.classList.remove('ativo'));
