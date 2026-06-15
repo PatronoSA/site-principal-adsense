@@ -972,8 +972,8 @@
                 </a>`).join('')
             : `<p style="color:#999;padding:20px 0;">No articles in this category yet.</p>`;
 
-        // Mais lidas (sempre globais)
-        const maisLidas = allPosts.slice(0, 5);
+        // Mais lidas — sorted by views desc
+        const maisLidas = [...allPosts].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
         document.getElementById('lista-mais-lidas').innerHTML = maisLidas.length
             ? maisLidas.map((p, i) => `
                 <a href="${postUrl(p)}" style="text-decoration:none;color:inherit;">

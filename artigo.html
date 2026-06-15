@@ -299,7 +299,7 @@
 <!-- ═══ SCRIPT ════════════════════════════════════════════════════════════════ -->
 <script type="module">
     import { initializeApp }  from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, getDocs, deleteDoc, setDoc, query, collection, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, getDocs, deleteDoc, setDoc, updateDoc, increment, query, collection, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
                               from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
@@ -548,6 +548,7 @@
             currentDocId  = snap.id;
             _currentPost  = snap.data();
             mostrarBotaoDelete();
+            updateDoc(doc(db, 'posts', currentDocId), { views: increment(1) }).catch(() => {});
             const post = _currentPost;
             document.title = post.titulo + ' | Desenvolvimento Real';
 
