@@ -187,9 +187,6 @@
         /* ── Toast notification ─────────────────────────────────────────────────── */
         #toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px); background: #1a1a2e; color: #fff; padding: 10px 22px; border-radius: 20px; font-size: 13px; font-weight: 600; font-family: 'Roboto', sans-serif; opacity: 0; transition: opacity .3s, transform .3s; z-index: 9999; pointer-events: none; white-space: nowrap; }
         #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        /* ── Favorite button ─────────────────────────────────────────────────────── */
-        .fav-btn { background: none; border: none; cursor: pointer; font-size: 20px; line-height: 1; padding: 4px 6px; border-radius: 50%; transition: transform .15s; flex-shrink: 0; }
-        .fav-btn:hover { transform: scale(1.25); }
         /* ── User badge ──────────────────────────────────────────────────────────── */
         .user-badge { display: inline-block; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 10px; margin-top: 4px; letter-spacing: 0.3px; text-transform: uppercase; }
         .user-badge.badge-admin { background: #fee2e2; color: #dc2626; }
@@ -608,7 +605,6 @@
             a.classList.toggle('ativo', a.dataset.categoria === _urlCategory);
         });
     }
-    let userFavorites  = new Set();
 
     // ─── Premium / Admin ──────────────────────────────────────────────────────
     function ocultarAnuncios() {
@@ -691,39 +687,6 @@
         });
     }
 
-    // ─── Favorites ────────────────────────────────────────────────────────────
-    async function loadFavorites(uid) {
-        try {
-            const snap = await getDocs(collection(db, 'usuarios', uid, 'favorites'));
-            userFavorites = new Set(snap.docs.map(d => d.id));
-        } catch { userFavorites = new Set(); }
-        renderPosts();
-    }
-
-    async function toggleFavorite(post, btn) {
-        const user = auth.currentUser;
-        if (!user) { showToast('Sign in to save favorites'); return; }
-        const favRef = doc(db, 'usuarios', user.uid, 'favorites', post.id);
-        if (userFavorites.has(post.id)) {
-            await deleteDoc(favRef).catch(() => {});
-            userFavorites.delete(post.id);
-            btn.textContent = '🤍';
-            btn.title = 'Save article';
-        } else {
-            await setDoc(favRef, {
-                titulo:    post.titulo    || '',
-                slug:      post.slug      || '',
-                imagem:    post.imagem    || '',
-                categoria: post.categoria || '',
-                data:      post.data      || null
-            }).catch(() => {});
-            userFavorites.add(post.id);
-            btn.textContent = '❤️';
-            btn.title = 'Remove from saved';
-            showToast('Saved! ❤️');
-        }
-    }
-
     // ─── Profile modal ────────────────────────────────────────────────────────
     function abrirProfile() {
         const user = auth.currentUser;
@@ -790,7 +753,6 @@
             userInfo.style.display = 'block';
             authButtons.style.display = 'none';
             fecharModais();
-            loadFavorites(user.uid);
             // Admin panel: only reveal for the exact admin email AND Firestore admin flag
             adminPanel.style.display = 'none';
             adminPanel.classList.add('hidden');
@@ -811,7 +773,6 @@
             adminPanel.classList.add('hidden');
             adminPanel.style.display = 'none';
             fecharDropdown();
-            userFavorites = new Set();
         }
     });
 
@@ -985,7 +946,6 @@
                             <p style="margin:4px 0 6px;font-size:13px;color:#666;">${textoLimpo(p.conteudo, 300)}</p>
                             <span class="btn-read-more">Read More →</span>
                         </div>
-                        <button class="fav-btn" data-post-id="${p.id}" title="${userFavorites.has(p.id) ? 'Remove from saved' : 'Save article'}" aria-label="Save article">${userFavorites.has(p.id) ? '❤️' : '🤍'}</button>
                     </div>
                 </a>`).join('')
             : `<p style="color:#999;padding:20px 0;">No articles in this category yet.</p>`;
@@ -1235,17 +1195,6 @@
                 if (target) { target.value = text; target.dispatchEvent(new Event('input', { bubbles: true })); }
             } catch(e) { alert('Clipboard access denied. Please allow clipboard permissions in your browser.'); }
         });
-    });
-
-    // ─── Favorites — event delegation on article list ─────────────────────────
-    document.getElementById('lista-artigos').addEventListener('click', e => {
-        const btn = e.target.closest('.fav-btn');
-        if (!btn) return;
-        e.preventDefault();
-        e.stopPropagation();
-        const postId = btn.dataset.postId;
-        const post   = allPosts.find(p => p.id === postId);
-        if (post) toggleFavorite(post, btn);
     });
 
     // ─── Dropdown item handlers ───────────────────────────────────────────────
