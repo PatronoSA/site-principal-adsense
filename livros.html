@@ -246,20 +246,20 @@
 
 <!-- ═══ HERO ══════════════════════════════════════════════════════════════════ -->
 <div class="books-hero">
-    <h1>📚 Nossa <span>Biblioteca</span></h1>
-    <p>Os melhores livros selecionados para quem quer evoluir de verdade — com resumos, resenhas e links diretos para compra.</p>
+    <h1>📚 Our <span>Library</span></h1>
+    <p>The best books selected for those who want to truly grow — with summaries, reviews and direct purchase links.</p>
 </div>
 
 <!-- ═══ FILTROS ════════════════════════════════════════════════════════════════ -->
 <div class="filter-bar" id="filter-bar">
-    <button class="filter-btn ativo" data-cat="todas">Todos</button>
-    <button class="filter-btn" data-cat="carreira">Carreira</button>
-    <button class="filter-btn" data-cat="mente">Mente</button>
-    <button class="filter-btn" data-cat="financas">Finanças</button>
-    <button class="filter-btn" data-cat="produtividade">Produtividade</button>
-    <button class="filter-btn" data-cat="autoconhecimento">Autoconhecimento</button>
-    <button class="filter-btn" data-cat="negocios">Negócios</button>
-    <button class="filter-btn" data-cat="outros">Outros</button>
+    <button class="filter-btn ativo" data-cat="todas">ALL</button>
+    <button class="filter-btn" data-cat="carreira">CAREER</button>
+    <button class="filter-btn" data-cat="mente">MINDSET</button>
+    <button class="filter-btn" data-cat="financas">FINANCE</button>
+    <button class="filter-btn" data-cat="produtividade">PRODUCTIVITY</button>
+    <button class="filter-btn" data-cat="autoconhecimento">SELF-KNOWLEDGE</button>
+    <button class="filter-btn" data-cat="negocios">BUSINESS</button>
+    <button class="filter-btn" data-cat="outros">OTHER</button>
 </div>
 
 <!-- ═══ CATÁLOGO ═══════════════════════════════════════════════════════════════ -->
@@ -479,7 +479,7 @@
             : allBooks.filter(b => b.categoria === activeFilter);
 
         if (!filtered.length) {
-            grid.innerHTML = `<div class="books-empty">📭 Nenhum livro nesta categoria ainda.</div>`;
+            grid.innerHTML = `<div class="books-empty">📭 No books in this category yet.</div>`;
             return;
         }
 
