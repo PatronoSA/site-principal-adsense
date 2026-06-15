@@ -79,6 +79,28 @@
         #article-wrap { filter: none !important; pointer-events: auto !important; user-select: auto !important; }
         /* ─────────────────────────────────────────────────────────────────────── */
     </style>
+    <script type="application/ld+json" id="schema-blogposting">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "Life Mastery Path Article",
+      "url": "https://lifemasterypath.com/artigo.html",
+      "inLanguage": "en",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Life Mastery Path",
+        "url": "https://lifemasterypath.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://lifemasterypath.com/og-image.png"
+        }
+      },
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://lifemasterypath.com/#blog"
+      }
+    }
+    </script>
 </head>
 <body>
 
@@ -540,7 +562,32 @@
             document.getElementById('article-skeleton').classList.add('hidden');
             document.getElementById('article-content').classList.remove('hidden');
 
+            updateArticleSchema(post);
+
         } catch (e) { mostrarErro(t('err_load') + e.message); }
+    }
+
+    function updateArticleSchema(post) {
+        const rawDate = post.data || post.createdAt || post.publishedAt;
+        const dateISO = rawDate?.toDate ? rawDate.toDate().toISOString() : new Date().toISOString();
+        const slug = new URLSearchParams(location.search).get('slug') || '';
+        const description = (post.conteudo || '').replace(/\*\*(.+?)\*\*/g, '$1').replace(/<[^>]+>/g, '').slice(0, 160);
+        const el = document.getElementById('schema-blogposting');
+        if (el) el.textContent = JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            'headline': post.titulo,
+            'description': description,
+            'image': post.imagem || 'https://lifemasterypath.com/og-image.png',
+            'datePublished': dateISO,
+            'dateModified': dateISO,
+            'url': `https://lifemasterypath.com/artigo.html?slug=${encodeURIComponent(slug)}`,
+            'inLanguage': 'en',
+            'author': { '@type': 'Organization', 'name': 'Life Mastery Path Team', 'url': 'https://lifemasterypath.com/' },
+            'publisher': { '@type': 'Organization', 'name': 'Life Mastery Path', 'url': 'https://lifemasterypath.com/', 'logo': { '@type': 'ImageObject', 'url': 'https://lifemasterypath.com/og-image.png' } },
+            'mainEntityOfPage': { '@type': 'WebPage', '@id': `https://lifemasterypath.com/artigo.html?slug=${encodeURIComponent(slug)}` },
+            'isPartOf': { '@type': 'Blog', '@id': 'https://lifemasterypath.com/#blog' }
+        });
     }
 
     function formatInline(texto) {
