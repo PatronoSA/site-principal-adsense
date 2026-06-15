@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Posts — leitura pública, escrita somente para usuários admin
+    match /posts/{postId} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.admin == true;
+    }
+
+    // Usuarios — leitura e escrita só pelo próprio usuário
+    // Escrita de campos sensíveis (premium, admin) só via Cloud Function (Admin SDK)
+    match /usuarios/{uid} {
+      allow read:  if request.auth != null && request.auth.uid == uid;
+      // Usuários podem escrever campos não-sensíveis (ex: preferências)
+      allow write: if request.auth != null
+                   && request.auth.uid == uid
+                   && !('premium' in request.resource.data)
+                   && !('admin' in request.resource.data);
+    }
+  }
+}

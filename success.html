@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assinatura Confirmada | Life Mastery Path</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Roboto', sans-serif; background: #f3f4f6; margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
+        header { background: #000; color: #fff; text-align: center; padding: 20px; border-bottom: 4px solid #0056b3; }
+        .logo { font-size: 26px; font-weight: 300; letter-spacing: 3px; text-transform: uppercase; line-height: 1.1; text-decoration: none; color: #fff; }
+        .logo span.logo-bold { font-weight: 800; color: #0056b3; letter-spacing: 2px; }
+        .logo span.logo-light { font-weight: 300; opacity: 0.85; }
+        .card { max-width: 480px; margin: 60px auto; background: #fff; border-radius: 20px; box-shadow: 0 4px 30px rgba(0,0,0,.1); padding: 48px 40px; text-align: center; }
+        .icon { font-size: 60px; margin-bottom: 16px; }
+        h1 { font-size: 28px; font-weight: 900; color: #1a1a1a; margin: 0 0 12px; }
+        p { color: #555; line-height: 1.6; margin: 0 0 28px; }
+        .badge { display: inline-block; background: linear-gradient(135deg,#f59e0b,#d97706); color: #fff; font-size: 13px; font-weight: 700; padding: 6px 18px; border-radius: 20px; margin-bottom: 28px; }
+        .btn { display: inline-block; background: #0056b3; color: #fff; font-weight: 700; font-size: 15px; padding: 14px 32px; border-radius: 10px; text-decoration: none; border: none; cursor: pointer; transition: background .2s; }
+        .btn:hover { background: #004999; }
+        .status { margin-top: 20px; font-size: 12px; color: #aaa; }
+        footer { background: #000; color: #9ca3af; text-align: center; padding: 24px; font-size: 13px; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a class="logo" href="index.html"><span class="logo-light">Life</span> <span class="logo-bold">Mastery</span> <span class="logo-light">Path</span></a>
+</header>
+
+<div class="card">
+    <div class="icon">🎉</div>
+    <div class="badge">✨ PREMIUM ATIVO</div>
+    <h1 id="titulo">Bem-vindo ao Premium!</h1>
+    <p id="mensagem">Sua assinatura de <strong>$4,99/mês</strong> foi confirmada. Agora você lê o portal <strong>sem anúncios</strong> em todos os dispositivos.</p>
+    <a href="index.html" class="btn">Acessar o Portal →</a>
+    <p class="status" id="status-msg">Verificando status da assinatura...</p>
+</div>
+
+<footer>© 2026 Life Mastery Path.</footer>
+
+<script type="module">
+    import { initializeApp }  from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+    const lang = localStorage.getItem('dr_lang') || 'pt';
+    if (lang === 'en') {
+        document.title = 'Subscription Confirmed | Life Mastery Path';
+        document.getElementById('titulo').textContent = 'Welcome to Premium!';
+        document.getElementById('mensagem').innerHTML =
+            'Your <strong>$4.99/month</strong> subscription is confirmed. Read the portal <strong>without ads</strong> on all devices.';
+        document.querySelector('.btn').textContent = 'Go to Portal →';
+        document.querySelector('footer').textContent = '© 2026 Life Mastery Path.';
+        document.getElementById('status-msg').textContent = 'Checking subscription status...';
+    }
+
+    const app  = initializeApp({
+        apiKey: "AIzaSyAKbBvmfcJ-_FmRndrXypVm4DjK3cqpB6k",
+        authDomain: "desenvolvimentoreal-1b8a3.firebaseapp.com",
+        projectId: "desenvolvimentoreal-1b8a3",
+        storageBucket: "desenvolvimentoreal-1b8a3.firebasestorage.app",
+        messagingSenderId: "996194852151",
+        appId: "1:996194852151:web:41f962b99ecee030a64eb2",
+    });
+    const db   = getFirestore(app);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, async (user) => {
+        const statusEl = document.getElementById('status-msg');
+        if (!user) {
+            statusEl.textContent = lang === 'en'
+                ? 'Sign in to confirm premium status.'
+                : 'Faça login para confirmar o status premium.';
+            return;
+        }
+
+        // Aguarda até 8s para o webhook atualizar o Firestore
+        let attempts = 0;
+        const check = async () => {
+            attempts++;
+            const snap = await getDoc(doc(db, "usuarios", user.uid)).catch(() => null);
+            const premium = snap?.exists() && snap.data().premium;
+
+            if (premium) {
+                statusEl.textContent = lang === 'en'
+                    ? '✅ Premium confirmed in account!'
+                    : '✅ Premium confirmado na conta!';
+                statusEl.style.color = '#059669';
+            } else if (attempts < 8) {
+                setTimeout(check, 1000);
+            } else {
+                statusEl.textContent = lang === 'en'
+                    ? 'If your account is not yet premium, wait a few minutes and reload.'
+                    : 'Se sua conta ainda não está premium, aguarde alguns minutos e recarregue.';
+            }
+        };
+        check();
+    });
+</script>
+
+<!-- ═══ COOKIE CONSENT ════════════════════════════════════════════════════════ -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;color:#e0e0e0;padding:14px 24px;z-index:9999;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:'Roboto',sans-serif;font-size:13px;box-shadow:0 -2px 12px rgba(0,0,0,.25);">
+    <span>We use cookies to improve your experience. <a href="privacy-policy.html" style="color:#60a5fa;text-decoration:underline;">Learn more</a></span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+        <button onclick="setCookieConsent('declined')" style="background:none;border:1px solid rgba(255,255,255,.3);color:#e0e0e0;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Roboto',sans-serif;">Decline</button>
+        <button onclick="setCookieConsent('accepted')" style="background:#0056b3;border:none;color:#fff;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Roboto',sans-serif;">Accept</button>
+    </div>
+</div>
+<script>
+    (function() { if (!localStorage.getItem('lmp_cookies')) document.getElementById('cookie-banner').style.display = 'flex'; })();
+    function setCookieConsent(v) { localStorage.setItem('lmp_cookies', v); document.getElementById('cookie-banner').style.display = 'none'; }
+</script>
+</body>
+</html>

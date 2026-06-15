@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" id="html-root">
+<html lang="en" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,6 +70,11 @@
             nav a { font-size: 11px; }
             footer { padding: 20px 16px; }
         }
+
+        /* ── ADS HIDDEN — comment out to re-enable ──────────────────────────── */
+        .ad-slot, ins.adsbygoogle, #interstitial { display: none !important; }
+        #article-wrap { filter: none !important; pointer-events: auto !important; user-select: auto !important; }
+        /* ─────────────────────────────────────────────────────────────────────── */
     </style>
 </head>
 <body>
@@ -78,11 +83,6 @@
 <header>
     <div class="header-inner">
         <a class="logo" href="index.html" id="logo-text"><span class="logo-light">Life</span> <span class="logo-bold">Mastery</span> <span class="logo-light">Path</span></a>
-        <div style="display:flex;gap:4px;align-items:center;">
-            <button class="btn-lang-flag" data-lang="en" title="English">🇺🇸</button>
-            <button class="btn-lang-flag" data-lang="es" title="Español">🇪🇸</button>
-            <button class="btn-lang-flag" data-lang="pt" title="Português">🇧🇷</button>
-        </div>
     </div>
 </header>
 
@@ -227,7 +227,7 @@
     const STRIPE_YEARLY  = 'https://buy.stripe.com/test_3cIbJ04bK6Wq3Pa9IG5AQ01';
 
     // ─── i18n ─────────────────────────────────────────────────────────────────
-    let LANG = localStorage.getItem('dr_lang') || 'en';
+    let LANG = 'en';
 
     const T = {
         en: {
@@ -326,13 +326,6 @@
         });
     }
 
-    document.querySelectorAll('.btn-lang-flag').forEach(btn => {
-        btn.addEventListener('click', () => {
-            LANG = btn.dataset.lang;
-            localStorage.setItem('dr_lang', LANG);
-            applyLang();
-        });
-    });
     // ─── /i18n ────────────────────────────────────────────────────────────────
 
     const firebaseConfig = {
@@ -592,6 +585,19 @@
 
     applyLang();
     carregarArtigo();
+</script>
+
+<!-- ═══ COOKIE CONSENT ════════════════════════════════════════════════════════ -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;color:#e0e0e0;padding:14px 24px;z-index:9999;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:'Roboto',sans-serif;font-size:13px;box-shadow:0 -2px 12px rgba(0,0,0,.25);">
+    <span>We use cookies to improve your experience. <a href="privacy-policy.html" style="color:#60a5fa;text-decoration:underline;">Learn more</a></span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+        <button onclick="setCookieConsent('declined')" style="background:none;border:1px solid rgba(255,255,255,.3);color:#e0e0e0;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Roboto',sans-serif;">Decline</button>
+        <button onclick="setCookieConsent('accepted')" style="background:#0056b3;border:none;color:#fff;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Roboto',sans-serif;">Accept</button>
+    </div>
+</div>
+<script>
+    (function() { if (!localStorage.getItem('lmp_cookies')) document.getElementById('cookie-banner').style.display = 'flex'; })();
+    function setCookieConsent(v) { localStorage.setItem('lmp_cookies', v); document.getElementById('cookie-banner').style.display = 'none'; }
 </script>
 </body>
 </html>

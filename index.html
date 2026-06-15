@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" id="html-root">
+<html lang="en" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -161,13 +161,20 @@
         @media (max-width: 480px) {
             .logo { font-size: 15px; letter-spacing: 1px; }
             .header-inner { padding: 10px 12px; }
-            .btn-lang-flag { padding: 2px 5px; font-size: 13px; }
             .small-thumb { width: 70px; height: 52px; }
             .post-card { gap: 10px; padding: 12px 0; }
             .post-card h4 { font-size: 13px; }
             nav a.cat-link { font-size: 10px; margin: 0 4px; }
             footer { padding: 24px 16px; font-size: 13px; }
         }
+
+        /* ── Paste button ────────────────────────────────────────────────────── */
+        .paste-btn { background: none; border: 1px solid #d1d5db; border-radius: 5px; padding: 2px 7px; cursor: pointer; font-size: 13px; color: #9ca3af; transition: all .15s; line-height: 1; }
+        .paste-btn:hover { border-color: #0056b3; color: #0056b3; background: #eff6ff; }
+
+        /* ── ADS HIDDEN — comment out to re-enable ──────────────────────────── */
+        .ad-slot, ins.adsbygoogle { display: none !important; }
+        /* ─────────────────────────────────────────────────────────────────────── */
     </style>
 </head>
 <body>
@@ -176,13 +183,6 @@
 <header>
     <div class="header-inner">
         <div class="logo"><span class="logo-light">Life</span> <span class="logo-bold">Mastery</span> <span class="logo-light">Path</span></div>
-        <div class="header-controls">
-            <div style="display:flex;gap:4px;align-items:center;">
-                <button class="btn-lang-flag" data-lang="en" title="English">🇺🇸</button>
-                <button class="btn-lang-flag" data-lang="es" title="Español">🇪🇸</button>
-                <button class="btn-lang-flag" data-lang="pt" title="Português">🇧🇷</button>
-            </div>
-        </div>
     </div>
 </header>
 
@@ -338,11 +338,17 @@
             </select>
         </div>
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1" data-i18n="admin_title_label">Título:</label>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                <label class="text-sm font-semibold text-gray-700" data-i18n="admin_title_label">Título:</label>
+                <button type="button" class="paste-btn" data-paste="input-titulo" title="Paste from clipboard">📋</button>
+            </div>
             <input id="input-titulo" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n-placeholder="admin_title_placeholder">
         </div>
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1" data-i18n="admin_content_label">Conteúdo:</label>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                <label class="text-sm font-semibold text-gray-700" data-i18n="admin_content_label">Conteúdo:</label>
+                <button type="button" class="paste-btn" data-paste="input-conteudo" title="Paste from clipboard">📋</button>
+            </div>
             <textarea id="input-conteudo" rows="5" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y" data-i18n-placeholder="admin_content_placeholder"></textarea>
         </div>
         <div>
@@ -374,12 +380,18 @@
             <p class="text-xs text-gray-400 mt-1">artigo.html?slug=<span id="slug-preview" class="text-gray-500">...</span></p>
         </div>
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1" data-i18n="admin_metadesc_label">Meta Description:</label>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                <label class="text-sm font-semibold text-gray-700" data-i18n="admin_metadesc_label">Meta Description:</label>
+                <button type="button" class="paste-btn" data-paste="input-metadesc" title="Paste from clipboard">📋</button>
+            </div>
             <textarea id="input-metadesc" rows="3" maxlength="160" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" data-i18n-placeholder="admin_metadesc_placeholder"></textarea>
             <p class="text-xs text-right mt-1"><span id="metadesc-count" class="text-gray-400">160</span> <span class="text-gray-400" data-i18n="admin_chars_left">caracteres restantes</span></p>
         </div>
         <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-1" data-i18n="admin_keywords_label">Keywords:</label>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                <label class="text-sm font-semibold text-gray-700" data-i18n="admin_keywords_label">Keywords:</label>
+                <button type="button" class="paste-btn" data-paste="input-keywords" title="Paste from clipboard">📋</button>
+            </div>
             <input id="input-keywords" type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" data-i18n-placeholder="admin_keywords_placeholder">
         </div>
 
@@ -472,7 +484,7 @@
 
     // ─── i18n ─────────────────────────────────────────────────────────────────
     // Troca de idioma persistida no localStorage — uma linha para mudar o padrão:
-    let LANG = localStorage.getItem('dr_lang') || 'en';
+    let LANG = 'en';
 
     const T = {
         pt: {
@@ -747,13 +759,6 @@
         });
     }
 
-    document.querySelectorAll('.btn-lang-flag').forEach(btn => {
-        btn.addEventListener('click', () => {
-            LANG = btn.dataset.lang;
-            localStorage.setItem('dr_lang', LANG);
-            applyLang();
-        });
-    });
     // ─── /i18n ────────────────────────────────────────────────────────────────
 
     const firebaseConfig = {
@@ -1252,6 +1257,17 @@
         }
     });
 
+    // ─── Paste buttons ────────────────────────────────────────────────────────
+    document.querySelectorAll('.paste-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                const target = document.getElementById(btn.dataset.paste);
+                if (target) { target.value = text; target.dispatchEvent(new Event('input', { bubbles: true })); }
+            } catch(e) { alert('Clipboard access denied. Please allow clipboard permissions in your browser.'); }
+        });
+    });
+
     window.onload = () => { applyLang(); carregarPosts(); };
 </script>
 
@@ -1298,5 +1314,18 @@
         </div>
     </div>
 </div>
+
+<!-- ═══ COOKIE CONSENT ════════════════════════════════════════════════════════ -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;color:#e0e0e0;padding:14px 24px;z-index:9999;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:'Roboto',sans-serif;font-size:13px;box-shadow:0 -2px 12px rgba(0,0,0,.25);">
+    <span>We use cookies to improve your experience. <a href="privacy-policy.html" style="color:#60a5fa;text-decoration:underline;">Learn more</a></span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+        <button onclick="setCookieConsent('declined')" style="background:none;border:1px solid rgba(255,255,255,.3);color:#e0e0e0;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Roboto',sans-serif;">Decline</button>
+        <button onclick="setCookieConsent('accepted')" style="background:#0056b3;border:none;color:#fff;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Roboto',sans-serif;">Accept</button>
+    </div>
+</div>
+<script>
+    (function() { if (!localStorage.getItem('lmp_cookies')) document.getElementById('cookie-banner').style.display = 'flex'; })();
+    function setCookieConsent(v) { localStorage.setItem('lmp_cookies', v); document.getElementById('cookie-banner').style.display = 'none'; }
+</script>
 </body>
 </html>

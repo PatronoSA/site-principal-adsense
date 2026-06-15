@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets
+functions/.env
+*.json
+!package.json
+!package-lock.json

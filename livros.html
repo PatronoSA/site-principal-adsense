@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" id="html-root">
+<html lang="en" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -178,6 +178,10 @@
             .logo { font-size: 18px; letter-spacing: 1.5px; }
             .header-inner { padding: 12px 16px; }
         }
+
+        /* ── ADS HIDDEN — comment out to re-enable ──────────────────────────── */
+        .ad-slot, ins.adsbygoogle { display: none !important; }
+        /* ─────────────────────────────────────────────────────────────────────── */
     </style>
 </head>
 <body>
@@ -188,9 +192,6 @@
         <a class="logo" href="index.html">
             <span class="logo-light">Life</span> <span class="logo-bold">Mastery</span> <span class="logo-light">Path</span>
         </a>
-        <div class="header-controls">
-            <button id="btn-lang" class="btn-lang">🌐 EN</button>
-        </div>
     </div>
 </header>
 
@@ -425,13 +426,7 @@
     const provider = new GoogleAuthProvider();
 
     // ── i18n (básico) ────────────────────────────────────────────────────────
-    let LANG = localStorage.getItem('dr_lang') || 'pt';
-    document.getElementById('btn-lang').textContent = LANG === 'pt' ? '🌐 EN' : '🌐 PT';
-    document.getElementById('btn-lang').addEventListener('click', () => {
-        LANG = LANG === 'pt' ? 'en' : 'pt';
-        localStorage.setItem('dr_lang', LANG);
-        document.getElementById('btn-lang').textContent = LANG === 'pt' ? '🌐 EN' : '🌐 PT';
-    });
+    let LANG = 'en';
 
     // ── Cores de categoria ────────────────────────────────────────────────────
     const CAT_MAP = {
@@ -814,6 +809,19 @@
 
     // ── Init ──────────────────────────────────────────────────────────────────
     carregarLivros();
+</script>
+
+<!-- ═══ COOKIE CONSENT ════════════════════════════════════════════════════════ -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;color:#e0e0e0;padding:14px 24px;z-index:9999;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;font-family:'Roboto',sans-serif;font-size:13px;box-shadow:0 -2px 12px rgba(0,0,0,.25);">
+    <span>We use cookies to improve your experience. <a href="privacy-policy.html" style="color:#60a5fa;text-decoration:underline;">Learn more</a></span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+        <button onclick="setCookieConsent('declined')" style="background:none;border:1px solid rgba(255,255,255,.3);color:#e0e0e0;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Roboto',sans-serif;">Decline</button>
+        <button onclick="setCookieConsent('accepted')" style="background:#0056b3;border:none;color:#fff;padding:7px 16px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Roboto',sans-serif;">Accept</button>
+    </div>
+</div>
+<script>
+    (function() { if (!localStorage.getItem('lmp_cookies')) document.getElementById('cookie-banner').style.display = 'flex'; })();
+    function setCookieConsent(v) { localStorage.setItem('lmp_cookies', v); document.getElementById('cookie-banner').style.display = 'none'; }
 </script>
 </body>
 </html>
