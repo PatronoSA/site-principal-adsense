@@ -55,6 +55,14 @@
 
         footer { background: #000; color: #9ca3af; text-align: center; padding: 40px; font-size: 13px; margin-top: 40px; }
 
+        /* ── Favorite button ─────────────────────────────────────────────────── */
+        .fav-btn-art { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1.5px solid #e5e7eb; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 700; font-family: 'Roboto', sans-serif; color: #555; cursor: pointer; transition: all .15s; }
+        .fav-btn-art:hover { border-color: #ef4444; color: #ef4444; }
+        .fav-btn-art.saved { border-color: #ef4444; color: #ef4444; background: #fff5f5; }
+        /* ── Toast ───────────────────────────────────────────────────────────── */
+        #toast { position: fixed; bottom: 60px; left: 50%; transform: translateX(-50%) translateY(20px); background: #1a1a2e; color: #fff; padding: 10px 22px; border-radius: 20px; font-size: 13px; font-weight: 600; font-family: 'Roboto', sans-serif; opacity: 0; transition: opacity .3s, transform .3s; z-index: 9999; pointer-events: none; white-space: nowrap; }
+        #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
         /* ── Mobile ──────────────────────────────────────────────────────────── */
         @media (max-width: 768px) {
             .header-inner { padding: 12px 16px; }
@@ -224,7 +232,10 @@
             <h1 id="article-titulo"
                 class="text-4xl font-black leading-tight text-gray-900 mb-3"
                 style="font-family:'Roboto',sans-serif;letter-spacing:-0.5px;"></h1>
-            <p id="article-byline" class="text-sm text-gray-500 mb-8" style="font-family:'Roboto',sans-serif;font-weight:600;"></p>
+            <p id="article-byline" class="text-sm text-gray-500 mb-4" style="font-family:'Roboto',sans-serif;font-weight:600;"></p>
+            <div id="fav-btn-wrap" style="display:none;margin-bottom:28px;">
+                <button id="btn-fav-artigo" class="fav-btn-art" aria-label="Save to favorites">🤍 <span id="fav-label">Save article</span></button>
+            </div>
             <img id="article-imagem" src="" alt="Article featured image"
                  class="hidden w-full object-cover rounded-2xl mb-10 shadow-md"
                  style="max-height:480px;">
@@ -249,10 +260,13 @@
     © 2026 Life Mastery Path.
 </footer>
 
+<!-- ═══ TOAST ════════════════════════════════════════════════════════════════ -->
+<div id="toast"></div>
+
 <!-- ═══ SCRIPT ════════════════════════════════════════════════════════════════ -->
 <script type="module">
     import { initializeApp }  from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, getDocs, deleteDoc, query, collection, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, getDocs, deleteDoc, setDoc, query, collection, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
                               from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
@@ -293,9 +307,14 @@
             btnLoginArt.className = 'btn-logout-sm';
             btnLoginArt.innerHTML = '<span>Sign out</span>';
 
+            loadFavoritesArt(user.uid);
+
             const snap = await getDoc(doc(db, "usuarios", user.uid)).catch(() => null);
             isPremium = snap?.exists() && snap.data().premium === true;
             if (snap?.exists() && snap.data().admin) { isAdmin = true; mostrarBotaoDelete(); }
+        } else {
+            userFavorites = new Set();
+            atualizarBotaoFav();
         }
 
         if (isPremium) pularInterstitial(true);
@@ -389,8 +408,10 @@
     const _params = new URLSearchParams(window.location.search);
     const id   = _params.get('id');
     const slug = _params.get('slug');
-    let currentDocId = null;
-    let isAdmin      = false;
+    let currentDocId  = null;
+    let isAdmin       = false;
+    let userFavorites = new Set();
+    let _currentPost  = null;
 
     function mostrarBotaoDelete() {
         if (isAdmin && currentDocId)
@@ -403,6 +424,58 @@
             await deleteDoc(doc(db, 'posts', currentDocId));
             window.location.href = 'index.html';
         } catch (e) { alert('Erro ao excluir: ' + e.message); }
+    });
+
+    // ─── Toast ────────────────────────────────────────────────────────────────
+    function showToast(msg, ms = 2800) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), ms);
+    }
+
+    // ─── Favorites ────────────────────────────────────────────────────────────
+    function atualizarBotaoFav() {
+        const wrap = document.getElementById('fav-btn-wrap');
+        const btn  = document.getElementById('btn-fav-artigo');
+        const lbl  = document.getElementById('fav-label');
+        if (!auth.currentUser || !currentDocId) { wrap.style.display = 'none'; return; }
+        wrap.style.display = 'block';
+        const saved = userFavorites.has(currentDocId);
+        btn.innerHTML = (saved ? '❤️ ' : '🤍 ') + `<span id="fav-label">${saved ? 'Saved' : 'Save article'}</span>`;
+        btn.className = 'fav-btn-art' + (saved ? ' saved' : '');
+    }
+
+    async function loadFavoritesArt(uid) {
+        try {
+            const snap = await getDocs(collection(db, 'usuarios', uid, 'favorites'));
+            userFavorites = new Set(snap.docs.map(d => d.id));
+        } catch { userFavorites = new Set(); }
+        atualizarBotaoFav();
+    }
+
+    document.getElementById('btn-fav-artigo').addEventListener('click', async () => {
+        const user = auth.currentUser;
+        if (!user) { showToast('Sign in to save favorites'); return; }
+        if (!currentDocId) return;
+        const favRef = doc(db, 'usuarios', user.uid, 'favorites', currentDocId);
+        if (userFavorites.has(currentDocId)) {
+            await deleteDoc(favRef).catch(() => {});
+            userFavorites.delete(currentDocId);
+            showToast('Removed from saved articles');
+        } else {
+            const p = _currentPost || {};
+            await setDoc(favRef, {
+                titulo:    p.titulo    || '',
+                slug:      p.slug      || '',
+                imagem:    p.imagem    || '',
+                categoria: p.categoria || '',
+                data:      p.data      || null
+            }).catch(() => {});
+            userFavorites.add(currentDocId);
+            showToast('Saved! ❤️');
+        }
+        atualizarBotaoFav();
     });
 
     async function carregarArtigo() {
@@ -418,9 +491,10 @@
                 if (!snap.exists()) { mostrarErro('Article not found.'); return; }
             }
 
-            currentDocId = snap.id;
+            currentDocId  = snap.id;
+            _currentPost  = snap.data();
             mostrarBotaoDelete();
-            const post = snap.data();
+            const post = _currentPost;
             document.title = post.titulo + ' | Desenvolvimento Real';
 
             const CAT_COLORS = {
@@ -467,6 +541,7 @@
             document.getElementById('article-skeleton').classList.add('hidden');
             document.getElementById('article-content').classList.remove('hidden');
 
+            atualizarBotaoFav();
             updateArticleSchema(post);
 
         } catch (e) { mostrarErro('Load error: ' + e.message); }
