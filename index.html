@@ -450,11 +450,17 @@
     <div id="aba-livro" style="display:none;padding:28px 32px;" class="space-y-4">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
             <div>
-                <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Book Title</label>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                    <label style="font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;">Book Title</label>
+                    <button type="button" class="paste-btn" data-paste="lv-titulo" title="Paste from clipboard">📋</button>
+                </div>
                 <input id="lv-titulo" type="text" placeholder="Ex: Atomic Habits" style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
             </div>
             <div>
-                <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Author</label>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                    <label style="font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;">Author</label>
+                    <button type="button" class="paste-btn" data-paste="lv-autor" title="Paste from clipboard">📋</button>
+                </div>
                 <input id="lv-autor" type="text" placeholder="Ex: James Clear" style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
             </div>
         </div>
@@ -480,15 +486,24 @@
             </div>
         </div>
         <div>
-            <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Short Summary</label>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                <label style="font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;">Short Summary</label>
+                <button type="button" class="paste-btn" data-paste="lv-resumo" title="Paste from clipboard">📋</button>
+            </div>
             <textarea id="lv-resumo" rows="2" placeholder="Brief description (appears on book card)..." style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;resize:vertical;box-sizing:border-box;"></textarea>
         </div>
         <div>
-            <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Why We Recommend This Book</label>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                <label style="font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;">Why We Recommend This Book</label>
+                <button type="button" class="paste-btn" data-paste="lv-porque" title="Paste from clipboard">📋</button>
+            </div>
             <textarea id="lv-porque" rows="2" placeholder="Highlight the main benefits and learnings..." style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;resize:vertical;box-sizing:border-box;"></textarea>
         </div>
         <div>
-            <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Affiliate Link</label>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                <label style="font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;">Affiliate Link</label>
+                <button type="button" class="paste-btn" data-paste="lv-link" title="Paste from clipboard">📋</button>
+            </div>
             <input id="lv-link" type="url" placeholder="https://www.amazon.com/dp/..." style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
         </div>
         <div>
