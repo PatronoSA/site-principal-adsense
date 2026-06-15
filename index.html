@@ -322,8 +322,8 @@
 
     <!-- Abas -->
     <div style="display:flex;border-bottom:2px solid #e5e7eb;">
-        <button id="tab-artigo" onclick="trocarAba('artigo')" style="flex:1;padding:12px 8px;font-size:13px;font-weight:700;font-family:'Roboto',sans-serif;border:none;cursor:pointer;background:#eff6ff;color:#1d4ed8;border-bottom:2px solid #1d4ed8;margin-bottom:-2px;">📝 Artigo</button>
-        <button id="tab-livro" onclick="trocarAba('livro')" style="flex:1;padding:12px 8px;font-size:13px;font-weight:700;font-family:'Roboto',sans-serif;border:none;cursor:pointer;background:#fff;color:#6b7280;border-bottom:2px solid transparent;margin-bottom:-2px;">📚 Livro</button>
+        <button id="tab-artigo" onclick="trocarAba('artigo')" style="flex:1;padding:12px 8px;font-size:13px;font-weight:700;font-family:'Roboto',sans-serif;border:none;cursor:pointer;background:#eff6ff;color:#1d4ed8;border-bottom:2px solid #1d4ed8;margin-bottom:-2px;">📝 Article</button>
+        <button id="tab-livro" onclick="trocarAba('livro')" style="flex:1;padding:12px 8px;font-size:13px;font-weight:700;font-family:'Roboto',sans-serif;border:none;cursor:pointer;background:#fff;color:#6b7280;border-bottom:2px solid transparent;margin-bottom:-2px;">📚 Book</button>
     </div>
 
     <!-- ── Aba Artigo (existente) ── -->
@@ -408,29 +408,29 @@
     <div id="aba-livro" style="display:none;padding:28px 32px;" class="space-y-4">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
             <div>
-                <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Título do Livro</label>
-                <input id="lv-titulo" type="text" placeholder="Ex: Hábitos Atômicos" style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
+                <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Book Title</label>
+                <input id="lv-titulo" type="text" placeholder="Ex: Atomic Habits" style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
             </div>
             <div>
-                <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Autor</label>
+                <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Author</label>
                 <input id="lv-autor" type="text" placeholder="Ex: James Clear" style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
             </div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
             <div>
-                <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Categoria</label>
+                <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Category</label>
                 <select id="lv-categoria" style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
-                    <option value="carreira">Carreira</option>
-                    <option value="mente">Mente</option>
-                    <option value="financas">Finanças</option>
-                    <option value="produtividade">Produtividade</option>
-                    <option value="autoconhecimento">Autoconhecimento</option>
-                    <option value="negocios">Negócios</option>
-                    <option value="outros">Outros</option>
+                    <option value="carreira">Career</option>
+                    <option value="mente">Mindset</option>
+                    <option value="financas">Finance</option>
+                    <option value="produtividade">Productivity</option>
+                    <option value="autoconhecimento">Self-Knowledge</option>
+                    <option value="negocios">Business</option>
+                    <option value="outros">Other</option>
                 </select>
             </div>
             <div>
-                <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Nota (1 a 5)</label>
+                <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Rating (1 to 5)</label>
                 <div style="display:flex;align-items:center;gap:8px;">
                     <input id="lv-nota" type="number" min="1" max="5" step="0.1" value="4.5" style="width:80px;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 10px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;">
                     <span id="lv-star-preview" style="font-size:18px;color:#f59e0b;letter-spacing:2px;">★★★★½</span>
@@ -438,23 +438,23 @@
             </div>
         </div>
         <div>
-            <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Resumo Curto</label>
-            <textarea id="lv-resumo" rows="2" placeholder="Breve descrição (aparece no card do livro)..." style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;resize:vertical;box-sizing:border-box;"></textarea>
+            <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Short Summary</label>
+            <textarea id="lv-resumo" rows="2" placeholder="Brief description (appears on book card)..." style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;resize:vertical;box-sizing:border-box;"></textarea>
         </div>
         <div>
-            <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Por que recomendamos este livro</label>
-            <textarea id="lv-porque" rows="2" placeholder="Destaque os principais benefícios e aprendizados..." style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;resize:vertical;box-sizing:border-box;"></textarea>
+            <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Why We Recommend This Book</label>
+            <textarea id="lv-porque" rows="2" placeholder="Highlight the main benefits and learnings..." style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;resize:vertical;box-sizing:border-box;"></textarea>
         </div>
         <div>
-            <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Link de Afiliado</label>
-            <input id="lv-link" type="url" placeholder="https://www.amazon.com.br/dp/..." style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
+            <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Affiliate Link</label>
+            <input id="lv-link" type="url" placeholder="https://www.amazon.com/dp/..." style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
         </div>
         <div>
-            <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Capa do Livro</label>
+            <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Book Cover</label>
             <div id="lv-drop-area" style="border:2px dashed #d0d5e0;border-radius:12px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;">
                 <input type="file" id="lv-imagem" accept="image/*" style="display:none;">
                 <div style="font-size:32px;margin-bottom:6px;">🖼️</div>
-                <div style="font-size:13px;color:#888;"><span id="lv-drop-label" style="color:#0056b3;font-weight:700;cursor:pointer;">Clique para selecionar</span> ou arraste aqui<br><small style="color:#bbb;">JPG, PNG, WEBP — máx. 10 MB</small></div>
+                <div style="font-size:13px;color:#888;"><span id="lv-drop-label" style="color:#0056b3;font-weight:700;cursor:pointer;">Click to select</span> or drag here<br><small style="color:#bbb;">JPG, PNG, WEBP — max. 10 MB</small></div>
             </div>
             <div id="lv-bar-wrap" style="display:none;margin-top:10px;">
                 <div style="background:#e5e7eb;border-radius:99px;height:6px;overflow:hidden;"><div id="lv-bar-fill" style="background:#0056b3;height:100%;border-radius:99px;width:0;transition:width .2s;"></div></div>
