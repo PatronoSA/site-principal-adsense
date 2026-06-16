@@ -12,7 +12,15 @@
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="content-language" content="en">
-    <meta property="og:image" content="https://lifemasterypath.com/og-image.png">
+    <meta property="og:type"         content="article">
+    <meta property="og:site_name"    content="Life Mastery Path">
+    <meta property="og:title"        content="Life Mastery Path | The Portal of Self-Knowledge">
+    <meta property="og:description"  content="Articles, books and strategies on career, mindset, finance and productivity.">
+    <meta property="og:image"        content="https://lifemasterypath.com/og-image.png">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type"   content="image/png">
+    <meta property="og:url"          content="https://lifemasterypath.com/artigo.html">
     <title>Life Mastery Path | The Portal of Self-Knowledge</title>
     <link rel="canonical" href="https://lifemasterypath.com/artigo.html" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -598,9 +606,46 @@
 
             atualizarShareBar(post);
             atualizarBotaoFav();
+            updateMetaTags(post);
             updateArticleSchema(post);
 
         } catch (e) { mostrarErro('Load error: ' + e.message); }
+    }
+
+    function updateMetaTags(post) {
+        const DEFAULT_IMAGE = 'https://lifemasterypath.com/og-image.png';
+        const slug = new URLSearchParams(location.search).get('slug') || '';
+        const pid  = new URLSearchParams(location.search).get('id')   || '';
+        const pageUrl = 'https://lifemasterypath.com/artigo.html' +
+            (slug ? '?slug=' + encodeURIComponent(slug) : pid ? '?id=' + encodeURIComponent(pid) : '');
+
+        const imgUrl = (post.imagem && post.imagem.startsWith('https://'))
+            ? post.imagem : DEFAULT_IMAGE;
+
+        const description = (post.conteudo || '')
+            .replace(/\*\*(.+?)\*\*/g, '$1')
+            .replace(/<[^>]+>/g, '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .slice(0, 160);
+
+        function setMeta(prop, val) {
+            let el = document.querySelector(`meta[property="${prop}"]`);
+            if (!el) { el = document.createElement('meta'); el.setAttribute('property', prop); document.head.appendChild(el); }
+            el.setAttribute('content', val);
+        }
+
+        setMeta('og:title',        post.titulo || 'Life Mastery Path');
+        setMeta('og:description',  description);
+        setMeta('og:url',          pageUrl);
+        setMeta('og:type',         'article');
+        setMeta('og:image',        imgUrl);
+        setMeta('og:image:width',  '1200');
+        setMeta('og:image:height', '630');
+        setMeta('og:image:type',   imgUrl === DEFAULT_IMAGE ? 'image/png' : 'image/jpeg');
+
+        const canonical = document.querySelector('link[rel="canonical"]');
+        if (canonical) canonical.setAttribute('href', pageUrl);
     }
 
     function updateArticleSchema(post) {
