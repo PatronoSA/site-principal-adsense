@@ -417,6 +417,10 @@
     const fetchAdminPanelHTML = httpsCallable(functionsApp, 'getAdminPanelHTML');
 
     async function montarAdminPanel() {
+        // Revela o container ANTES de chamar a function, senão o spinner de loading
+        // (e qualquer erro) fica escondido por trás do display:none/class hidden.
+        adminPanel.classList.remove('hidden');
+        adminPanel.style.display = '';
         adminPanel.innerHTML = '<div style="padding:40px;text-align:center;color:#999;font-family:\'Roboto\',sans-serif;font-size:13px;">Loading Publishing Panel…</div>';
         try {
             const result = await fetchAdminPanelHTML();
@@ -424,8 +428,10 @@
             inicializarAdminPanel();
             adminPanelMounted = true;
         } catch (e) {
-            console.warn('Erro ao carregar Publishing Panel:', e.message);
+            console.error('Erro ao carregar Publishing Panel:', e.code, e.message, e);
             adminPanel.innerHTML = '';
+            adminPanel.classList.add('hidden');
+            adminPanel.style.display = 'none';
             adminPanelMounted = false;
         }
     }
@@ -588,9 +594,12 @@
                 } catch (e) { console.warn('Firestore read error:', e); }
             }
             if (confirmedAdmin) {
-                if (!adminPanelMounted) await montarAdminPanel();
-                adminPanel.classList.remove('hidden');
-                adminPanel.style.display = '';
+                if (!adminPanelMounted) {
+                    await montarAdminPanel();
+                } else {
+                    adminPanel.classList.remove('hidden');
+                    adminPanel.style.display = '';
+                }
             } else {
                 adminPanel.classList.add('hidden');
                 adminPanel.style.display = 'none';
