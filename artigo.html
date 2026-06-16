@@ -106,6 +106,23 @@
             footer { padding: 20px 16px; }
         }
 
+        /* ── Related articles ───────────────────────────────────────────────── */
+        .related-section { max-width: 48rem; margin: 0 auto; padding: 0 1rem 3rem; }
+        .related-section h2 { font-family: 'Roboto', sans-serif; font-size: 20px; font-weight: 900; color: #111; margin: 0 0 20px; padding-bottom: 12px; border-bottom: 2px solid #e5e7eb; }
+        .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+        .related-card { display: flex; flex-direction: column; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,.07); text-decoration: none; color: inherit; transition: transform .2s, box-shadow .2s; }
+        .related-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,.12); }
+        .related-card-img { width: 100%; height: 160px; object-fit: cover; display: block; flex-shrink: 0; }
+        .related-card-noimg { background: #e5e7eb; }
+        .related-card-body { padding: 14px 16px 16px; display: flex; flex-direction: column; flex: 1; }
+        .related-cat-badge { display: inline-block; font-size: 10px; font-weight: 700; color: #fff; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 7px; align-self: flex-start; }
+        .related-card-title { font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 700; color: #111; line-height: 1.4; margin: 0 0 10px; flex: 1; }
+        .related-read-more { font-size: 12px; font-weight: 700; color: #0056b3; margin-top: auto; }
+        @media (max-width: 640px) {
+            .related-grid { grid-template-columns: 1fr; gap: 14px; }
+            .related-card-img { height: 200px; }
+        }
+
         /* ── ADS HIDDEN — comment out to re-enable ──────────────────────────── */
         .ad-slot, ins.adsbygoogle, #interstitial { display: none !important; }
         #article-wrap { filter: none !important; pointer-events: auto !important; user-select: auto !important; }
@@ -289,6 +306,14 @@
     </article>
 </div>
 
+<!-- ═══ RELATED ARTICLES ═══════════════════════════════════════════════════════ -->
+<section id="related-articles" style="display:none;">
+    <div class="related-section">
+        <h2 id="related-heading">You might also like</h2>
+        <div class="related-grid" id="related-grid"></div>
+    </div>
+</section>
+
 <footer id="footer-text">
     <div style="margin-bottom:12px;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;">
         <a href="about.html" style="color:#aaa;text-decoration:none;font-size:13px;font-weight:700;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#aaa'">About Us</a>
@@ -307,7 +332,7 @@
 <!-- ═══ SCRIPT ════════════════════════════════════════════════════════════════ -->
 <script type="module">
     import { initializeApp }  from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, getDocs, deleteDoc, setDoc, updateDoc, increment, query, collection, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, getDocs, deleteDoc, setDoc, updateDoc, increment, query, orderBy, limit, collection, where } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
                               from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
@@ -608,8 +633,85 @@
             atualizarBotaoFav();
             updateMetaTags(post);
             updateArticleSchema(post);
+            carregarRelacionados(post);
 
         } catch (e) { mostrarErro('Load error: ' + e.message); }
+    }
+
+    async function carregarRelacionados(post) {
+        const section = document.getElementById('related-articles');
+        const grid    = document.getElementById('related-grid');
+        const heading = document.getElementById('related-heading');
+
+        const CAT_LABELS = {
+            carreira: { label: 'Career', color: '#2563eb' },
+            mente: { label: 'Mindset', color: '#7c3aed' },
+            financas: { label: 'Finance', color: '#059669' },
+            livros: { label: '📚 Books', color: '#ea580c' },
+            produtividade: { label: 'Productivity', color: '#b45309' },
+            hobbies: { label: 'Hobbies', color: '#b91c1c' },
+            'estilo-de-vida': { label: 'Lifestyle', color: '#0891b2' },
+        };
+
+        try {
+            // Primary: same category, most recent, fetch 4 to allow excluding current
+            let relacionados = [];
+            if (post.categoria) {
+                const qCat = await getDocs(query(
+                    collection(db, 'posts'),
+                    where('categoria', '==', post.categoria),
+                    orderBy('data', 'desc'),
+                    limit(4)
+                ));
+                relacionados = qCat.docs
+                    .filter(d => d.id !== currentDocId)
+                    .slice(0, 3)
+                    .map(d => ({ id: d.id, ...d.data() }));
+            }
+
+            // Fallback: fill remaining slots with most recent articles
+            if (relacionados.length < 3) {
+                const exclude = new Set([currentDocId, ...relacionados.map(p => p.id)]);
+                const qRecent = await getDocs(query(
+                    collection(db, 'posts'),
+                    orderBy('data', 'desc'),
+                    limit(6)
+                ));
+                const extra = qRecent.docs
+                    .filter(d => !exclude.has(d.id))
+                    .slice(0, 3 - relacionados.length)
+                    .map(d => ({ id: d.id, ...d.data() }));
+                relacionados = [...relacionados, ...extra];
+            }
+
+            if (!relacionados.length) return;
+
+            // If all from same category, keep heading; otherwise use generic
+            const allSameCat = relacionados.every(p => p.categoria === post.categoria);
+            if (!allSameCat) heading.textContent = 'More Articles';
+
+            grid.innerHTML = relacionados.map(p => {
+                const cat = CAT_LABELS[p.categoria];
+                const url = p.slug
+                    ? `artigo.html?slug=${encodeURIComponent(p.slug)}`
+                    : `artigo.html?id=${p.id}`;
+                return `
+                <a href="${url}" class="related-card">
+                    ${p.imagem
+                        ? `<img src="${p.imagem}" alt="${p.titulo || ''}" class="related-card-img">`
+                        : `<div class="related-card-img related-card-noimg"></div>`}
+                    <div class="related-card-body">
+                        ${cat ? `<span class="related-cat-badge" style="background:${cat.color}">${cat.label}</span>` : ''}
+                        <h3 class="related-card-title">${p.titulo || ''}</h3>
+                        <span class="related-read-more">Read More →</span>
+                    </div>
+                </a>`;
+            }).join('');
+
+            section.style.display = '';
+        } catch (e) {
+            console.warn('Related articles error:', e.message);
+        }
     }
 
     function updateMetaTags(post) {
