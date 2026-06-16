@@ -27,7 +27,6 @@
     <link rel="alternate" hreflang="en-us"     href="https://lifemasterypath.com/artigo.html" />
     <link rel="alternate" hreflang="x-default" href="https://lifemasterypath.com/artigo.html" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7485615657043606" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: 'Roboto', sans-serif; background: #f3f4f6; margin: 0; }
@@ -59,8 +58,6 @@
         .article-body h2 { font-family: 'Roboto', sans-serif; font-size: 24px; font-weight: 800; color: #111; margin: 2.2rem 0 0.8rem; line-height: 1.3; }
         .btn-delete-art { display: flex; align-items: center; gap: 8px; background: #fff; color: #dc2626; border: 1.5px solid #dc2626; border-radius: 8px; padding: 9px 18px; font-size: 13px; font-weight: 700; font-family: 'Roboto', sans-serif; cursor: pointer; transition: background .15s, color .15s; }
         .btn-delete-art:hover { background: #dc2626; color: #fff; }
-        .ad-slot { background: #f9f9f9; border: 1px dashed #bbb; position: relative; text-align: center; overflow: hidden; }
-        .ad-slot::after { content: attr(data-label); position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #ccc; font-size: 11px; pointer-events: none; white-space: nowrap; font-family: 'Roboto', sans-serif; }
         .skeleton { animation: pulse 1.5s cubic-bezier(.4,0,.6,1) infinite; }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
@@ -125,11 +122,6 @@
             .related-grid { grid-template-columns: 1fr; gap: 14px; }
             .related-card-img { height: 200px; }
         }
-
-        /* ── ADS HIDDEN — comment out to re-enable ──────────────────────────── */
-        .ad-slot, ins.adsbygoogle, #interstitial { display: none !important; }
-        #article-wrap { filter: none !important; pointer-events: auto !important; user-select: auto !important; }
-        /* ─────────────────────────────────────────────────────────────────────── */
     </style>
     <script type="application/ld+json" id="schema-blogposting">
     {
@@ -202,48 +194,8 @@
     <button onclick="this.parentElement.remove()" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1;">×</button>
 </div>
 
-<!-- ═══ INTERSTITIAL ══════════════════════════════════════════════════════════ -->
-<div id="interstitial" class="fixed inset-0 z-50 bg-black bg-opacity-95 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
-        <div class="bg-gray-100 px-4 py-2 border-b border-gray-200 flex items-center justify-between">
-            <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Advertisement</span>
-            <span id="countdown-chip" class="bg-gray-200 text-gray-500 text-xs font-bold px-2 py-0.5 rounded-full">
-                <span id="count">5</span>s
-            </span>
-        </div>
-        <div class="ad-slot flex items-center justify-center" style="width:300px;height:250px;margin:0 auto;"
-             data-label="AdSense 300×250">
-            <ins class="adsbygoogle"
-                 style="display:inline-block;width:300px;height:250px"
-                 data-ad-client="ca-pub-7485615657043606"
-                 data-ad-slot="2669333856"></ins>
-        </div>
-        <div class="px-6 py-4 text-center border-t border-gray-100">
-            <p id="countdown-msg" class="text-sm text-gray-400 mb-2">
-                <span>Wait</span> <span id="count2">5</span>s...
-            </p>
-            <button id="btn-fechar"
-                    class="hidden w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 rounded-xl text-sm transition-colors"
-                    >
-                Continue reading →
-            </button>
-        </div>
-    </div>
-</div>
-
 <!-- ═══ CONTEÚDO ══════════════════════════════════════════════════════════════ -->
 <div id="article-wrap">
-
-    <div class="ad-slot max-w-4xl mx-auto my-4" style="min-height:90px;"
-         data-label="AdSense • Banner Topo (728×90)">
-        <ins id="ad-topo"
-             class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-7485615657043606"
-             data-ad-slot="2753094333"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-    </div>
 
     <article class="max-w-3xl mx-auto px-4 pb-16">
 
@@ -366,9 +318,6 @@
     const userNameArt   = document.getElementById('user-name-art');
 
     onAuthStateChanged(auth, async (user) => {
-        authResolved = true;
-        clearTimeout(authTimer);
-
         if (user) {
             userAvatarArt.src = user.photoURL || '';
             userNameArt.textContent = user.displayName?.split(' ')[0] || user.email;
@@ -379,16 +328,11 @@
             loadFavoritesArt(user.uid);
 
             const snap = await getDoc(doc(db, "usuarios", user.uid)).catch(() => null);
-            isPremium = snap?.exists() && snap.data().premium === true;
             if (snap?.exists() && snap.data().admin) { isAdmin = true; mostrarBotaoDelete(); }
         } else {
             userFavorites = new Set();
             atualizarBotaoFav();
         }
-
-        if (isPremium) pularInterstitial(true);
-        else if (isAdmin) pularInterstitial(false);
-        else iniciarInterstitial();
     });
 
     btnLoginArt.addEventListener('click', async () => {
@@ -420,58 +364,7 @@
     document.getElementById('btn-assinar-artigo-mensal').addEventListener('click', e => { e.preventDefault(); abrirCheckout(STRIPE_MONTHLY); });
     document.getElementById('btn-assinar-artigo-anual').addEventListener('click',  e => { e.preventDefault(); abrirCheckout(STRIPE_YEARLY);  });
 
-    // Força reload ao restaurar do bfcache (garante estado limpo + interstitial sempre dispara)
     window.addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
-
-    // ─── Premium ──────────────────────────────────────────────────────────────
-    let isPremium    = false;
-    let authResolved = false;
-    const authTimer  = setTimeout(() => { if (!authResolved) iniciarInterstitial(); }, 900);
-
-    function pularInterstitial(esconderAds = false) {
-        document.getElementById('interstitial')?.remove();
-        document.getElementById('premium-banner-artigo')?.remove();
-        const wrap = document.getElementById('article-wrap');
-        wrap.style.filter = wrap.style.pointerEvents = wrap.style.userSelect = '';
-        if (esconderAds) {
-            document.querySelectorAll('.ad-slot, ins.adsbygoogle').forEach(el => el.style.display = 'none');
-        } else {
-            inicializarAnunciosArtigo();
-        }
-    }
-
-    // ─── Intersticial ─────────────────────────────────────────────────────────
-    function iniciarInterstitial() {
-        if (iniciarInterstitial.done) return;
-        iniciarInterstitial.done = true;
-
-        const wrap = document.getElementById('article-wrap');
-        wrap.style.filter = 'blur(6px)';
-        wrap.style.pointerEvents = 'none';
-        wrap.style.userSelect = 'none';
-
-        ;(window.adsbygoogle = window.adsbygoogle || []).push({});
-
-        let seconds = 5;
-        const countEls = [document.getElementById('count'), document.getElementById('count2')];
-        const ticker = setInterval(() => {
-            seconds--;
-            countEls.forEach(el => { if (el) el.textContent = seconds; });
-            if (seconds <= 0) {
-                clearInterval(ticker);
-                document.getElementById('countdown-msg')?.classList.add('hidden');
-                document.getElementById('countdown-chip')?.classList.add('hidden');
-                document.getElementById('btn-fechar').classList.remove('hidden');
-            }
-        }, 1000);
-    }
-
-    document.getElementById('btn-fechar').addEventListener('click', () => {
-        document.getElementById('interstitial').remove();
-        const wrap = document.getElementById('article-wrap');
-        wrap.style.filter = wrap.style.pointerEvents = wrap.style.userSelect = '';
-        inicializarAnunciosArtigo();
-    });
 
     // ─── Artigo ───────────────────────────────────────────────────────────────
     const _params = new URLSearchParams(window.location.search);
@@ -627,7 +520,7 @@
             const imgEl = document.getElementById('article-imagem');
             if (post.imagem) { imgEl.src = post.imagem; imgEl.alt = post.titulo; imgEl.classList.remove('hidden'); }
 
-            document.getElementById('article-body').innerHTML = renderComAnuncios(post.conteudo || '');
+            document.getElementById('article-body').innerHTML = renderArtigo(post.conteudo || '');
 
             document.getElementById('article-skeleton').classList.add('hidden');
             document.getElementById('article-content').classList.remove('hidden');
@@ -784,44 +677,13 @@
         return texto.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     }
 
-    function renderComAnuncios(conteudo) {
+    function renderArtigo(conteudo) {
         const linhas = conteudo.split(/\n+/).map(l => l.trim()).filter(Boolean);
         if (!linhas.length) return `<p>${conteudo}</p>`;
-        let html = '', adIdx = 0;
-        linhas.forEach((linha, i) => {
-            let bloco;
+        return linhas.map(linha => {
             const h2 = linha.match(/^#{1,2} (.+)/);
-            if (h2) {
-                bloco = `<h2>${formatInline(h2[1])}</h2>`;
-            } else {
-                bloco = `<p>${formatInline(linha)}</p>`;
-            }
-            html += bloco;
-            if (!h2 && (i + 1) % 3 === 0 && i < linhas.length - 1)
-                html += `<div class="ad-artigo-slot" data-idx="${adIdx++}"></div>`;
-        });
-        if (adIdx === 0) html += `<div class="ad-artigo-slot" data-idx="0"></div>`;
-        return html;
-    }
-
-    function inicializarAnunciosArtigo() {
-        ;(window.adsbygoogle = window.adsbygoogle || []).push({});
-        document.querySelectorAll('.ad-artigo-slot').forEach(div => {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'ad-slot my-8 rounded-lg overflow-hidden';
-            wrapper.setAttribute('data-label', 'AdSense • Artigo');
-            wrapper.style.minHeight = '90px';
-            const ins = document.createElement('ins');
-            ins.className = 'adsbygoogle';
-            ins.setAttribute('style', 'display:block;text-align:center;');
-            ins.setAttribute('data-ad-client', 'ca-pub-7485615657043606');
-            ins.setAttribute('data-ad-slot', '3603141572');
-            ins.setAttribute('data-ad-format', 'auto');
-            ins.setAttribute('data-full-width-responsive', 'true');
-            wrapper.appendChild(ins);
-            div.replaceWith(wrapper);
-            ;(window.adsbygoogle = window.adsbygoogle || []).push({});
-        });
+            return h2 ? `<h2>${formatInline(h2[1])}</h2>` : `<p>${formatInline(linha)}</p>`;
+        }).join('');
     }
 
     function mostrarErro(msg) {

@@ -19,7 +19,6 @@
     <link rel="alternate" hreflang="en-us"     href="https://lifemasterypath.com/books.html" />
     <link rel="alternate" hreflang="x-default" href="https://lifemasterypath.com/books.html" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7485615657043606" crossorigin="anonymous"></script>
     <style>
         :root { --dark-blue: #0B172A; --black: #000; --accent: #0056b3; }
         * { box-sizing: border-box; }
@@ -115,20 +114,6 @@
         .btn-delete-book:hover { background: #dc2626; color: #fff; }
         .book-card { position: relative; }
 
-        /* ── Interstitial ── */
-        .interstitial-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 900; align-items: center; justify-content: center; padding: 16px; }
-        .interstitial-overlay.active { display: flex; }
-        .int-card { background: #fff; border-radius: 20px; overflow: hidden; width: 100%; max-width: 340px; box-shadow: 0 24px 60px rgba(0,0,0,.4); }
-        .int-topbar { background: #f4f5f7; padding: 10px 16px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; }
-        .int-label { font-size: 11px; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 1px; }
-        .int-chip { background: #e5e7eb; color: #777; font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 99px; min-width: 36px; text-align: center; }
-        .int-ad { display: flex; align-items: center; justify-content: center; min-height: 250px; background: #f9fafb; }
-        .int-footer { padding: 16px 20px; text-align: center; border-top: 1px solid #f0f0f0; }
-        .int-wait { font-size: 13px; color: #bbb; margin: 0 0 10px; }
-        .int-btn { display: block; width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 700; font-family: 'Roboto', sans-serif; cursor: pointer; transition: background .2s, opacity .2s; }
-        .int-btn:hover:not(:disabled) { background: #0046a0; }
-        .int-btn:disabled { opacity: .4; cursor: not-allowed; }
-
         /* ── Modal (login/cadastro) ── */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 1000; align-items: center; justify-content: center; padding: 16px; }
         .modal-overlay.active { display: flex; }
@@ -165,10 +150,6 @@
             .logo { font-size: 18px; letter-spacing: 1.5px; }
             .header-inner { padding: 12px 16px; }
         }
-
-        /* ── ADS HIDDEN — comment out to re-enable ──────────────────────────── */
-        .ad-slot, ins.adsbygoogle { display: none !important; }
-        /* ─────────────────────────────────────────────────────────────────────── */
     </style>
     <script type="application/ld+json">
     {
@@ -268,24 +249,6 @@
 <div class="books-container">
     <div class="books-grid" id="books-grid">
         <div class="books-loading">Loading books...</div>
-    </div>
-</div>
-
-
-<!-- ═══ INTERSTITIAL ════════════════════════════════════════════════════════ -->
-<div id="interstitial-livro" class="interstitial-overlay">
-    <div class="int-card">
-        <div class="int-topbar">
-            <span class="int-label">Publicidade</span>
-            <span class="int-chip" id="int-chip"><span id="int-count">5</span>s</span>
-        </div>
-        <div class="int-ad" id="int-ad-container">
-            <!-- AdSense inserido dinamicamente -->
-        </div>
-        <div class="int-footer">
-            <p class="int-wait" id="int-wait">Aguarde <span id="int-count2">5</span>s...</p>
-            <button class="int-btn" id="btn-ver-livro" disabled>View Book →</button>
-        </div>
     </div>
 </div>
 
@@ -463,72 +426,11 @@
         });
     });
 
-    // ── Interstitial ──────────────────────────────────────────────────────────
-    let pendingLink = '';
-    let intTimer    = null;
-
-    function abrirInterstitial(url) {
-        pendingLink = url;
-        const overlay  = document.getElementById('interstitial-livro');
-        const chip     = document.getElementById('int-chip');
-        const count1   = document.getElementById('int-count');
-        const count2   = document.getElementById('int-count2');
-        const waitEl   = document.getElementById('int-wait');
-        const btnVer   = document.getElementById('btn-ver-livro');
-
-        // Reinserir o slot AdSense para permitir múltiplos pushes
-        document.getElementById('int-ad-container').innerHTML =
-            `<ins class="adsbygoogle"
-                  style="display:inline-block;width:300px;height:250px"
-                  data-ad-client="ca-pub-7485615657043606"
-                  data-ad-slot="2669333856"></ins>`;
-        try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
-
-        // Reset visual
-        let seconds = 5;
-        count1.textContent = seconds;
-        count2.textContent = seconds;
-        chip.style.display  = '';
-        waitEl.style.display = '';
-        btnVer.disabled = true;
-
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-
-        clearInterval(intTimer);
-        intTimer = setInterval(() => {
-            seconds--;
-            count1.textContent = seconds;
-            count2.textContent = seconds;
-            if (seconds <= 0) {
-                clearInterval(intTimer);
-                chip.style.display   = 'none';
-                waitEl.style.display = 'none';
-                btnVer.disabled = false;
-            }
-        }, 1000);
-    }
-
-    function fecharInterstitial() {
-        document.getElementById('interstitial-livro').classList.remove('active');
-        document.body.style.overflow = '';
-        clearInterval(intTimer);
-    }
-
-    document.getElementById('btn-ver-livro').addEventListener('click', () => {
-        window.open(pendingLink, '_blank', 'noopener,noreferrer');
-        fecharInterstitial();
-    });
-
-    document.getElementById('interstitial-livro').addEventListener('click', function(e) {
-        if (e.target === this) fecharInterstitial();
-    });
-
     // Event delegation — captura cliques em qualquer .book-buy-btn do grid
     document.getElementById('books-grid').addEventListener('click', e => {
         const btn = e.target.closest('.book-buy-btn');
         if (btn && btn.dataset.link) {
-            abrirInterstitial(btn.dataset.link);
+            window.open(btn.dataset.link, '_blank', 'noopener,noreferrer');
         }
     });
 
