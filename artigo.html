@@ -253,7 +253,7 @@
                  class="hidden w-full object-cover rounded-2xl mb-10 shadow-md"
                  style="max-height:480px;">
             <div id="article-body" class="article-body"></div>
-            <div id="admin-delete-wrap" class="hidden mt-8 pt-6" style="border-top:1px solid #e5e7eb;">
+            <div id="admin-delete-wrap" class="hidden mt-8 pt-6" style="display:none;border-top:1px solid #e5e7eb;">
                 <button id="btn-delete-post" class="btn-delete-art">🗑️ Delete article</button>
             </div>
         </div>
@@ -376,8 +376,11 @@
     let _currentPost  = null;
 
     function mostrarBotaoDelete() {
-        if (isAdmin && currentDocId)
-            document.getElementById('admin-delete-wrap').classList.remove('hidden');
+        if (isAdmin && currentDocId) {
+            const el = document.getElementById('admin-delete-wrap');
+            el.classList.remove('hidden');
+            el.style.display = '';
+        }
     }
 
     document.getElementById('btn-delete-post').addEventListener('click', async () => {
