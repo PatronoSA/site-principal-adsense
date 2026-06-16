@@ -350,7 +350,64 @@
 </footer>
 
 <!-- ═══ PAINEL ADMIN ══════════════════════════════════════════════════════════ -->
-<div id="admin-panel" class="hidden max-w-2xl mx-auto my-10 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden" style="display:none;">
+<!-- Vazio por padrão: o formulário só é injetado via JS após onAuthStateChanged confirmar admin -->
+<div id="admin-panel" class="hidden max-w-2xl mx-auto my-10 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden" style="display:none;"></div>
+
+<!-- ═══ SCRIPT ════════════════════════════════════════════════════════════════ -->
+<script type="module">
+    import { initializeApp }      from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, doc, getDoc, setDoc, deleteDoc }
+                                   from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged,
+             createUserWithEmailAndPassword, signInWithEmailAndPassword,
+             setPersistence, browserLocalPersistence, browserSessionPersistence, updateProfile, deleteUser }
+                                   from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL }
+                                   from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
+
+    // ─── Stripe ───────────────────────────────────────────────────────────────
+    // Crie um Payment Link no Stripe Dashboard (produto $4.99/mês) e cole a URL abaixo.
+    const STRIPE_MONTHLY = 'https://buy.stripe.com/test_28E9ASeQodkO99ucUS5AQ00';
+    const STRIPE_YEARLY  = 'https://buy.stripe.com/test_3cIbJ04bK6Wq3Pa9IG5AQ01';
+
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAKbBvmfcJ-_FmRndrXypVm4DjK3cqpB6k",
+        authDomain: "desenvolvimentoreal-1b8a3.firebaseapp.com",
+        projectId: "desenvolvimentoreal-1b8a3",
+        storageBucket: "desenvolvimentoreal-1b8a3.firebasestorage.app",
+        messagingSenderId: "996194852151",
+        appId: "1:996194852151:web:41f962b99ecee030a64eb2",
+        measurementId: "G-63Z414S3KM"
+    };
+
+    const app     = initializeApp(firebaseConfig);
+    const db      = getFirestore(app);
+    const auth    = getAuth(app);
+    const storage = getStorage(app);
+
+    // ─── Estado global ────────────────────────────────────────────────────────
+    let allPosts       = [];
+    let activeCategory = 'todas';
+    const ADMIN_EMAIL  = 'devonkater01@gmail.com';
+
+    // Apply ?category= from URL (navigation from artigo.html)
+    const _urlCategory = new URLSearchParams(window.location.search).get('category');
+    if (_urlCategory) {
+        activeCategory = _urlCategory;
+        document.querySelectorAll('nav a.cat-link').forEach(a => {
+            a.classList.toggle('ativo', a.dataset.categoria === _urlCategory);
+        });
+    }
+
+    // ─── Premium / Admin ──────────────────────────────────────────────────────
+    function ocultarAnuncios() {
+        document.getElementById('premium-banner')?.remove();
+    }
+
+    // Markup do Publishing Panel: só existe como string até ser confirmado admin via Firestore.
+    // É injetado no DOM por montarAdminPanel() — nunca fica presente no HTML estático.
+    const ADMIN_PANEL_HTML = `
     <div class="bg-blue-700 px-8 py-5">
         <h2 class="text-xl font-bold text-white">Publishing Panel</h2>
     </div>
@@ -517,58 +574,20 @@
         </button>
         <div id="lv-success" style="display:none;background:#ecfdf5;border:1px solid #6ee7b7;color:#065f46;border-radius:8px;padding:12px 14px;font-size:13px;font-weight:600;text-align:center;">✅ Book published successfully! It now appears on books.html</div>
     </div>
-</div>
+    `;
 
-<!-- ═══ SCRIPT ════════════════════════════════════════════════════════════════ -->
-<script type="module">
-    import { initializeApp }      from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy, doc, getDoc, setDoc, deleteDoc }
-                                   from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged,
-             createUserWithEmailAndPassword, signInWithEmailAndPassword,
-             setPersistence, browserLocalPersistence, browserSessionPersistence, updateProfile, deleteUser }
-                                   from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-    import { getStorage, ref, uploadBytesResumable, getDownloadURL }
-                                   from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
+    let adminPanelMounted = false;
 
-    // ─── Stripe ───────────────────────────────────────────────────────────────
-    // Crie um Payment Link no Stripe Dashboard (produto $4.99/mês) e cole a URL abaixo.
-    const STRIPE_MONTHLY = 'https://buy.stripe.com/test_28E9ASeQodkO99ucUS5AQ00';
-    const STRIPE_YEARLY  = 'https://buy.stripe.com/test_3cIbJ04bK6Wq3Pa9IG5AQ01';
-
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyAKbBvmfcJ-_FmRndrXypVm4DjK3cqpB6k",
-        authDomain: "desenvolvimentoreal-1b8a3.firebaseapp.com",
-        projectId: "desenvolvimentoreal-1b8a3",
-        storageBucket: "desenvolvimentoreal-1b8a3.firebasestorage.app",
-        messagingSenderId: "996194852151",
-        appId: "1:996194852151:web:41f962b99ecee030a64eb2",
-        measurementId: "G-63Z414S3KM"
-    };
-
-    const app     = initializeApp(firebaseConfig);
-    const db      = getFirestore(app);
-    const auth    = getAuth(app);
-    const storage = getStorage(app);
-
-    // ─── Estado global ────────────────────────────────────────────────────────
-    let allPosts       = [];
-    let activeCategory = 'todas';
-    const ADMIN_EMAIL  = 'devonkater01@gmail.com';
-
-    // Apply ?category= from URL (navigation from artigo.html)
-    const _urlCategory = new URLSearchParams(window.location.search).get('category');
-    if (_urlCategory) {
-        activeCategory = _urlCategory;
-        document.querySelectorAll('nav a.cat-link').forEach(a => {
-            a.classList.toggle('ativo', a.dataset.categoria === _urlCategory);
-        });
+    function montarAdminPanel() {
+        adminPanel.innerHTML = ADMIN_PANEL_HTML;
+        inicializarAdminPanel();
+        adminPanelMounted = true;
     }
 
-    // ─── Premium / Admin ──────────────────────────────────────────────────────
-    function ocultarAnuncios() {
-        document.getElementById('premium-banner')?.remove();
+    function desmontarAdminPanel() {
+        if (!adminPanelMounted) return;
+        adminPanel.innerHTML = '';
+        adminPanelMounted = false;
     }
 
     // ─── Auth ─────────────────────────────────────────────────────────────────
@@ -712,25 +731,31 @@
             userInfo.style.display = 'block';
             authButtons.style.display = 'none';
             fecharModais();
-            // Admin panel: only reveal for the exact admin email AND Firestore admin flag
-            adminPanel.style.display = 'none';
-            adminPanel.classList.add('hidden');
+            // Admin panel: o formulário só é montado no DOM se o e-mail E o flag admin no Firestore baterem
+            let confirmedAdmin = false;
             if (user.email === ADMIN_EMAIL) {
                 try {
                     const snap = await getDoc(doc(db, "usuarios", user.uid));
                     const data = snap.exists() ? snap.data() : {};
-                    if (data.admin) {
-                        adminPanel.classList.remove('hidden');
-                        adminPanel.style.display = '';
-                    }
+                    confirmedAdmin = !!data.admin;
                     if (data.premium) ocultarAnuncios();
                 } catch (e) { console.warn('Firestore read error:', e); }
+            }
+            if (confirmedAdmin) {
+                if (!adminPanelMounted) montarAdminPanel();
+                adminPanel.classList.remove('hidden');
+                adminPanel.style.display = '';
+            } else {
+                adminPanel.classList.add('hidden');
+                adminPanel.style.display = 'none';
+                desmontarAdminPanel();
             }
         } else {
             userInfo.style.display = 'none';
             authButtons.style.display = 'flex';
             adminPanel.classList.add('hidden');
             adminPanel.style.display = 'none';
+            desmontarAdminPanel();
             fecharDropdown();
         }
     });
@@ -940,6 +965,12 @@
         }
         renderPosts();
     }
+
+    // ─── Inicialização do Publishing Panel ───────────────────────────────────
+    // Tudo abaixo manipula elementos que só existem no DOM depois de montarAdminPanel()
+    // injetar ADMIN_PANEL_HTML — por isso fica dentro desta função, chamada uma única vez
+    // após a confirmação de admin, em vez de rodar no carregamento da página.
+    function inicializarAdminPanel() {
 
     // ─── SEO / Slug ───────────────────────────────────────────────────────────
     let slugManuallyEdited = false;
@@ -1162,6 +1193,8 @@
             } catch(e) { alert('Clipboard access denied. Please allow clipboard permissions in your browser.'); }
         });
     });
+
+    } // fim de inicializarAdminPanel()
 
     // ─── Dropdown item handlers ───────────────────────────────────────────────
     document.getElementById('dd-perfil').addEventListener('click', e => {
