@@ -133,6 +133,46 @@
         .modal-footer-link a { color: var(--accent); font-weight: 700; cursor: pointer; text-decoration: none; }
         .modal-error { background: #fef2f2; border: 1px solid #fca5a5; color: #dc2626; border-radius: 6px; padding: 9px 12px; font-size: 13px; margin-bottom: 12px; display: none; }
 
+        /* ── Book Tags (card) ── */
+        .book-tags-wrap { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+        .tag-badge { display: inline-block; background: #f0f2f5; color: #555; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; cursor: pointer; transition: all .2s; border: 1px solid #e0e0e0; text-transform: lowercase; letter-spacing: .2px; }
+        .tag-badge:hover, .tag-badge.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .book-detail-link { display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+        .book-detail-link:hover { color: #0046a0; }
+
+        /* ── Tag filter indicator ── */
+        .tag-filter-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; border: none; border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 700; font-family: 'Roboto', sans-serif; cursor: pointer; }
+        .tag-filter-chip span { font-size: 14px; line-height: 1; }
+
+        /* ── Book Detail Modal ── */
+        .modal-book-detail { max-width: 700px !important; padding: 0 !important; overflow: hidden; }
+        .book-detail-scroll { max-height: 88vh; overflow-y: auto; }
+        .book-detail-header { background: linear-gradient(135deg, var(--dark-blue) 0%, #0d2650 100%); color: #fff; padding: 28px 28px 24px; display: flex; gap: 20px; align-items: flex-start; }
+        .book-detail-cover { width: 90px; height: 128px; border-radius: 8px; object-fit: cover; flex-shrink: 0; box-shadow: 0 6px 24px rgba(0,0,0,.45); }
+        .book-detail-cover-ph { width: 90px; height: 128px; border-radius: 8px; background: rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; font-size: 36px; flex-shrink: 0; }
+        .book-detail-title { font-size: 20px; font-weight: 900; margin: 0 0 4px; line-height: 1.25; }
+        .book-detail-author { font-size: 13px; color: rgba(255,255,255,.7); margin: 0 0 12px; font-style: italic; }
+        .book-detail-body { padding: 24px 28px 28px; }
+
+        /* ── Featured Quote ── */
+        .featured-quote { position: relative; background: linear-gradient(135deg, #f0f4ff, #e8f0fe); border-left: 4px solid var(--accent); border-radius: 0 12px 12px 0; padding: 18px 20px 18px 42px; margin-bottom: 22px; }
+        .featured-quote::before { content: '\201C'; font-size: 56px; color: var(--accent); opacity: .25; line-height: 0; position: absolute; top: 30px; left: 10px; font-family: Georgia, serif; }
+        .featured-quote p { margin: 0; font-size: 15px; font-style: italic; color: #1a1a3e; line-height: 1.65; font-family: 'Merriweather', serif; }
+
+        /* ── Key Takeaways ── */
+        .key-takeaways { background: #f8fafc; border-radius: 12px; padding: 18px 20px; margin-bottom: 22px; }
+        .section-label { font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: .7px; margin-bottom: 12px; }
+        .key-takeaways ul { margin: 0; padding: 0; list-style: none; }
+        .key-takeaways ul li { font-size: 14px; color: #333; line-height: 1.65; padding: 5px 0 5px 22px; position: relative; }
+        .key-takeaways ul li::before { content: '•'; color: var(--accent); font-weight: 900; font-size: 16px; position: absolute; left: 0; top: 4px; }
+
+        /* ── Full Review ── */
+        .full-review { margin-bottom: 22px; }
+        .full-review-text { font-size: 14px; color: #444; line-height: 1.85; white-space: pre-wrap; }
+
+        /* ── Detail Tags ── */
+        .detail-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
+
         /* ── Footer ── */
         footer { background: var(--black); color: #777; text-align: center; padding: 36px 20px; margin-top: 60px; font-size: 13px; }
         footer a { color: #aaa; text-decoration: none; margin: 0 10px; font-weight: 700; }
@@ -299,6 +339,15 @@
     </div>
 </div>
 
+<!-- ═══ MODAL DETALHE DO LIVRO ════════════════════════════════════════════════ -->
+<div id="modal-book-detail" class="modal-overlay">
+    <div class="modal-card modal-book-detail">
+        <div class="book-detail-scroll" id="book-detail-scroll">
+            <!-- preenchido dinamicamente via JS -->
+        </div>
+    </div>
+</div>
+
 <!-- ═══ SCRIPT ════════════════════════════════════════════════════════════════ -->
 <script type="module">
     import { initializeApp }    from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
@@ -351,37 +400,91 @@
     // ── Render cards ─────────────────────────────────────────────────────────
     let allBooks     = [];
     let activeFilter = 'todas';
+    let activeTag    = '';
     let isAdmin      = false;
 
+    const originalTitle   = document.title;
+    const originalMetaDesc = document.querySelector('meta[name="description"]')?.content || '';
+
+    function bookHasTag(book, tag) {
+        if (!book.tags) return false;
+        return book.tags.split(',').map(t => t.trim().toLowerCase()).includes(tag.toLowerCase());
+    }
+
     document.getElementById('books-grid').addEventListener('click', async e => {
-        const btn = e.target.closest('.btn-delete-book');
-        if (!btn) return;
-        if (!confirm('Excluir este livro permanentemente?')) return;
-        const lid = btn.dataset.id;
-        try {
-            await deleteDoc(doc(db, 'livros', lid));
-            allBooks = allBooks.filter(b => b.id !== lid);
+        const delBtn = e.target.closest('.btn-delete-book');
+        if (delBtn) {
+            if (!confirm('Excluir este livro permanentemente?')) return;
+            const lid = delBtn.dataset.id;
+            try {
+                await deleteDoc(doc(db, 'livros', lid));
+                allBooks = allBooks.filter(b => b.id !== lid);
+                renderBooks();
+            } catch (err) { alert('Error deleting: ' + err.message); }
+            return;
+        }
+
+        const tagBtn = e.target.closest('.tag-badge');
+        if (tagBtn) {
+            activeTag = tagBtn.dataset.tag;
+            activeFilter = 'todas';
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('ativo'));
+            document.querySelector('.filter-btn[data-cat="todas"]').classList.add('ativo');
             renderBooks();
-        } catch (err) { alert('Error deleting: ' + err.message); }
+            showTagChip(activeTag);
+            return;
+        }
+
+        const detailBtn = e.target.closest('.book-detail-link');
+        if (detailBtn) {
+            const bid = detailBtn.dataset.id;
+            const book = allBooks.find(b => b.id === bid);
+            if (book) openBookDetail(book);
+            return;
+        }
     });
+
+    function showTagChip(tag) {
+        const bar = document.getElementById('filter-bar');
+        let chip = document.getElementById('tag-filter-chip');
+        if (!chip) {
+            chip = document.createElement('button');
+            chip.id = 'tag-filter-chip';
+            chip.className = 'tag-filter-chip';
+            chip.addEventListener('click', () => { activeTag = ''; chip.remove(); renderBooks(); });
+            bar.appendChild(chip);
+        }
+        chip.innerHTML = `<span>🏷️</span> ${tag} <span>×</span>`;
+    }
+
+    function escapeHtml(str) {
+        return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
 
     function renderBooks() {
         const grid = document.getElementById('books-grid');
-        const filtered = activeFilter === 'todas'
+        let filtered = activeFilter === 'todas'
             ? allBooks
             : allBooks.filter(b => b.categoria === activeFilter);
+        if (activeTag) filtered = filtered.filter(b => bookHasTag(b, activeTag));
 
         if (!filtered.length) {
             grid.innerHTML = `<div class="books-empty">📭 No books in this category yet.</div>`;
             return;
         }
 
-        grid.innerHTML = filtered.map(b => `
+        grid.innerHTML = filtered.map(b => {
+            const tagsList = b.tags
+                ? b.tags.split(',').map(t => t.trim()).filter(Boolean)
+                    .map(t => `<span class="tag-badge${activeTag===t?' active':''}" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('')
+                : '';
+            const hasDetail = b.keyTakeaways || b.fullReview || b.featuredQuote;
+            return `
             <div class="book-card">
                 ${isAdmin ? `<button class="btn-delete-book" data-id="${b.id}" title="Excluir livro">🗑️</button>` : ''}
                 <div class="book-cover-wrap">
                     ${b.imagem
-                        ? `<img src="${b.imagem}" alt="${b.titulo}" loading="lazy">`
+                        ? `<img src="${escapeHtml(b.imagem)}" alt="${escapeHtml(b.titulo)}" loading="lazy">`
                         : `<div class="book-cover-placeholder">📖</div>`}
                 </div>
                 <div class="book-body">
@@ -392,18 +495,106 @@
                             <span class="rating-num">${parseFloat(b.nota || 0).toFixed(1)}/5</span>
                         </div>
                     </div>
-                    <div class="book-title">${b.titulo}</div>
-                    <div class="book-author">by ${b.autor}</div>
-                    ${b.resumo ? `<div class="book-summary">${b.resumo}</div>` : ''}
+                    <div class="book-title">${escapeHtml(b.titulo)}</div>
+                    <div class="book-author">by ${escapeHtml(b.autor)}</div>
+                    ${b.resumo ? `<div class="book-summary">${escapeHtml(b.resumo)}</div>` : ''}
                     ${b.porque ? `
                     <div class="book-why">
-                        <div class="book-why-label">💡 Por que recomendamos</div>
-                        <div class="book-why-text">${b.porque}</div>
+                        <div class="book-why-label">💡 Why we recommend</div>
+                        <div class="book-why-text">${escapeHtml(b.porque)}</div>
                     </div>` : ''}
-                    ${b.link ? `<button class="book-buy-btn" data-link="${b.link}">🛒 Comprar agora →</button>` : ''}
+                    ${tagsList ? `<div class="book-tags-wrap">${tagsList}</div>` : ''}
+                    ${hasDetail ? `<span class="book-detail-link" data-id="${b.id}">Read full review →</span>` : ''}
+                    ${b.link ? `<button class="book-buy-btn" data-link="${escapeHtml(b.link)}" style="margin-top:12px;">🛒 Buy now →</button>` : ''}
                 </div>
-            </div>`).join('');
+            </div>`;
+        }).join('');
     }
+
+    // ── Book Detail Modal ─────────────────────────────────────────────────────
+    const modalBookDetail = document.getElementById('modal-book-detail');
+
+    function openBookDetail(book) {
+        document.title = book.seoTitle || `${book.titulo} | Life Mastery Path`;
+        let metaEl = document.querySelector('meta[name="description"]');
+        if (!metaEl) { metaEl = document.createElement('meta'); metaEl.name = 'description'; document.head.appendChild(metaEl); }
+        if (book.metaDescription) metaEl.content = book.metaDescription;
+
+        const tagsList = book.tags
+            ? book.tags.split(',').map(t => t.trim()).filter(Boolean)
+                .map(t => `<span class="tag-badge detail-tag-btn" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('')
+            : '';
+
+        const takeawaysHtml = book.keyTakeaways
+            ? `<div class="key-takeaways">
+                <div class="section-label">✅ Key Takeaways</div>
+                <ul>${book.keyTakeaways.split('\n').filter(l => l.trim())
+                    .map(l => `<li>${escapeHtml(l.replace(/^[•\-\*]\s*/, ''))}</li>`).join('')}</ul>
+               </div>`
+            : '';
+
+        const quoteHtml = book.featuredQuote
+            ? `<div class="featured-quote"><p>${escapeHtml(book.featuredQuote)}</p></div>`
+            : '';
+
+        const reviewHtml = book.fullReview
+            ? `<div class="full-review">
+                <div class="section-label">📖 Full Review</div>
+                <div class="full-review-text">${escapeHtml(book.fullReview)}</div>
+               </div>`
+            : '';
+
+        document.getElementById('book-detail-scroll').innerHTML = `
+            <div class="book-detail-header">
+                ${book.imagem
+                    ? `<img src="${escapeHtml(book.imagem)}" alt="${escapeHtml(book.titulo)}" class="book-detail-cover">`
+                    : `<div class="book-detail-cover-ph">📖</div>`}
+                <div style="min-width:0;flex:1;">
+                    <div style="margin-bottom:8px;">${catBadge(book.categoria)}</div>
+                    <div class="book-detail-title">${escapeHtml(book.titulo)}</div>
+                    <div class="book-detail-author">by ${escapeHtml(book.autor)}</div>
+                    <div class="book-rating" style="margin-top:4px;">
+                        <span class="stars">${renderStars(book.nota)}</span>
+                        <span class="rating-num" style="color:rgba(255,255,255,.65);">${parseFloat(book.nota||0).toFixed(1)}/5</span>
+                    </div>
+                    ${book.isbn ? `<div style="margin-top:8px;font-size:11px;color:rgba(255,255,255,.5);">ISBN: ${escapeHtml(book.isbn)}</div>` : ''}
+                </div>
+                <button onclick="fecharBookDetail()" style="position:absolute;top:14px;right:18px;background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">×</button>
+            </div>
+            <div class="book-detail-body">
+                ${quoteHtml}
+                ${book.resumo ? `<p style="font-size:14px;color:#555;line-height:1.75;margin-bottom:20px;">${escapeHtml(book.resumo)}</p>` : ''}
+                ${takeawaysHtml}
+                ${reviewHtml}
+                ${tagsList ? `<div class="detail-tags"><div class="section-label" style="width:100%;margin-bottom:8px;">🏷️ Tags</div>${tagsList}</div>` : ''}
+                ${book.link ? `<a href="${escapeHtml(book.link)}" target="_blank" rel="noopener noreferrer" style="display:block;text-align:center;background:var(--accent);color:#fff;font-weight:700;font-size:14px;padding:13px 20px;border-radius:10px;text-decoration:none;margin-top:8px;">🛒 Buy on Amazon →</a>` : ''}
+            </div>`;
+
+        document.querySelectorAll('#book-detail-scroll .detail-tag-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                activeTag = btn.dataset.tag;
+                activeFilter = 'todas';
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('ativo'));
+                document.querySelector('.filter-btn[data-cat="todas"]').classList.add('ativo');
+                fecharBookDetail();
+                renderBooks();
+                showTagChip(activeTag);
+            });
+        });
+
+        modalBookDetail.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    window.fecharBookDetail = function() {
+        modalBookDetail.classList.remove('active');
+        document.body.style.overflow = '';
+        document.title = originalTitle;
+        const metaEl = document.querySelector('meta[name="description"]');
+        if (metaEl) metaEl.content = originalMetaDesc;
+    };
+
+    modalBookDetail.addEventListener('click', e => { if (e.target === modalBookDetail) fecharBookDetail(); });
 
     async function carregarLivros() {
         try {
@@ -422,6 +613,9 @@
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('ativo'));
             btn.classList.add('ativo');
             activeFilter = btn.dataset.cat;
+            activeTag = '';
+            const chip = document.getElementById('tag-filter-chip');
+            if (chip) chip.remove();
             renderBooks();
         });
     });
@@ -474,7 +668,7 @@
         triggerChevron.classList.toggle('open', open);
     });
     document.addEventListener('click', () => fecharDropdown());
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { fecharDropdown(); fecharModais(); } });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { fecharDropdown(); fecharModais(); fecharBookDetail(); } });
 
     document.getElementById('btn-logout').addEventListener('click', () => { fecharDropdown(); signOut(auth); });
 

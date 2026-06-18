@@ -983,6 +983,16 @@
         document.getElementById('lv-star-preview').textContent = renderLvStars(this.value);
     });
 
+    const lvMetaDescInput = document.getElementById('lv-metaDescription');
+    const lvMetaDescCount = document.getElementById('lv-metaDesc-count');
+    if (lvMetaDescInput && lvMetaDescCount) {
+        lvMetaDescInput.addEventListener('input', function() {
+            const rem = 160 - this.value.length;
+            lvMetaDescCount.textContent = rem;
+            lvMetaDescCount.style.color = rem < 5 ? '#ef4444' : '#9ca3af';
+        });
+    }
+
     lvDrop.addEventListener('click', () => lvInput.click());
     lvDrop.addEventListener('dragover', e => { e.preventDefault(); lvDrop.style.borderColor = '#0056b3'; lvDrop.style.background = '#f0f4ff'; });
     lvDrop.addEventListener('dragleave', () => { lvDrop.style.borderColor = '#d0d5e0'; lvDrop.style.background = ''; });
@@ -1006,13 +1016,20 @@
     }
 
     document.getElementById('btn-publicar-livro').addEventListener('click', async () => {
-        const titulo    = document.getElementById('lv-titulo').value.trim();
-        const autor     = document.getElementById('lv-autor').value.trim();
-        const categoria = document.getElementById('lv-categoria').value;
-        const nota      = parseFloat(document.getElementById('lv-nota').value) || 0;
-        const resumo    = document.getElementById('lv-resumo').value.trim();
-        const porque    = document.getElementById('lv-porque').value.trim();
-        const link      = document.getElementById('lv-link').value.trim();
+        const titulo          = document.getElementById('lv-titulo').value.trim();
+        const autor           = document.getElementById('lv-autor').value.trim();
+        const categoria       = document.getElementById('lv-categoria').value;
+        const nota            = parseFloat(document.getElementById('lv-nota').value) || 0;
+        const resumo          = document.getElementById('lv-resumo').value.trim();
+        const porque          = document.getElementById('lv-porque').value.trim();
+        const keyTakeaways    = document.getElementById('lv-keyTakeaways').value.trim();
+        const fullReview      = document.getElementById('lv-fullReview').value.trim();
+        const featuredQuote   = document.getElementById('lv-featuredQuote').value.trim();
+        const link            = document.getElementById('lv-link').value.trim();
+        const seoTitle        = document.getElementById('lv-seoTitle').value.trim();
+        const metaDescription = document.getElementById('lv-metaDescription').value.trim();
+        const isbn            = document.getElementById('lv-isbn').value.trim();
+        const tags            = document.getElementById('lv-tags').value.trim();
 
         if (!titulo || !autor) { alert('Please fill in at least title and author.'); return; }
 
@@ -1021,13 +1038,17 @@
         btn.disabled = true; btn.textContent = 'Publishing...';
         try {
             await addDoc(collection(db, 'livros'), {
-                titulo, autor, categoria, nota, resumo, porque, link,
+                titulo, autor, categoria, nota, resumo, porque,
+                keyTakeaways, fullReview, featuredQuote,
+                link, seoTitle, metaDescription, isbn, tags,
                 imagem: lvUploadedUrl || '',
                 data: new Date()
             });
             document.getElementById('lv-success').style.display = 'block';
             setTimeout(() => { document.getElementById('lv-success').style.display = 'none'; }, 4000);
-            ['lv-titulo','lv-autor','lv-resumo','lv-porque','lv-link'].forEach(id => document.getElementById(id).value = '');
+            ['lv-titulo','lv-autor','lv-resumo','lv-porque','lv-keyTakeaways','lv-fullReview',
+             'lv-featuredQuote','lv-link','lv-seoTitle','lv-metaDescription','lv-isbn','lv-tags']
+            .forEach(id => document.getElementById(id).value = '');
             document.getElementById('lv-nota').value = '4.5';
             document.getElementById('lv-star-preview').textContent = renderLvStars(4.5);
             document.getElementById('lv-drop-label').textContent = 'Click to select';

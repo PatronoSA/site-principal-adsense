@@ -224,10 +224,55 @@ const ADMIN_PANEL_HTML = `
         </div>
         <div>
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                <label style="font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;">Key Takeaways <span style="font-weight:400;color:#aaa;text-transform:none;">(3–5 items, one per line)</span></label>
+                <button type="button" class="paste-btn" data-paste="lv-keyTakeaways" title="Paste from clipboard">📋</button>
+            </div>
+            <textarea id="lv-keyTakeaways" rows="5" placeholder="• Small habits compound over time&#10;• Focus on systems, not goals&#10;• Identity shapes behavior" style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;resize:vertical;box-sizing:border-box;"></textarea>
+        </div>
+        <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                <label style="font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;">Full Review <span style="font-weight:400;color:#aaa;text-transform:none;">(500–1500 words)</span></label>
+                <button type="button" class="paste-btn" data-paste="lv-fullReview" title="Paste from clipboard">📋</button>
+            </div>
+            <textarea id="lv-fullReview" rows="10" placeholder="Write a detailed review of this book..." style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;resize:vertical;box-sizing:border-box;"></textarea>
+        </div>
+        <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                <label style="font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;">Featured Quote</label>
+                <button type="button" class="paste-btn" data-paste="lv-featuredQuote" title="Paste from clipboard">📋</button>
+            </div>
+            <input id="lv-featuredQuote" type="text" placeholder="Ex: You do not rise to the level of your goals, you fall to the level of your systems." style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
+        </div>
+        <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
                 <label style="font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;">Affiliate Link</label>
                 <button type="button" class="paste-btn" data-paste="lv-link" title="Paste from clipboard">📋</button>
             </div>
             <input id="lv-link" type="url" placeholder="https://www.amazon.com/dp/..." style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
+        </div>
+        <div style="border-top:1px solid #f0f0f0;margin:4px 0 8px;padding-top:16px;">
+            <div style="font-size:11px;font-weight:700;color:#0056b3;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;">🔍 SEO &amp; Metadata</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                <label style="font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;">SEO Title</label>
+                <button type="button" class="paste-btn" data-paste="lv-seoTitle" title="Paste from clipboard">📋</button>
+            </div>
+            <input id="lv-seoTitle" type="text" placeholder="Atomic Habits by James Clear – Summary, Review &amp; Key Lessons" style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                <label style="font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;">Meta Description</label>
+                <button type="button" class="paste-btn" data-paste="lv-metaDescription" title="Paste from clipboard">📋</button>
+            </div>
+            <textarea id="lv-metaDescription" rows="3" maxlength="160" placeholder="Summary for search engines (max 160 characters)" style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;resize:none;box-sizing:border-box;"></textarea>
+            <p style="font-size:11px;text-align:right;margin:3px 0 12px;"><span id="lv-metaDesc-count" style="color:#9ca3af;">160</span> <span style="color:#9ca3af;">characters left</span></p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                <div>
+                    <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">ISBN <span style="font-weight:400;color:#aaa;text-transform:none;">(optional)</span></label>
+                    <input id="lv-isbn" type="text" placeholder="978-0-7352-1174-3" style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
+                </div>
+                <div>
+                    <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Tags</label>
+                    <input id="lv-tags" type="text" placeholder="habits, productivity, self-improvement" style="width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:9px 13px;font-size:14px;font-family:'Roboto',sans-serif;color:#333;outline:none;box-sizing:border-box;">
+                </div>
+            </div>
         </div>
         <div>
             <label style="display:block;font-size:12px;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;">Book Cover</label>
