@@ -9,6 +9,13 @@ service cloud.firestore {
                    && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.admin == true;
     }
 
+    // Livros — leitura pública, escrita somente para usuários admin
+    match /livros/{livroId} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.admin == true;
+    }
+
     // Usuarios — leitura e escrita só pelo próprio usuário
     // Escrita de campos sensíveis (premium, admin) só via Cloud Function (Admin SDK)
     match /usuarios/{uid} {
