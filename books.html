@@ -91,8 +91,8 @@
         /* ── Book Card ── */
         .book-card { background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,.08); overflow: hidden; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s; }
         .book-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,.14); }
-        .book-cover-wrap { position: relative; background: #e8eaf0; height: 220px; overflow: hidden; flex-shrink: 0; }
-        .book-cover-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .book-cover-wrap { position: relative; background: #f5f5f5; height: 220px; overflow: hidden; flex-shrink: 0; }
+        .book-cover-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; }
         .book-cover-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 64px; background: linear-gradient(135deg, #e8eaf0, #d5d9e4); }
         .book-body { padding: 18px 20px; display: flex; flex-direction: column; flex: 1; }
         .book-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
@@ -112,7 +112,15 @@
 
         .btn-delete-book { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,.9); border: 1.5px solid #dc2626; color: #dc2626; border-radius: 6px; padding: 4px 8px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: 'Roboto', sans-serif; transition: background .15s, color .15s; z-index: 2; }
         .btn-delete-book:hover { background: #dc2626; color: #fff; }
+        .btn-edit-rating { position: absolute; top: 8px; left: 8px; background: rgba(255,255,255,.9); border: 1.5px solid #0056b3; color: #0056b3; border-radius: 6px; padding: 4px 8px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: 'Roboto', sans-serif; transition: background .15s, color .15s; z-index: 2; }
+        .btn-edit-rating:hover { background: #0056b3; color: #fff; }
         .book-card { position: relative; }
+
+        /* ── Rating Edit Modal ── */
+        .modal-rating-card { max-width: 320px !important; text-align: center; }
+        .rating-edit-stars { font-size: 28px; color: #f59e0b; letter-spacing: 3px; margin: 10px 0 4px; min-height: 36px; }
+        .modal-buy-top { display: block; text-align: center; background: none; border: 2px solid var(--accent); color: var(--accent); font-weight: 700; font-size: 13px; padding: 9px 16px; border-radius: 8px; cursor: pointer; font-family: 'Roboto', sans-serif; transition: all .2s; text-decoration: none; margin-bottom: 18px; }
+        .modal-buy-top:hover { background: var(--accent); color: #fff; }
 
         /* ── Modal (login/cadastro) ── */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 1000; align-items: center; justify-content: center; padding: 16px; }
@@ -339,6 +347,19 @@
     </div>
 </div>
 
+<!-- ═══ MODAL EDITAR RATING ══════════════════════════════════════════════════ -->
+<div id="modal-edit-rating" class="modal-overlay">
+    <div class="modal-card modal-rating-card">
+        <button class="modal-close" id="fechar-edit-rating">×</button>
+        <h2 class="modal-title" style="font-size:18px;">Edit Rating</h2>
+        <div class="rating-edit-stars" id="rating-edit-stars">★★★★½</div>
+        <input id="rating-edit-input" type="number" min="0.5" max="5" step="0.5"
+               class="modal-input" style="text-align:center;font-size:22px;font-weight:700;width:110px;margin:0 auto 16px;"
+               value="4.5">
+        <button id="btn-save-rating" class="modal-btn-primary">Save Rating</button>
+    </div>
+</div>
+
 <!-- ═══ MODAL DETALHE DO LIVRO ════════════════════════════════════════════════ -->
 <div id="modal-book-detail" class="modal-overlay">
     <div class="modal-card modal-book-detail">
@@ -351,7 +372,7 @@
 <!-- ═══ SCRIPT ════════════════════════════════════════════════════════════════ -->
 <script type="module">
     import { initializeApp }    from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, deleteDoc, query, orderBy, doc, getDoc }
+    import { getFirestore, collection, getDocs, deleteDoc, query, orderBy, doc, getDoc, updateDoc }
                                 from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged,
              createUserWithEmailAndPassword, signInWithEmailAndPassword,
@@ -435,6 +456,12 @@
             return;
         }
 
+        const editBtn = e.target.closest('.btn-edit-rating');
+        if (editBtn) {
+            abrirEditRating(editBtn.dataset.id, parseFloat(editBtn.dataset.nota) || 4.5);
+            return;
+        }
+
         const detailBtn = e.target.closest('.book-detail-link');
         if (detailBtn) {
             const bid = detailBtn.dataset.id;
@@ -481,6 +508,7 @@
             const hasDetail = b.keyTakeaways || b.fullReview || b.featuredQuote;
             return `
             <div class="book-card">
+                ${isAdmin ? `<button class="btn-edit-rating" data-id="${b.id}" data-nota="${b.nota||0}" title="Edit rating">✏️</button>` : ''}
                 ${isAdmin ? `<button class="btn-delete-book" data-id="${b.id}" title="Excluir livro">🗑️</button>` : ''}
                 <div class="book-cover-wrap">
                     ${b.imagem
@@ -510,6 +538,55 @@
             </div>`;
         }).join('');
     }
+
+    // ── Rating Edit Modal ─────────────────────────────────────────────────────
+    const modalEditRating = document.getElementById('modal-edit-rating');
+    const ratingInput     = document.getElementById('rating-edit-input');
+    const ratingStars     = document.getElementById('rating-edit-stars');
+    let   editingBookId   = null;
+
+    function abrirEditRating(bookId, notaAtual) {
+        editingBookId = bookId;
+        ratingInput.value = notaAtual;
+        ratingStars.textContent = renderStars(notaAtual);
+        modalEditRating.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        ratingInput.focus();
+    }
+
+    function fecharEditRating() {
+        modalEditRating.classList.remove('active');
+        document.body.style.overflow = '';
+        editingBookId = null;
+    }
+
+    ratingInput.addEventListener('input', () => {
+        ratingStars.textContent = renderStars(ratingInput.value);
+    });
+
+    document.getElementById('fechar-edit-rating').addEventListener('click', fecharEditRating);
+    modalEditRating.addEventListener('click', e => { if (e.target === modalEditRating) fecharEditRating(); });
+
+    document.getElementById('btn-save-rating').addEventListener('click', async () => {
+        if (!editingBookId) return;
+        const newNota = parseFloat(ratingInput.value);
+        if (isNaN(newNota) || newNota < 0.5 || newNota > 5) {
+            alert('Rating must be between 0.5 and 5.'); return;
+        }
+        const saveBtn = document.getElementById('btn-save-rating');
+        saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
+        try {
+            await updateDoc(doc(db, 'livros', editingBookId), { nota: newNota });
+            const book = allBooks.find(b => b.id === editingBookId);
+            if (book) book.nota = newNota;
+            fecharEditRating();
+            renderBooks();
+        } catch(err) {
+            alert('Error saving: ' + err.message);
+        } finally {
+            saveBtn.disabled = false; saveBtn.textContent = 'Save Rating';
+        }
+    });
 
     // ── Book Detail Modal ─────────────────────────────────────────────────────
     const modalBookDetail = document.getElementById('modal-book-detail');
@@ -562,6 +639,7 @@
                 <button onclick="fecharBookDetail()" style="position:absolute;top:14px;right:18px;background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">×</button>
             </div>
             <div class="book-detail-body">
+                ${book.link ? `<a href="${escapeHtml(book.link)}" target="_blank" rel="noopener noreferrer" class="modal-buy-top">🛒 Buy on Amazon →</a>` : ''}
                 ${quoteHtml}
                 ${book.resumo ? `<p style="font-size:14px;color:#555;line-height:1.75;margin-bottom:20px;">${escapeHtml(book.resumo)}</p>` : ''}
                 ${takeawaysHtml}
@@ -668,7 +746,7 @@
         triggerChevron.classList.toggle('open', open);
     });
     document.addEventListener('click', () => fecharDropdown());
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { fecharDropdown(); fecharModais(); fecharBookDetail(); } });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { fecharDropdown(); fecharModais(); fecharBookDetail(); fecharEditRating(); } });
 
     document.getElementById('btn-logout').addEventListener('click', () => { fecharDropdown(); signOut(auth); });
 
