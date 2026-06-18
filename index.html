@@ -29,7 +29,7 @@
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%230056b3'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='38' font-family='Arial Black,sans-serif' font-weight='900' fill='white'>L</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
     <meta name="google-site-verification" content="HI7uwHfKjeJl7pzYJTbGhK5ndQ348aRkDJq7XQFZgL8" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.tailwindcss.com"></script>
     <style>
         :root { --dark-blue: #0B172A; --black: #000; --accent: #0056b3; }
         body { font-family: 'Roboto', sans-serif; margin: 0; background: #fff; color: #333; }
@@ -806,18 +806,30 @@
             : `<p style="color:#999;font-size:13px;">No articles yet.</p>`;
     }
 
-    async function carregarPosts() {
-        const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 10000));
+    async function carregarPosts(attempt = 1) {
+        console.log(`[carregarPosts] attempt ${attempt} — start`);
+        const TIMEOUT_MS = 20000;
+        const makeTimeout = () => new Promise((_, rej) =>
+            setTimeout(() => rej(new Error('timeout')), TIMEOUT_MS));
         try {
             const snap = await Promise.race([
                 getDocs(query(collection(db, "posts"), orderBy("data", "desc"))),
-                timeout
+                makeTimeout()
             ]);
             allPosts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            console.log(`[carregarPosts] success — ${allPosts.length} posts loaded`);
         } catch (e) {
-            console.warn('Firestore error:', e.message);
+            console.warn(`[carregarPosts] attempt ${attempt} failed:`, e.message);
+            if (attempt < 3) {
+                const delay = attempt * 3000;
+                console.log(`[carregarPosts] retrying in ${delay / 1000}s…`);
+                await new Promise(res => setTimeout(res, delay));
+                return carregarPosts(attempt + 1);
+            }
+            console.error('[carregarPosts] all attempts failed, showing empty state');
             allPosts = [];
         }
+        console.log('[carregarPosts] renderPosts() called');
         renderPosts();
     }
 
