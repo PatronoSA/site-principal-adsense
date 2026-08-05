@@ -312,3 +312,86 @@ exports.getAdminPanelHTML = functions.https.onCall(async (data, context) => {
 
     return { html: ADMIN_PANEL_HTML };
 });
+
+
+// ── AI Chat ──────────────────────────────────────────────────────────────────
+// Proxies chat messages to the Claude API. The API key never reaches the
+// client: it lives only in functions/.env (ANTHROPIC_API_KEY), which is
+// gitignored. Requires sign-in and a per-user daily cap to keep this public
+// AdSense site from being used for unbounded/anonymous API usage.
+const CHAT_MODEL              = 'claude-sonnet-5';
+const CHAT_MAX_MESSAGE_LENGTH = 4000;
+const CHAT_MAX_HISTORY        = 20;
+const CHAT_DAILY_LIMIT        = 50;
+
+exports.chatWithAI = functions.https.onCall(async (data, context) => {
+    if (!context.auth) {
+        throw new functions.https.HttpsError('unauthenticated', 'Sign in required to use the chat.');
+    }
+
+    const message = typeof data?.message === 'string' ? data.message.trim() : '';
+    if (!message) {
+        throw new functions.https.HttpsError('invalid-argument', 'Message is required.');
+    }
+    if (message.length > CHAT_MAX_MESSAGE_LENGTH) {
+        throw new functions.https.HttpsError('invalid-argument', `Message must be under ${CHAT_MAX_MESSAGE_LENGTH} characters.`);
+    }
+
+    const history = Array.isArray(data?.history)
+        ? data.history
+            .slice(-CHAT_MAX_HISTORY)
+            .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+            .map(m => ({ role: m.role, content: m.content.slice(0, CHAT_MAX_MESSAGE_LENGTH) }))
+        : [];
+
+    if (!process.env.ANTHROPIC_API_KEY) {
+        throw new functions.https.HttpsError('failed-precondition', 'AI chat is not configured yet.');
+    }
+
+    const db        = admin.firestore();
+    const usageRef  = db.collection('chatUsage').doc(context.auth.uid);
+    const today     = new Date().toISOString().slice(0, 10);
+
+    const allowed = await db.runTransaction(async (tx) => {
+        const snap    = await tx.get(usageRef);
+        const usage   = snap.exists ? snap.data() : {};
+        const count   = usage.date === today ? (usage.count || 0) : 0;
+        if (count >= CHAT_DAILY_LIMIT) return false;
+        tx.set(usageRef, { date: today, count: count + 1 }, { merge: true });
+        return true;
+    });
+
+    if (!allowed) {
+        throw new functions.https.HttpsError('resource-exhausted', `Daily chat limit reached (${CHAT_DAILY_LIMIT} messages/day). Please try again tomorrow.`);
+    }
+
+    let response;
+    try {
+        response = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                'x-api-key': process.env.ANTHROPIC_API_KEY,
+                'anthropic-version': '2023-06-01',
+            },
+            body: JSON.stringify({
+                model: CHAT_MODEL,
+                max_tokens: 1024,
+                messages: [...history, { role: 'user', content: message }],
+            }),
+        });
+    } catch (err) {
+        console.error('Anthropic API request failed:', err);
+        throw new functions.https.HttpsError('unavailable', 'AI service is unreachable. Please try again.');
+    }
+
+    if (!response.ok) {
+        console.error('Anthropic API error:', response.status, await response.text());
+        throw new functions.https.HttpsError('internal', 'AI service error. Please try again.');
+    }
+
+    const result = await response.json();
+    const reply  = result?.content?.find(block => block.type === 'text')?.text || '';
+
+    return { reply };
+});
